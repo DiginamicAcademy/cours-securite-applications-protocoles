@@ -1,3 +1,5 @@
+[← Chapitre précédent](03-xss-et-sorties.md) · [Sommaire](Readme.md) · [Chapitre suivant →](05-dependances-et-configuration.md)
+
 # Erreurs et logging — ne rien exposer, tout tracer
 
 > En pleine ouverture des ventes, la billetterie d'un festival local affiche une
@@ -162,3 +164,7 @@ terminer la journée.*
   personnelle en clair.
 - Journaliser, c'est se préparer à reconstituer un incident — c'est donc une
   décision de conception, pas une variable de débogage qu'on oublie.
+
+---
+
+[← Chapitre précédent](03-xss-et-sorties.md) · [Sommaire](Readme.md) · [Chapitre suivant →](05-dependances-et-configuration.md)

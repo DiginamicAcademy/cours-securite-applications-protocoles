@@ -1,3 +1,5 @@
+[← Chapitre précédent](04-erreurs-et-logging.md) · [Sommaire](Readme.md) · [Chapitre suivant →](06-revue-de-code-securite.md)
+
 # Dépendances et configuration — ce qui tourne autour du code
 
 > L'équipe data d'une mutuelle maintient un petit service d'export de rapports.
@@ -200,3 +202,7 @@ terminer la journée.*
   vérifient depuis le client.
 - Une configuration durcie : **debug off**, secrets hors du code, aucune valeur
   de secours en production.
+
+---
+
+[← Chapitre précédent](04-erreurs-et-logging.md) · [Sommaire](Readme.md) · [Chapitre suivant →](06-revue-de-code-securite.md)

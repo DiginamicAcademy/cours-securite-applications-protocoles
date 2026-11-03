@@ -1,3 +1,5 @@
+[← Chapitre précédent](09-donnees-sensibles.md) · [Sommaire](Readme.md) · [Chapitre suivant →](11-pipelines-data.md)
+
 # RGPD appliqué — la donnée personnelle a une date de péremption
 
 > Une plainte vise une chaîne de magasins de sport : ses adresses courriel sont
@@ -147,3 +149,7 @@ terminer la journée.*
   preuve de clôture.
 - En cas de fuite de données personnelles : notification à la CNIL dans les
   **72 heures**. Le scénario se répète avant, pas pendant.
+
+---
+
+[← Chapitre précédent](09-donnees-sensibles.md) · [Sommaire](Readme.md) · [Chapitre suivant →](11-pipelines-data.md)

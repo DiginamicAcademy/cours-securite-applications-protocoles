@@ -1,3 +1,5 @@
+[← Chapitre précédent](07-securite-api.md) · [Sommaire](Readme.md) · [Chapitre suivant →](09-donnees-sensibles.md)
+
 # Auth et limitation d'API — qui appelle, et à quelle vitesse
 
 > L'API de billetterie d'une salle de spectacle est publique : n'importe qui peut
@@ -199,3 +201,7 @@ terminer la journée.*
 - La validation de schéma tranche à l'avance types, bornes, longueurs et
   formats — et refuse par défaut. Elle ne remplace jamais le contrôle
   d'autorisation sur l'objet touché.
+
+---
+
+[← Chapitre précédent](07-securite-api.md) · [Sommaire](Readme.md) · [Chapitre suivant →](09-donnees-sensibles.md)
