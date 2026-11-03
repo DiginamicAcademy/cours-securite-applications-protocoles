@@ -1,3 +1,5 @@
+[← Chapitre précédent](14-architecture-reseau.md) · [Sommaire](Readme.md) · [Chapitre suivant →](16-tests-securite.md)
+
 # DevSecOps et traçabilité des dépendances — sécuriser la chaîne, pas seulement le code
 
 > En décembre 2020, SolarWinds publie une mise à jour de sa plateforme de
@@ -220,3 +222,7 @@ la journée.*
 - Un secret commité est **compromis** : on révoque d'abord, on corrige ensuite.
 - Le **SBOM** est l'inventaire des composants livrés : sans lui, la publication
   d'une faille se traduit par des jours de recherche au lieu de minutes.
+
+---
+
+[← Chapitre précédent](14-architecture-reseau.md) · [Sommaire](Readme.md) · [Chapitre suivant →](16-tests-securite.md)

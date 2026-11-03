@@ -1,3 +1,5 @@
+[← Chapitre précédent](02-validation-et-injections.md) · [Sommaire](Readme.md) · [Chapitre suivant →](04-erreurs-et-logging.md)
+
 # XSS et sorties — que le texte reste du texte
 
 > Sur le site d'un magazine en ligne, les lecteurs laissent des commentaires
@@ -177,3 +179,7 @@ terminer la journée.*
   posée en en-tête de réponse.
 - Un moteur de gabarit qui échappe par défaut supprime une famille d'oubliés —
   à condition de ne pas le contourner avec des chaînes assemblées à la main.
+
+---
+
+[← Chapitre précédent](02-validation-et-injections.md) · [Sommaire](Readme.md) · [Chapitre suivant →](04-erreurs-et-logging.md)
