@@ -9,7 +9,7 @@
 
 ## Contexte
 
-La fromagerie **DIGICHEESE** (Les Comtés du Jura) lance un programme de fidélité.
+La fromagerie **DIGICHEESE** (la fromagerie du fil rouge) lance un programme de fidélité.
 Chaque soir, un script exporte les commandes du jour dans un fichier que le
 service comptabilité reprend le lendemain matin.
 
