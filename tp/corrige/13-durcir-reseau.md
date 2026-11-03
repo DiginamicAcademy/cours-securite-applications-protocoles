@@ -31,7 +31,7 @@ un peu plus d'accès que ce que le besoin justifie.
 
 | Zone | Machines | Justification |
 | --- | --- | --- |
-| **Zone publique** (la zone tampon, ou DMZ — demilitarized zone) | `web-boutique` | Seule machine destinée à être jointe depuis Internet : elle reçoit les coups, elle ne doit rien contenir de sensible. |
+| **Zone publique** — la zone tampon, ou DMZ (demilitarized zone) | `web-boutique` | Seule machine destinée à être jointe depuis Internet : elle reçoit les coups, elle ne doit rien contenir de sensible. |
 | **Zone interne** | `messagerie`, `admin-boutique`, les postes du bureau | Usage interne : ces machines n'ont pas à être visibles depuis l'extérieur. |
 | **Zone de données** | `bdd-commandes`, `sauvegarde` | Ce qu'il y a de plus précieux : isolé, joignable seulement par les machines qui en ont besoin. |
 

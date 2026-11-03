@@ -124,5 +124,5 @@ réponse fausse le jour où on en a besoin.
   bloquer une livraison saine.
 - Une alerte non bloquante doit avoir **un responsable et une échéance**, sinon
   elle devient du bruit.
-- Le **SBOM** transforme la question « sommes-nous concernés ? » en une liste de
+- Le **SBOM** (Software Bill of Materials, l'inventaire des composants) transforme la question « sommes-nous concernés ? » en une liste de
   travail immédiatement exploitable.

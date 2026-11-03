@@ -1,5 +1,3 @@
-[← Chapitre précédent](15-devsecops.md) · [Sommaire](Readme.md) · [Chapitre suivant →](17-reponse-incident.md)
-
 # Tests de sécurité — empêcher la faille corrigée de revenir
 
 > En mars, l'équipe corrige une injection dans le module de recherche de sa
@@ -168,8 +166,9 @@ l'un regarde le code, l'autre regarde ce qui tourne.
 la journée.*
 
 - **Le DAST** (Dynamic Application Security Testing, les tests d'intrusion
-  automatisés) — des outils comme OWASP ZAP (Zed Attack Proxy, l'outil de test
-  d'intrusion de l'OWASP, Open Web Application Security Project) explorent
+  automatisés) — des outils comme ZAP (Zed Attack Proxy, l'outil de test
+  d'intrusion) publié par l'OWASP (Open Web Application Security Project, le
+  projet de référence de la sécurité applicative) explorent
   l'application en cours d'exécution et signalent les comportements suspects. Plus
   lent qu'un smoke test, utile en vérification périodique.
 - **Les suites de tests de sécurité partagées** — publier ses payloads de
@@ -190,7 +189,3 @@ la journée.*
   itérations, en durée, et rejouable grâce à une graine enregistrée.
 - **Chaque faille corrigée devient un test** ; ces tests rejoignent le pipeline du
   chapitre précédent, à côté des contrôles statiques.
-
----
-
-[← Chapitre précédent](15-devsecops.md) · [Sommaire](Readme.md) · [Chapitre suivant →](17-reponse-incident.md)

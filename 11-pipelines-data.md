@@ -1,5 +1,3 @@
-[← Chapitre précédent](10-rgpd-applique.md) · [Sommaire](Readme.md) · [Chapitre suivant →](12-partage-et-tiers.md)
-
 # Pipelines de données — sécuriser chaque étape du flux
 
 > Un job d'orchestration alimente chaque nuit l'entrepôt de données d'un
@@ -170,7 +168,3 @@ terminer la journée.*
   combien de temps » — y compris pour les exports vers l'extérieur.
 - Un pipeline qui échoue en silence est plus dangereux qu'un pipeline en panne :
   il produit des données fausses **qui ont l'air vraies**.
-
----
-
-[← Chapitre précédent](10-rgpd-applique.md) · [Sommaire](Readme.md) · [Chapitre suivant →](12-partage-et-tiers.md)

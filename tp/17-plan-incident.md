@@ -3,7 +3,7 @@
 > 🔵 **Intégration** · **Durée :** 55 min · **Lien :** chapitre
 > [Réponse à incident](../17-reponse-incident.md)
 > **Objectif :** produire un mini-plan de réponse à incident exécutable pour une
-> PME, des premières actions jusqu'à la communication.
+> PME (petite et moyenne entreprise), des premières actions jusqu'à la communication.
 
 ---
 

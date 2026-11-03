@@ -1,5 +1,3 @@
-[← Chapitre précédent](13-protocoles-reseau.md) · [Sommaire](Readme.md) · [Chapitre suivant →](15-devsecops.md)
-
 # Architecture réseau — segmenter, cloisonner, ne rien croire sur parole
 
 > Au début, le réseau de l'éditeur tenait en une image : une forteresse, un mur,
@@ -196,7 +194,3 @@ la journée.*
   son identité et ses droits, y compris entre services internes.
 - L'**API Gateway** rassemble authentification, autorisation, limitation de débit
   et journalisation à un point d'entrée unique, contrôlé.
-
----
-
-[← Chapitre précédent](13-protocoles-reseau.md) · [Sommaire](Readme.md) · [Chapitre suivant →](15-devsecops.md)

@@ -41,7 +41,9 @@ geste qui le **coupe** — pas une liste de bonnes intentions.
 
 | Écart | Le chemin le plus court | Le geste qui le coupe |
 | --- | --- | --- |
-| Dépendances (note 1) | une faille publiée sur un composant de `requirements.txt` est exploitable sans que personne ne le sache | figer les versions, produire un inventaire des composants (SBOM, Software Bill of Materials) à chaque livraison, et recevoir l'alerte quand une version est affectée |
+| Dépendances (note 1) | une faille publiée sur un composant de `requirements.txt` est exploitable sans que personne ne le sache | figer les versions, produire le SBOM (Software Bill of Materials, l'inventaire
+  des composants) à chaque livraison, et recevoir l'alerte quand une version est
+  affectée |
 | Réseau (note 2) | un poste interne compromis donne accès direct à la base de données | n'autoriser que l'API de restitution à joindre la base, et refuser le reste |
 | Réponse à incident (note 1) | le jour où ça casse, personne ne sait qui décide quoi, et les gestes de première urgence détruisent les traces | écrire le mini-plan de réponse, nommer les rôles, le tester par une simulation |
 

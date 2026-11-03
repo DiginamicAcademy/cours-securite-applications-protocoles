@@ -1,5 +1,3 @@
-[← Chapitre précédent](06-revue-de-code-securite.md) · [Sommaire](Readme.md) · [Chapitre suivant →](08-auth-et-limitation-api.md)
-
 # Sécurité des API — la porte d'entrée des applications modernes
 
 > L'API d'une grande rétention de véhicules expose `GET /users/{id}` sans aucun
@@ -184,7 +182,3 @@ terminer la journée.*
   BOLA.
 - Chaque version maintenue est une surface maintenue : **versionner, annoncer,
   mesurer, couper**.
-
----
-
-[← Chapitre précédent](06-revue-de-code-securite.md) · [Sommaire](Readme.md) · [Chapitre suivant →](08-auth-et-limitation-api.md)
