@@ -1,3 +1,5 @@
+[← Chapitre précédent](17-reponse-incident.md) · [Sommaire](Readme.md)
+
 # Maturité et perspectives — la sécurité est une trajectoire
 
 > « Sommes-nous en sécurité ? » est une question à laquelle personne ne peut
@@ -183,3 +185,7 @@ la journée.*
 - La **veille** se mesure à un délai de réaction, pas au nombre d'alertes lues ;
   elle repose sur l'inventaire des composants et une personne nommée.
 - L'**IA** accélère les deux côtés de la défense : elle propose, l'humain décide.
+
+---
+
+[← Chapitre précédent](17-reponse-incident.md) · [Sommaire](Readme.md)

@@ -1,3 +1,5 @@
+[Sommaire](Readme.md) · [Chapitre suivant →](02-validation-et-injections.md)
+
 # Principes du secure coding — écrire pour que ça ne casse pas
 
 > Le développeur de la fromagerie **DIGICHEESE** (la fromagerie du fil rouge) a ouvert le
@@ -164,3 +166,7 @@ la journée.*
   aucune couche ne remplace les autres.
 - Face à une erreur, un programme sûr **refuse et prévient** : c'est le
   fail-closed.
+
+---
+
+[Sommaire](Readme.md) · [Chapitre suivant →](02-validation-et-injections.md)
