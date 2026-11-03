@@ -1,3 +1,5 @@
+[← Chapitre précédent](01-Exemple%20de%20cours%20en%20un%20seul%20fichier.md) · [Sommaire](Readme.md) · [Chapitre suivant →](02-Exemple%20de%20cours%20en%20multi-fichier.md)
+
 # Principes du secure coding — écrire pour que ça ne casse pas
 
 > Le développeur de la fromagerie **DIGICHEESE** (Les Comtés du Jura) a ouvert le
@@ -164,3 +166,7 @@ la journée.*
   aucune couche ne remplace les autres.
 - Face à une erreur, un programme sûr **refuse et prévient** : c'est le
   fail-closed.
+
+---
+
+[← Chapitre précédent](01-Exemple%20de%20cours%20en%20un%20seul%20fichier.md) · [Sommaire](Readme.md) · [Chapitre suivant →](02-Exemple%20de%20cours%20en%20multi-fichier.md)
