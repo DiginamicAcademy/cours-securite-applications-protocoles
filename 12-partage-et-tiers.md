@@ -1,5 +1,3 @@
-[← Chapitre précédent](11-pipelines-data.md) · [Sommaire](Readme.md) · [Chapitre suivant →](13-protocoles-reseau.md)
-
 # Partage et tiers — quand la donnée sort du système
 
 > Une mutuelle sous-traite l'impression et l'envoi de ses courriers à un
@@ -142,7 +140,3 @@ terminer la journée.*
   quasi-identifiants), pas aux colonnes supprimées.
 - Éco-conception et sécurité convergent : **moins de données détenues = moins
   de risque**, et moins de coût.
-
----
-
-[← Chapitre précédent](11-pipelines-data.md) · [Sommaire](Readme.md) · [Chapitre suivant →](13-protocoles-reseau.md)

@@ -1,5 +1,3 @@
-[← Chapitre précédent](05-dependances-et-configuration.md) · [Sommaire](Readme.md) · [Chapitre suivant →](07-securite-api.md)
-
 # Revue de code sécurité — chercher les patterns, pas relire tout
 
 > Une association sportive fait relire le module de gestion de ses adhésions,
@@ -164,7 +162,3 @@ terminer la journée.*
   l'exposition.
 - L'automatisation filtre les patterns connus ; la question de la forme reste
   humaine.
-
----
-
-[← Chapitre précédent](05-dependances-et-configuration.md) · [Sommaire](Readme.md) · [Chapitre suivant →](07-securite-api.md)

@@ -1,5 +1,3 @@
-[← Chapitre précédent](15-devsecops.md) · [Sommaire](Readme.md) · [Chapitre suivant →](17-reponse-incident.md)
-
 # Tests de sécurité — empêcher la faille corrigée de revenir
 
 > En mars, l'équipe corrige une injection dans le module de recherche de sa
@@ -191,7 +189,3 @@ la journée.*
   itérations, en durée, et rejouable grâce à une graine enregistrée.
 - **Chaque faille corrigée devient un test** ; ces tests rejoignent le pipeline du
   chapitre précédent, à côté des contrôles statiques.
-
----
-
-[← Chapitre précédent](15-devsecops.md) · [Sommaire](Readme.md) · [Chapitre suivant →](17-reponse-incident.md)

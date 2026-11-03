@@ -1,5 +1,3 @@
-[← Chapitre précédent](16-tests-securite.md) · [Sommaire](Readme.md) · [Chapitre suivant →](18-maturite-et-perspectives.md)
-
 # Réponse à incident — le jour où ça casse
 
 > Un vendredi matin, la base de commandes d'une plateforme de livraison ne répond
@@ -176,7 +174,3 @@ la journée.*
   l'autorité de contrôle : cette obligation se prépare, elle ne s'improvise pas.
 - Le retour d'expérience cherche **ce qui a permis l'incident**, pas qui l'a
   laissé faire ; chaque changement a un responsable et une échéance.
-
----
-
-[← Chapitre précédent](16-tests-securite.md) · [Sommaire](Readme.md) · [Chapitre suivant →](18-maturite-et-perspectives.md)

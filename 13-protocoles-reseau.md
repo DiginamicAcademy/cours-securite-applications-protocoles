@@ -1,5 +1,3 @@
-[← Chapitre précédent](12-partage-et-tiers.md) · [Sommaire](Readme.md) · [Chapitre suivant →](14-architecture-reseau.md)
-
 # Protocoles réseau — ce que le réseau chiffre, et ce qu'il laisse ouvert
 
 > Le courrier électronique naît en 1982 avec SMTP (Simple Mail Transfer Protocol, le
@@ -206,7 +204,3 @@ la journée.*
   de la montée en chiffrement, repli en clair.
 - Le durcissement tient en trois gestes : **imposer** le chiffrement (HSTS),
   **authentifier** les réponses (DNSSEC), **administrer par clé** (SSH).
-
----
-
-[← Chapitre précédent](12-partage-et-tiers.md) · [Sommaire](Readme.md) · [Chapitre suivant →](14-architecture-reseau.md)

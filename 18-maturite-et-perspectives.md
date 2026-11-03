@@ -1,5 +1,3 @@
-[← Chapitre précédent](17-reponse-incident.md) · [Sommaire](Readme.md)
-
 # Maturité et perspectives — la sécurité est une trajectoire
 
 > « Sommes-nous en sécurité ? » est une question à laquelle personne ne peut
@@ -119,8 +117,9 @@ sources, un rythme et un **délai de réaction**.
 Ce qui compte n'est pas le nombre d'alertes lues, mais le temps entre la
 publication d'une faille et le moment où votre organisation sait **si elle est
 concernée**. Ce temps se réduit mécaniquement : inventaire des composants tenu à
-jour (le SBOM du chapitre sur la chaîne de livraison), alertes automatiques sur
-les dépendances, et une personne nommée pour traiter ce qui arrive.
+jour, alertes automatiques sur les dépendances, et une personne nommée pour
+traiter ce qui arrive. Cet inventaire est le SBOM (Software Bill of Materials, la
+liste des composants) décrit au chapitre sur la chaîne de livraison.
 
 > 💡 **Astuce** — automatisez la collecte, jamais la décision. Une alerte
 > automatique qui crée une tâche assignée est utile ; un correctif appliqué sans
@@ -162,8 +161,9 @@ un système qui en a déjà beaucoup.
 la journée.*
 
 - **Les référentiels de maturité** — des cadres publics décrivent des niveaux de
-  maturité par domaine (la norme ISO 27001, Organisation internationale de
-  normalisation, pour le système de management de la sécurité). Ils servent de
+  maturité par domaine, comme la norme ISO 27001 publiée par l'ISO (Organisation
+  internationale de normalisation) pour le système de management de la sécurité.
+  Ils servent de
   vocabulaire commun avec la direction, pas de certification obligatoire.
 - **Les communautés et les conférences** — suivre les retours d'expérience
   d'autres équipes est le moyen le moins cher d'éviter les erreurs déjà payées par
@@ -185,7 +185,3 @@ la journée.*
 - La **veille** se mesure à un délai de réaction, pas au nombre d'alertes lues ;
   elle repose sur l'inventaire des composants et une personne nommée.
 - L'**IA** accélère les deux côtés de la défense : elle propose, l'humain décide.
-
----
-
-[← Chapitre précédent](17-reponse-incident.md) · [Sommaire](Readme.md)

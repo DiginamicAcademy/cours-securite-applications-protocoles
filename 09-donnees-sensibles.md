@@ -1,5 +1,3 @@
-[← Chapitre précédent](08-auth-et-limitation-api.md) · [Sommaire](Readme.md) · [Chapitre suivant →](10-rgpd-applique.md)
-
 # Données sensibles — classer, minimiser, masquer
 
 > Un éditeur de logiciel de gestion RH découvre, en revoyant son API de paie,
@@ -176,7 +174,3 @@ terminer la journée.*
   un pseudonyme **reste** une donnée personnelle.
 - La question de départ, à poser pour chaque endpoint : « **pourquoi** ce champ
   est-il dans cette réponse ? »
-
----
-
-[← Chapitre précédent](08-auth-et-limitation-api.md) · [Sommaire](Readme.md) · [Chapitre suivant →](10-rgpd-applique.md)

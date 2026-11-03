@@ -1,5 +1,3 @@
-[← Chapitre précédent](01-principes-secure-coding.md) · [Sommaire](Readme.md) · [Chapitre suivant →](03-xss-et-sorties.md)
-
 # Validation et injections — séparer les données des instructions
 
 > Sur la plateforme de suivi de colis d'une PME (petite et moyenne entreprise)
@@ -200,7 +198,3 @@ terminer la journée.*
   longueur maximale — et elle refuse, elle ne répare pas.
 - Un ORM sécurise le cas courant ; dès qu'une saisie influence la **forme** de la
   requête, on revient à une liste fermée de valeurs autorisées.
-
----
-
-[← Chapitre précédent](01-principes-secure-coding.md) · [Sommaire](Readme.md) · [Chapitre suivant →](03-xss-et-sorties.md)
