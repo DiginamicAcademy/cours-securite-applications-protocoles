@@ -1,6 +1,7 @@
 # Exercice — Appliquer les principes du secure coding
 
-> 🟢 **Débutant** · **Durée :** 25 min · **Lien :** chapitre
+> **Nature :** TD (trois mini-analyses en séquence découverte) · **Durée :** 20 min · **Notion :** les principes du secure coding — moindre privilège, défense en profondeur, fail-closed
+> 🟢 **Débutant** · **Durée :** 20 min · **Lien :** chapitre
 > [Principes du secure coding](../01-principes-secure-coding.md)
 > **Objectif :** auditer un script avec les principes du chapitre — moindre
 > privilège, defense in depth, fail-closed — et proposer un comportement durci.

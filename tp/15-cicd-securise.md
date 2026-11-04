@@ -1,6 +1,7 @@
 # Exercice — Intégrer la sécurité dans une intégration continue
 
-> 🟡 **À vous de jouer** · **Durée :** 50 min · **Lien :** chapitre
+> **Nature :** élément intégrable dans le TP intégrateur ([TP-INTEGRATEUR.md](TP-INTEGRATEUR.md)) — utilisable aussi en exercice autonome · **Durée :** 35 min · **Notion :** l'intégration continue sécurisée — SAST, SCA, secrets, SBOM
+> 🟡 **À vous de jouer** · **Durée :** 35 min · **Lien :** chapitre
 > [DevSecOps et traçabilité des dépendances](../15-devsecops.md)
 > **Objectif :** écrire un workflow d'intégration continue qui exécute les trois
 > familles de contrôles du chapitre, et décider, contrôle par contrôle, ce qui

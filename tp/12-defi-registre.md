@@ -1,5 +1,6 @@
 # Exercice — Brouillon de registre des traitements
 
+> **Nature :** exercice (défi facultatif) · **Durée :** libre · **Notion :** le registre des traitements RGPD
 > 🔴 **Défi** · **Durée :** libre · **Lien :** chapitre [Partage et
 > tiers](../12-partage-et-tiers.md)
 > **Objectif :** produire un brouillon de registre des traitements pour une

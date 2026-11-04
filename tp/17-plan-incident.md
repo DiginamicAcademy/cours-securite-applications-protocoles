@@ -1,6 +1,7 @@
 # Exercice — Rédiger un mini-plan de réponse à incident
 
-> 🔵 **Intégration** · **Durée :** 55 min · **Lien :** chapitre
+> **Nature :** élément intégrable dans le TP intégrateur ([TP-INTEGRATEUR.md](TP-INTEGRATEUR.md)) — utilisable aussi en exercice autonome · **Durée :** 40 min · **Notion :** la réponse à incident — organisation, décisions, communication
+> 🔵 **Intégration** · **Durée :** 40 min · **Lien :** chapitre
 > [Réponse à incident](../17-reponse-incident.md)
 > **Objectif :** produire un mini-plan de réponse à incident exécutable pour une
 > PME (petite et moyenne entreprise), des premières actions jusqu'à la communication.

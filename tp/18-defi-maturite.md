@@ -1,5 +1,6 @@
 # Exercice — Construire sa feuille de route de sécurité
 
+> **Nature :** exercice (défi facultatif) · **Durée :** non chronométré · **Notion :** l'auto-évaluation de maturité et la feuille de route
 > 🔴 **Défi** · **Durée :** non chronométré · **Lien :** chapitre
 > [Maturité et perspectives](../18-maturite-et-perspectives.md)
 > **Objectif :** produire, pour un projet qui vous est familier, une

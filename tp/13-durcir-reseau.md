@@ -1,6 +1,7 @@
 # Exercice — Durcir le réseau d'une petite entreprise
 
-> 🟢 **Échauffement** · **Durée :** 25 min · **Lien :** chapitre
+> **Nature :** TD (quatre gestes en séquence découverte) · **Durée :** 20 min · **Notion :** le durcissement réseau — repérer les flux, zoner, cloisonner
+> 🟢 **Échauffement** · **Durée :** 20 min · **Lien :** chapitre
 > [Protocoles réseau](../13-protocoles-reseau.md)
 > **Objectif :** repérer, sur une description de réseau, les flux en clair et les
 > expositions inutiles, puis proposer un durcissement réaliste.

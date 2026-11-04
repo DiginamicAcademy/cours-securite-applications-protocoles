@@ -1,6 +1,7 @@
 # Durcir un endpoint de réservation
 
-> 🟡 **Intermédiaire** · **Durée :** 50 min · **Lien :** chapitre
+> **Nature :** TD (quatre mini-durcissements en séquence) · **Durée :** 30 min · **Notion :** durcir un endpoint — erreurs, journaux, contrôle d'accès, en-têtes de sécurité
+> 🟡 **Intermédiaire** · **Durée :** 30 min · **Lien :** chapitre
 > [Erreurs et logging](../04-erreurs-et-logging.md)
 > **Objectif :** durcir une route de service — erreurs non exposées, journaux
 > sans secret, contrôle d'accès explicite, en-têtes de sécurité — sans changer

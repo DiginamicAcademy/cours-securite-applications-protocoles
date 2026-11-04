@@ -1,6 +1,7 @@
 # Exercice — Sécuriser un endpoint qui en dit trop
 
-> 🟡 **À vous de jouer** · **Durée :** 50 min · **Lien :** chapitre [Données
+> **Nature :** exercice · **Durée :** 30 min · **Notion :** les données sensibles — classification, minimisation, masquage
+> 🟡 **À vous de jouer** · **Durée :** 30 min · **Lien :** chapitre [Données
 > sensibles](../09-donnees-sensibles.md)
 > **Objectif :** appliquer la minimisation et le masquage sur un endpoint
 > réellement trop bavard, et justifier les choix au regard du RGPD.

@@ -1,6 +1,7 @@
 # Exercice — Analyser les risques d'un pipeline de données
 
-> 🔵 **Intégration** · **Durée :** 55 min · **Lien :** chapitre [Pipelines de
+> **Nature :** élément intégrable dans le TP intégrateur ([TP-INTEGRATEUR.md](TP-INTEGRATEUR.md)) — utilisable aussi en exercice autonome · **Durée :** 35 min · **Notion :** les risques d'un pipeline de données — fuite, intégrité, traçabilité
+> 🔵 **Intégration** · **Durée :** 35 min · **Lien :** chapitre [Pipelines de
 > données](../11-pipelines-data.md)
 > **Objectif :** analyser les risques de fuite et d'intégrité d'un pipeline ETL (Extract, Transform, Load)
 > étape par étape, et prioriser des recommandations.

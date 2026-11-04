@@ -1,5 +1,6 @@
 # Exercice — Auditer l'API d'un service de mobilité
 
+> **Nature :** exercice · **Durée :** 25 min · **Notion :** la surface d'attaque d'une API — autorisation et limitation
 > 🟢 **Débutant** · **Durée :** 25 min · **Lien :** chapitre [Sécurité des
 > API](../07-securite-api.md)
 > **Objectif :** cartographier la surface d'attaque d'une API et repérer ses

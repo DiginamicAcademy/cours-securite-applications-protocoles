@@ -1,6 +1,7 @@
 # Auditer un module de gestion des adhésions
 
-> 🔵 **Avancé** · **Durée :** 55 min · **Lien :** chapitre
+> **Nature :** élément intégrable dans le TP intégrateur ([TP-INTEGRATEUR.md](TP-INTEGRATEUR.md)) — utilisable aussi en exercice autonome · **Durée :** 35 min · **Notion :** la revue de code sécurité en trois passes et le rapport de dette
+> 🔵 **Avancé** · **Durée :** 35 min · **Lien :** chapitre
 > [Revue de code sécurité](../06-revue-de-code-securite.md)
 > **Objectif :** appliquer la revue en trois passes sur un module complet, puis
 > en tirer un rapport de dette priorisé, exploitable par l'équipe.

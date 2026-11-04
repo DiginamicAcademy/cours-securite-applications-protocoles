@@ -1,6 +1,7 @@
 # Échapper les sorties d'un livre d'or
 
-> 🟢 **Débutant** · **Durée :** 20 min · **Lien :** chapitre
+> **Nature :** exercice · **Durée :** 15 min · **Notion :** l'échappement des sorties et la CSP — que le texte reste du texte
+> 🟢 **Débutant** · **Durée :** 15 min · **Lien :** chapitre
 > [XSS (Cross-Site Scripting) et sorties](../03-xss-et-sorties.md)
 > **Objectif :** repérer les contextes d'insertion d'une page, appliquer
 > l'échappement adapté à chacun, puis poser une politique de sécurité du contenu.

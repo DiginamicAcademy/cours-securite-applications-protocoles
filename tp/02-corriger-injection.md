@@ -1,6 +1,7 @@
 # Corriger une injection dans une recherche
 
-> 🟢 **Débutant** · **Durée :** 25 min · **Lien :** chapitre
+> **Nature :** exercice · **Durée :** 20 min · **Notion :** l'injection SQL — requête paramétrée et validation d'entrée
+> 🟢 **Débutant** · **Durée :** 20 min · **Lien :** chapitre
 > [Validation et injections](../02-validation-et-injections.md)
 > **Objectif :** repérer ce qui, dans une requête, relève de l'instruction et ce
 > qui relève de la donnée, puis réécrire la route en requête paramétrée avec un
