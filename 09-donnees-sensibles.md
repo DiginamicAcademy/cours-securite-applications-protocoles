@@ -8,8 +8,7 @@
 > base ne fuit pas : c'est l'**endpoint** qui donne trop. Le meilleur moyen de
 > protéger une donnée, c'est souvent de ne pas la renvoyer.
 
-**Durée de lecture :** 65 min · **Prérequis :** les chapitres [Sécurité des
-API](07-securite-api.md) et [Auth et limitation d'API](08-auth-et-limitation-api.md)
+**Durée de lecture :** 65 min · **Prérequis :** les chapitres [Sécurité des API](07-securite-api.md) et [Auth et limitation d'API](08-auth-et-limitation-api.md)
 
 ---
 

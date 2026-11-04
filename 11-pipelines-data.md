@@ -134,8 +134,8 @@ a un couloir.
 
 > [!NOTE]
 > Un export vers un tiers est une **sortie du système d'information** : le
-> fichier échappe au contrôle dès qu'il part. Le chapitre [Partage et
-> tiers](12-partage-et-tiers.md) traite ce cas pour lui-même.
+> fichier échappe au contrôle dès qu'il part. Le chapitre
+> [Partage et tiers](12-partage-et-tiers.md) traite ce cas pour lui-même.
 
 ---
 

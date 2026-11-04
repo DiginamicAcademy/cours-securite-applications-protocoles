@@ -8,8 +8,7 @@
 > technique** à concevoir dès le départ, comme on conçoit une contrainte de
 > performance ou de disponibilité.
 
-**Durée de lecture :** 60 min · **Prérequis :** le chapitre [Données
-sensibles](09-donnees-sensibles.md)
+**Durée de lecture :** 60 min · **Prérequis :** le chapitre [Données sensibles](09-donnees-sensibles.md)
 
 ---
 

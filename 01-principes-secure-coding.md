@@ -92,8 +92,7 @@ def exporter(jour):
 ```
 
 Repérez les trois endroits où le **moindre privilège** est violé. Notez-les sans
-chercher à corriger : la correction vient dans [l'exercice qui
-suit](tp/01-appliquer-les-principes.md).
+chercher à corriger : la correction vient dans [l'exercice qui suit](tp/01-appliquer-les-principes.md).
 
 ---
 

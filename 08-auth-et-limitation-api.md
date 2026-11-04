@@ -9,8 +9,7 @@
 > l'appelant n'est pas le tout : il faut aussi **limiter son débit** et
 > **valider ses données**.
 
-**Durée de lecture :** 60 min · **Prérequis :** le chapitre [Sécurité des
-API](07-securite-api.md)
+**Durée de lecture :** 60 min · **Prérequis :** le chapitre [Sécurité des API](07-securite-api.md)
 
 ---
 

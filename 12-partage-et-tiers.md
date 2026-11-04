@@ -9,8 +9,7 @@
 > vraiment ? Le partage de données sort du système d'information : les
 > contrats et l'anonymisation deviennent des sujets de **sécurité**.
 
-**Durée de lecture :** 45 min · **Prérequis :** les chapitres [Données
-sensibles](09-donnees-sensibles.md) et [RGPD appliqué](10-rgpd-applique.md)
+**Durée de lecture :** 45 min · **Prérequis :** les chapitres [Données sensibles](09-donnees-sensibles.md) et [RGPD appliqué](10-rgpd-applique.md)
 
 ---
 
