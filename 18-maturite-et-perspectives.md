@@ -1,4 +1,4 @@
-[← Chapitre précédent](17-reponse-incident.md) · [Sommaire](Readme.md)
+[← Chapitre précédent](17-reponse-incident.md) · [Sommaire](Readme.md) · [Chapitre suivant →](A-Glossaire-et-ressources.md)
 
 # Maturité et perspectives — la sécurité est une trajectoire
 
@@ -190,4 +190,4 @@ la journée.*
 
 ---
 
-[← Chapitre précédent](17-reponse-incident.md) · [Sommaire](Readme.md)
+[← Chapitre précédent](17-reponse-incident.md) · [Sommaire](Readme.md) · [Chapitre suivant →](A-Glossaire-et-ressources.md)

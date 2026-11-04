@@ -1,3 +1,5 @@
+[← Chapitre précédent](18-maturite-et-perspectives.md) · [Sommaire](Readme.md)
+
 # Glossaire et ressources
 
 > **Nature :** annexe de référence · **Usage :** tout au cours
@@ -157,3 +159,7 @@ Cette page rassemble les acronymes et les termes techniques du cours, avec leurs
 - **Have I Been Pwned** — savoir si une adresse a fui : https://haveibeenpwned.com/
 
 *URLs vérifiées le 4 novembre 2026.*
+
+---
+
+[← Chapitre précédent](18-maturite-et-perspectives.md) · [Sommaire](Readme.md)
