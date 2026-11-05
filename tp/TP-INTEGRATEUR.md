@@ -100,24 +100,7 @@ Rassemblez le tout dans le dossier (voir plus bas), et terminez par une [feuille
 6. **La chaîne DevSecOps** — workflow, portes de sécurité, SBOM, tests.
 7. **La réponse à incident et la feuille de route** — plan, scénario traité, priorités.
 
-Les étapes 1 à 9 sont la matière du dossier, pas des livrables à part. Ce TP est **noté sur 20**, selon la grille ci-dessous.
-
----
-
-## Grille d'évaluation
-
-| Critère | Points |
-| --- | --- |
-| 1. Revue de code et corrections — validation, injections, sorties, erreurs | 4 |
-| 2. Dépendances, configuration et secrets | 2 |
-| 3. API et données personnelles — autorisation, limitation, minimisation, RGPD | 4 |
-| 4. Pipeline de données et partage avec les tiers | 3 |
-| 5. Réseau et architecture | 2 |
-| 6. Chaîne DevSecOps et tests de sécurité | 3 |
-| 7. Réponse à incident et feuille de route | 2 |
-| **Total** | **20** |
-
-Chaque critère est noté sur la justesse technique, la complétude et la justification des choix. Un critère non traité est noté zéro ; un arbitrage expliqué compte autant qu'une mesure de plus.
+Les étapes 1 à 9 sont la matière du dossier, pas des livrables à part. Ce TP est **noté sur 20**.
 
 ---
 
