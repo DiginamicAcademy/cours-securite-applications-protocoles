@@ -99,6 +99,12 @@ correspondant, puis se corrige soi-même :
 | 🟡 | [Intégrer la sécurité dans une intégration continue](tp/15-cicd-securise.md) · [corrigé](tp/corrige/15-cicd-securise.md) | 50 min |
 | 🔵 | [Rédiger un mini-plan de réponse à incident](tp/17-plan-incident.md) · [corrigé](tp/corrige/17-plan-incident.md) | 55 min |
 | 🔴 | [Construire sa feuille de route de sécurité](tp/18-defi-maturite.md) · [corrigé](tp/corrige/18-defi-maturite.md) | non chronométré |
+| 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](tp/TP-INTEGRATEUR.md) — **TP intégrateur, seul élément noté du cours** | 4 h |
+
+Les quatorze premiers énoncés sont formatifs : le corrigé reste public et sert à
+l'auto-évaluation. Le TP intégrateur, lui, est **noté** — il reprend l'ensemble du
+cours (J7 à J9) et se rend en un dossier unique ; son corrigé est réservé à
+l'évaluation et n'est pas publié.
 
 ---
 
