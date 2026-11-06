@@ -24,7 +24,7 @@ journées précédentes, et le chapitre
   concaténation par une requête paramétrée.
 - **Contrôler** une saisie avant usage : type, format attendu, longueur maximale.
 - **Arbitrer** entre requête paramétrée, ORM et validation d'entrée, selon ce que
-  le code doit réellement faire.
+  le code doit réellement faire — l'exposé de l'ORM est en approfondissement.
 - **Refuser** proprement une valeur hors format, au lieu de la réparer en
   silence.
 

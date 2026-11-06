@@ -23,7 +23,8 @@
 - **Distinguer** les contextes d'insertion — texte, attribut, script, adresse —
   et le traitement qui correspond à chacun.
 - **Poser** une politique de sécurité du contenu pour limiter ce qu'une page
-  peut charger et exécuter.
+  peut charger et exécuter — en principe : la mécanique des directives est en
+  approfondissement.
 - **Choisir** un moteur de gabarit qui échappe par défaut, et repérer les endroits
   où ce défaut est désactivé.
 
