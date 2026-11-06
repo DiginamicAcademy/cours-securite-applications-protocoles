@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <!-- QCM formatif AppSec (J7-J9) — formatif, 24 questions, choix unique, 1 point, réponses mélangées -->
+  <!-- Source : qcm/03-formatif-appsec.qcm.md (source de vérité, couplage 1:1) -->
+  <!-- Config Moodle attendue (type formatif) : tentatives illimitées, temps illimité, pas de note. -->
+
+  <question type="category">
+    <category><text>$course$/QCM formatif AppSec (J7-J9)/Jour 7 — Sécuriser l'application dans le code</text></category>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q01 (J7, ch. 01)</text></name>
+    <questiontext format="markdown">
+      <text>Le moindre privilège se vérifie avec trois questions, à poser pour chaque script, chaque service, chaque requête. Laquelle ne fait **pas** partie de ces trois questions ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Les trois questions portent sur les données, les droits et le compte ; l'auteur et la date de revue relèvent de la revue de code, pas du moindre privilège. Chapitre à revoir : 01.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Quelles données cette tâche doit-elle réellement lire ?</text></answer>
+    <answer fraction="0" format="markdown"><text>Quels droits ce composant doit-il détenir ?</text></answer>
+    <answer fraction="0" format="markdown"><text>Quel compte exécute ce code ?</text></answer>
+    <answer fraction="100" format="markdown"><text>Qui a écrit ce code et quand a-t-il été revu ?</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q02 (J7, ch. 02)</text></name>
+    <questiontext format="markdown">
+      <text>Une recherche est écrite `WHERE titre LIKE ?`, la saisie étant transmise comme paramètre. Pourquoi cette forme neutralise-t-elle une saisie du type `' OR '1'='1` ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>L'instruction est choisie avant que la saisie ne soit lue : elle ne peut donc pas en modifier la forme. L'échappement HTML, lui, protège une page, pas une base. Chapitre à revoir : 02.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Parce qu'elle supprime les caractères spéciaux de la saisie avant de l'utiliser</text></answer>
+    <answer fraction="0" format="markdown"><text>Parce qu'elle chiffre la requête avant de l'envoyer à la base</text></answer>
+    <answer fraction="100" format="markdown"><text>Parce que la saisie reste une valeur et ne devient jamais un morceau de l'instruction</text></answer>
+    <answer fraction="0" format="markdown"><text>Parce qu'elle échappe la saisie en HTML avant de l'insérer</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q03 (J7, ch. 02)</text></name>
+    <questiontext format="markdown">
+      <text>Un champ libre reçoit une valeur qui ne correspond ni au format ni à la longueur attendus. Que fait une validation d'entrée bien conçue ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>En entrée on refuse ce qui n'est pas attendu : « réparer » la saisie cache un problème et lui apprend à revenir. L'échappement est un geste distinct, fait au moment de l'affichage. Chapitre à revoir : 02.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Elle remplace les caractères dangereux par des caractères sûrs, puis enregistre</text></answer>
+    <answer fraction="0" format="markdown"><text>Elle enregistre la valeur telle quelle : l'échappement interviendra à l'affichage</text></answer>
+    <answer fraction="0" format="markdown"><text>Elle borne la longueur et laisse passer le reste de la valeur</text></answer>
+    <answer fraction="100" format="markdown"><text>Elle refuse la valeur, au lieu de la réparer</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q04 (J7, ch. 03)</text></name>
+    <questiontext format="markdown">
+      <text>Un commentaire saisi par un utilisateur est affiché sur une page. Dans quel cas l'échappement HTML est-il insuffisant à lui seul ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Le traitement dépend du contexte d'insertion : dans un contexte JavaScript, c'est celui-là qui commande, et l'échappement HTML n'y suffit pas. Chapitre à revoir : 03.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Quand le commentaire est affiché dans un paragraphe de texte</text></answer>
+    <answer fraction="100" format="markdown"><text>Quand le commentaire est inséré dans un gestionnaire d'événement JavaScript d'une balise</text></answer>
+    <answer fraction="0" format="markdown"><text>Quand le commentaire contient des accents ou des apostrophes</text></answer>
+    <answer fraction="0" format="markdown"><text>Quand le commentaire est plus long que la colonne qui le stocke</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q05 (J7, ch. 03)</text></name>
+    <questiontext format="markdown">
+      <text>Que fait une Content Security Policy (CSP) ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>La CSP est une liste posée côté serveur dans un en-tête de réponse : ceinture et bretelles derrière l'échappement, jamais à sa place. Chapitre à revoir : 03.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Elle échappe les sorties HTML au moment de l'affichage</text></answer>
+    <answer fraction="100" format="markdown"><text>Elle liste ce qu'une page a le droit de charger et d'exécuter, et se déclare dans un en-tête de réponse HTTP</text></answer>
+    <answer fraction="0" format="markdown"><text>Elle remplace l'échappement dès lors qu'elle est en place</text></answer>
+    <answer fraction="0" format="markdown"><text>Elle interdit l'exécution de tout script sur le site</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q06 (J7, ch. 04)</text></name>
+    <questiontext format="markdown">
+      <text>Une opération échoue en production. Quelle information a sa place dans le journal d'application ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Un journal décrit ce qui s'est passé, pas ce que contenaient les données : le fait et l'identifiant technique, jamais la valeur. À l'utilisateur, un message générique avec un identifiant de suivi. Chapitre à revoir : 04.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Le mot de passe saisi, masqué par des astérisques</text></answer>
+    <answer fraction="0" format="markdown"><text>La saisie entière de l'utilisateur, pour reproduire l'incident</text></answer>
+    <answer fraction="100" format="markdown"><text>Le fait que l'opération a échoué, avec l'identifiant technique concerné</text></answer>
+    <answer fraction="0" format="markdown"><text>Le contenu complet du fichier traité</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q07 (J7, ch. 05)</text></name>
+    <questiontext format="markdown">
+      <text>Une faille est publiée sur une bibliothèque de votre application. Quelle suite de gestes correspond à ce que le cours appelle l'analyse des composants ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Quatre temps : lire, situer (le code vulnérable est-il réellement appelé ?), corriger, vérifier. La note de gravité décrit la bibliothèque, pas votre situation. Chapitre à revoir : 05.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Retirer la bibliothèque, réécrire la fonctionnalité, tester, livrer</text></answer>
+    <answer fraction="0" format="markdown"><text>Attendre la prochaine version majeure et tout mettre à jour d'un coup</text></answer>
+    <answer fraction="100" format="markdown"><text>Lire l'inventaire des composants, situer l'exposition réelle, corriger, vérifier</text></answer>
+    <answer fraction="0" format="markdown"><text>Relever la note de gravité publiée et décider d'après elle seule</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q08 (J7, ch. 06)</text></name>
+    <questiontext format="markdown">
+      <text>La revue de sécurité d'un diff se conduit en trois passes indépendantes, chacune avec sa question. Lesquelles, et dans quel ordre ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Qu'arrive-t-il de l'extérieur, qu'est-ce qui sort, que déclenche le code : chaque passe se fait sur tout le fichier avant de passer à la suivante. Chapitre à revoir : 06.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Lisibilité, performance, maintenabilité</text></answer>
+    <answer fraction="0" format="markdown"><text>Entrées, appels système, sorties</text></answer>
+    <answer fraction="100" format="markdown"><text>Entrées, sorties, appels système</text></answer>
+    <answer fraction="0" format="markdown"><text>Nommage, commentaires, tests</text></answer>
+  </question>
+
+  <question type="category">
+    <category><text>$course$/QCM formatif AppSec (J7-J9)/Jour 8 — API, données et conformité</text></category>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q09 (J8, ch. 07)</text></name>
+    <questiontext format="markdown">
+      <text>Un client authentifié obtient le dossier d'un autre client en changeant l'identifiant dans l'URL. De quel risque s'agit-il ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>C'est le risque n°1 des API : l'API vérifie que vous êtes connecté, pas que l'objet demandé est le vôtre. Chapitre à revoir : 07.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Une injection dans la base</text></answer>
+    <answer fraction="100" format="markdown"><text>Du BOLA (Broken Object Level Authorization)</text></answer>
+    <answer fraction="0" format="markdown"><text>Un manquement à la validation de schéma</text></answer>
+    <answer fraction="0" format="markdown"><text>Une dépendance vulnérable</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q10 (J8, ch. 07)</text></name>
+    <questiontext format="markdown">
+      <text>Une équipe garde `/v1` ouverte « au cas où », trois ans après l'arrivée de `/v2`. Quel est le problème, du point de vue de la sécurité ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Garder `/v1`, c'est garder les erreurs de `/v1` : on annonce une fin de vie (date de dépréciation, en-tête `Sunset`), on mesure l'usage, puis on coupe l'ancienne version. Chapitre à revoir : 07.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Cela rend la validation de schéma des requêtes impossible</text></answer>
+    <answer fraction="100" format="markdown"><text>Chaque version maintenue est une surface d'attaque maintenue</text></answer>
+    <answer fraction="0" format="markdown"><text>Cela empêche de versionner dans le chemin</text></answer>
+    <answer fraction="0" format="markdown"><text>Cela alourdit uniquement les journaux d'accès</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q11 (J8, ch. 08)</text></name>
+    <questiontext format="markdown">
+      <text>Un appel arrive avec un jeton valide dont le scope ne couvre pas l'action demandée. Quel code de refus est le bon ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>401 dit « je ne sais pas qui vous êtes », 403 dit « je sais qui vous êtes, et vous n'avez pas ce droit ». Un jeton valide au périmètre trop étroit, c'est un 403. Chapitre à revoir : 08.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>401, car l'appelant n'est pas autorisé</text></answer>
+    <answer fraction="100" format="markdown"><text>403, car l'appelant est identifié mais n'a pas ce droit</text></answer>
+    <answer fraction="0" format="markdown"><text>429, car l'appel insiste au-delà du périmètre</text></answer>
+    <answer fraction="0" format="markdown"><text>404, car la ressource doit rester invisible</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q12 (J8, ch. 08)</text></name>
+    <questiontext format="markdown">
+      <text>Un appelant dépasse le quota que l'API lui fixe. Que doit-il recevoir pour cesser de marteler ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Le rate limiting se décide sur trois points : qui compte, quel rythme, que renvoyer — un 429 avec `Retry-After`, pour que l'appelant sache quand réessayer. Chapitre à revoir : 08.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Un 403 sans information complémentaire</text></answer>
+    <answer fraction="0" format="markdown"><text>Une réponse vide, pour ne rien divulguer</text></answer>
+    <answer fraction="100" format="markdown"><text>Un 429 (Too Many Requests) accompagné de l'en-tête `Retry-After`</text></answer>
+    <answer fraction="0" format="markdown"><text>Un 500, pour que le client retente plus tard</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q13 (J8, ch. 09)</text></name>
+    <questiontext format="markdown">
+      <text>La classification attribue à chaque donnée un niveau de sensibilité, du plus exposable au plus protégé. Sur quel critère se décide ce niveau ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Le critère est le dommage, pas la valeur : mots de passe, RIB (relevé d'identité bancaire) et numéro de sécurité sociale sont strictement confidentiels et ne sortent jamais par une API. Chapitre à revoir : 09.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Sur la valeur commerciale de la donnée</text></answer>
+    <answer fraction="100" format="markdown"><text>Sur le dommage causé par sa divulgation</text></answer>
+    <answer fraction="0" format="markdown"><text>Sur le volume de données stockées</text></answer>
+    <answer fraction="0" format="markdown"><text>Sur l'ancienneté de la donnée</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q14 (J8, ch. 10)</text></name>
+    <questiontext format="markdown">
+      <text>Une case pré-cochée dans les conditions générales vaut-elle consentement, et quelle base légale justifie la conservation de l'adresse de livraison d'une commande ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Un consentement pré-coché ou glissé dans les conditions générales ne vaut pas consentement. L'adresse qui sert à livrer ce qui est convenu repose sur l'exécution du contrat. Chapitre à revoir : 10.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Oui, il vaut consentement ; c'est donc la même base pour l'adresse de livraison</text></answer>
+    <answer fraction="0" format="markdown"><text>Non ; elle relève de l'obligation légale</text></answer>
+    <answer fraction="100" format="markdown"><text>Non ; l'adresse de livraison relève de l'exécution du contrat</text></answer>
+    <answer fraction="0" format="markdown"><text>Oui ; l'adresse de livraison relève de l'intérêt légitime</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q15 (J8, ch. 11)</text></name>
+    <questiontext format="markdown">
+      <text>Un test de données détecte des durées négatives dans le lot produit par l'étape de transformation, avant le chargement dans l'entrepôt. Que doit faire ce test ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Un pipeline fail-closed : le test bloque avant l'entrepôt. Alerter après le chargement laisse les données fausses entrer dans les rapports. Chapitre à revoir : 11.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Envoyer une alerte après le chargement, pour ne pas bloquer l'exécution de nuit</text></answer>
+    <answer fraction="0" format="markdown"><text>Corriger les valeurs inattendues pour que le lot passe</text></answer>
+    <answer fraction="0" format="markdown"><text>Consigner l'anomalie dans un tableau de bord à consulter le lendemain</text></answer>
+    <answer fraction="100" format="markdown"><text>Bloquer le chargement</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q16 (J8, ch. 12)</text></name>
+    <questiontext format="markdown">
+      <text>Un export « anonymisé » d'adhérents ne contient plus de nom ni de courriel, mais garde le code postal, la date de naissance et le sexe. Comment juger cette anonymisation ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>L'anonymat se mesure à la ré-identification possible, pas aux colonnes supprimées : des quasi-identifiants recroisés peuvent suffire à retrouver une personne. Chapitre à revoir : 12.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Elle est acquise dès lors qu'aucune colonne nominative ne subsiste</text></answer>
+    <answer fraction="100" format="markdown"><text>Elle se mesure à la ré-identification possible par croisement avec une autre source</text></answer>
+    <answer fraction="0" format="markdown"><text>Elle dépend du nombre de lignes que compte l'export</text></answer>
+    <answer fraction="0" format="markdown"><text>Elle suffit dès lors que le fichier est transmis chiffré</text></answer>
+  </question>
+
+  <question type="category">
+    <category><text>$course$/QCM formatif AppSec (J7-J9)/Jour 9 — Réseau, chaîne de livraison et service</text></category>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q17 (J9, ch. 13)</text></name>
+    <questiontext format="markdown">
+      <text>Que garantit une connexion TLS (Transport Layer Security) ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>TLS garantit confidentialité, intégrité et identité du serveur — pas l'honnêteté du site : un site de hameçonnage parfaitement chiffré reste un site de hameçonnage. Chapitre à revoir : 13.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Que le site visité est honnête et conserve bien vos données</text></answer>
+    <answer fraction="0" format="markdown"><text>Que le nom de domaine que vous avez tapé est bien celui que vous vouliez</text></answer>
+    <answer fraction="100" format="markdown"><text>La confidentialité de l'échange, son intégrité, et l'authentification du serveur</text></answer>
+    <answer fraction="0" format="markdown"><text>Que le site ne peut pas être un site de hameçonnage</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q18 (J9, ch. 13)</text></name>
+    <questiontext format="markdown">
+      <text>Une messagerie propose le chiffrement en cours de connexion, mais accepte le repli en clair si la négociation échoue. Quelle attaque exploite précisément ce point, et quel principe de durcissement y répond ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>La dégradation forcée fait croire que l'autre extrémité ne sait pas chiffrer : un chiffrement optionnel est un chiffrement contournable, il faut l'imposer. DNSSEC et l'authentification par clé répondent aux deux autres failles du chapitre. Chapitre à revoir : 13.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>L'usurpation de réponse DNS ; il faut signer les réponses de résolution</text></answer>
+    <answer fraction="100" format="markdown"><text>La dégradation forcée ; il faut imposer le chiffrement et refuser le repli en clair</text></answer>
+    <answer fraction="0" format="markdown"><text>L'interception par personne interposée ; il faut administrer l'accès distant par clé publique</text></answer>
+    <answer fraction="0" format="markdown"><text>L'épuisement du service ; il faut limiter le débit des appelants</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q19 (J9, ch. 14)</text></name>
+    <questiontext format="markdown">
+      <text>Quelle phrase reprend le principe Zero Trust (confiance zéro) appliqué à une application ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Zero Trust applique au réseau le moindre privilège : chaque appel est authentifié et autorisé, y compris entre services internes, et le trafic est chiffré partout. Chapitre à revoir : 14.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Le réseau interne est sûr, le réseau extérieur est hostile</text></answer>
+    <answer fraction="0" format="markdown"><text>Il faut authentifier chaque machine une seule fois, à sa connexion au réseau</text></answer>
+    <answer fraction="100" format="markdown"><text>La position sur le réseau ne prouve rien : chaque appel prouve son identité et ses droits</text></answer>
+    <answer fraction="0" format="markdown"><text>Il faut placer les bases de données dans la zone tampon visible de l'extérieur</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q20 (J9, ch. 15)</text></name>
+    <questiontext format="markdown">
+      <text>Dans la chaîne d'intégration continue, quel contrôle répond à la question « ce que vous importez est-il sain ? »</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Le SCA porte sur les composants importés. SAST lit votre propre code, la recherche de secrets cherche les clés laissées, le SBOM tient l'inventaire : aucun ne remplace les autres. Chapitre à revoir : 15.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Le SAST (Static Application Security Testing), qui lit le code source sans l'exécuter</text></answer>
+    <answer fraction="100" format="markdown"><text>Le SCA (Software Composition Analysis), qui regarde les dépendances et leurs versions</text></answer>
+    <answer fraction="0" format="markdown"><text>La recherche de secrets, qui balaie le code et l'historique des commits</text></answer>
+    <answer fraction="0" format="markdown"><text>Le SBOM (Software Bill of Materials), qui inventorie les composants livrés</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q21 (J9, ch. 15)</text></name>
+    <questiontext format="markdown">
+      <text>Une clé d'API vient d'être découverte dans un commit déjà poussé sur un dépôt privé. Quelle est la bonne réaction ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Un secret commité est compromis : l'historique garde tout, et un dépôt privé n'est pas un dépôt sûr. On révoque d'abord, on corrige ensuite. Chapitre à revoir : 15.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Supprimer la ligne et pousser un nouveau commit</text></answer>
+    <answer fraction="0" format="markdown"><text>Passer le dépôt en plus restreint et attendre</text></answer>
+    <answer fraction="100" format="markdown"><text>Révoquer la clé, puis corriger le code</text></answer>
+    <answer fraction="0" format="markdown"><text>Réécrire l'historique de Git, et n'en parler à personne</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q22 (J9, ch. 16)</text></name>
+    <questiontext format="markdown">
+      <text>Au printemps, une injection est corrigée dans la recherche d'une API. À l'automne, une réécriture réintroduit la concaténation d'origine, sans que personne s'en aperçoive. Quel geste aurait empêché cette régression ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Chaque faille corrigée devient un test : le smoke test rejoue le payload qui marchait avant et vérifie qu'il échoue toujours, en attendant un code de réponse précis. Chapitre à revoir : 16.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Une revue de code supplémentaire à la livraison d'automne</text></answer>
+    <answer fraction="0" format="markdown"><text>Un audit de sécurité annuel</text></answer>
+    <answer fraction="0" format="markdown"><text>Le passage de l'API derrière une passerelle d'API</text></answer>
+    <answer fraction="100" format="markdown"><text>Un test qui rejoue le payload d'origine et attend un code de refus précis</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q23 (J9, ch. 17)</text></name>
+    <questiontext format="markdown">
+      <text>Pendant un incident, un serveur est identifié comme compromis. Que fait exactement le temps « contenir » ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>Contenir n'est pas détruire : couper un accès, isoler un segment, désactiver un compte, oui ; formater ou effacer des journaux, non — les traces servent à comprendre, restaurer, parfois prouver. Chapitre à revoir : 17.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Il formate le disque du serveur pour repartir d'une base propre</text></answer>
+    <answer fraction="100" format="markdown"><text>Il limite l'extension de l'incident sans détruire les traces</text></answer>
+    <answer fraction="0" format="markdown"><text>Il restaure la dernière sauvegarde vérifiée</text></answer>
+    <answer fraction="0" format="markdown"><text>Il écrit la chronologie de l'incident pour l'équipe</text></answer>
+  </question>
+
+  <question type="multichoice">
+    <name><text>Formatif AppSec — Q24 (J9, ch. 18)</text></name>
+    <questiontext format="markdown">
+      <text>Dans la grille de maturité du parcours, chaque domaine est noté de 1 à 5. Que signifie une note de 3 ?</text>
+    </questiontext>
+    <generalfeedback format="markdown"><text>1 ignoré, 2 conscient, 3 planifié, 4 appliqué, 5 tenu dans le temps. La grille sert à décider de la prochaine étape, pas à se noter. Chapitre à revoir : 18.</text></generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <single>true</single>
+    <shuffleanswers>1</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+    <answer fraction="0" format="markdown"><text>Ignoré : personne ne s'en occupe, ou on ne sait pas</text></answer>
+    <answer fraction="0" format="markdown"><text>Conscient : le sujet est identifié, rien n'est fait</text></answer>
+    <answer fraction="100" format="markdown"><text>Planifié : une décision existe, elle n'est pas appliquée partout</text></answer>
+    <answer fraction="0" format="markdown"><text>Tenu dans le temps : c'est en place, vérifié, et amélioré par les retours</text></answer>
+  </question>
+
+</quiz>
