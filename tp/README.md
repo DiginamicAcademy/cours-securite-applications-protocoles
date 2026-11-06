@@ -2,7 +2,7 @@
 
 Chaque énoncé se fait **juste après le chapitre** qu'il pratique. Le corrigé est
 un **corrigé formatif** : il reste dans ce dépôt public et sert à s'auto-corriger.
-Le TP intégrateur, lui, est **noté** : son corrigé est réservé à l'évaluation et
+Le TP intégrateur, lui, est **facultatif** ; s'il est rendu, il est **noté** : son corrigé est réservé à l'évaluation et
 n'est pas publié.
 
 > ⚖️ **Cadre légal.** Toutes les manipulations de ce cours se pratiquent sur
@@ -29,7 +29,7 @@ n'est pas publié.
 | 🟡 | [Intégrer la sécurité dans une intégration continue](15-cicd-securise.md) | 15 — DevSecOps | [corrigé](corrige/15-cicd-securise.md) |
 | 🔵 | [Rédiger un mini-plan de réponse à incident](17-plan-incident.md) | 17 — Réponse à incident | [corrigé](corrige/17-plan-incident.md) |
 | 🔴 | [Construire sa feuille de route de sécurité](18-defi-maturite.md) | 18 — Maturité et perspectives | [corrigé](corrige/18-defi-maturite.md) |
-| 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](TP-INTEGRATEUR.md) — **TP intégrateur, seul élément noté, corrigé non publié** | les chapitres 01 à 18 (J7-J9) | non publié |
+| 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](TP-INTEGRATEUR.md) — **TP intégrateur facultatif, noté s'il est rendu** — seul élément noté, corrigé non publié | les chapitres 01 à 18 (J7-J9) | non publié |
 
 Les niveaux suivent la progression 🟢 découverte · 🟡 application · 🔵 intégration ·
 🔴 défi facultatif. Un 🔴 ne bloque jamais la progression.
