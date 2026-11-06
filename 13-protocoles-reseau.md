@@ -11,7 +11,7 @@
 > (la version chiffrée du protocole du web) protège les pages — et chacun garde les
 > hypothèses de son époque.
 
-**Durée de lecture :** 70 min · **Prérequis :** les vulnérabilités web des journées
+**Durée de lecture :** 60 min hors approfondissements facultatifs · **Prérequis :** les vulnérabilités web des journées
 précédentes, la notion de chiffrement
 
 ---
@@ -105,24 +105,10 @@ Deux attaques du même genre, très employées contre les protocoles qui chiffre
 | **Dégradation forcée** (downgrade) | fait croire au client que le serveur ne sait pas chiffrer, pour récupérer la version en clair | SMTP, les anciennes versions de TLS |
 | **Interception de la montée en chiffrement** | laisse passer la commande de chiffrement, l'annule, continue en clair | STARTTLS (la commande qui négocie le chiffrement en cours de connexion) |
 
-Le cas de STARTTLS est emblématique : le client annonce « je peux chiffrer », le
-serveur répond « moi aussi », puis les deux basculent. Entre les deux messages,
-l'attaquant peut effacer la proposition — les deux extrémités croient que l'autre
-ne chiffre pas et poursuivent en clair. Le chiffrement était disponible, il n'a
-simplement jamais été utilisé.
-
 > 🚨 **Piège à éviter** —
 > « Notre messagerie est chiffrée, on utilise STARTTLS » ne suffit pas. Si le
 > repli en clair est accepté, un attaquant sur le chemin obtient exactement ce
 > qu'il veut. Un chiffrement optionnel est un chiffrement contournable.
-
-### Les versions et les algorithmes morts
-
-Un protocole vivant garde ses anciennes versions pour compatibilité — et chacune
-porte ses faiblesses. SSL (Secure Sockets Layer, l'ancêtre de TLS) est cassé
-depuis des années ; TLS 1.0 et 1.1 sont déconseillés. Les maintenir « pour les
-vieux clients », c'est offrir à l'attaquant la porte d'entrée qu'il cherche : il
-demande la version faible, le serveur accepte.
 
 ---
 
@@ -136,8 +122,7 @@ protocole.
 HSTS (HTTP Strict Transport Security, l'en-tête qui interdit le repli en clair)
 dit au navigateur : « pour ce domaine, le HTTPS est obligatoire, et ce pendant un
 an ». Même si l'utilisateur tape `http://`, même si un lien propose le clair, le
-navigateur refuse et chiffre. La première visite reste à protéger par ailleurs —
-d'où l'inscription du domaine dans les listes de préchargement des navigateurs.
+navigateur refuse et chiffre.
 
 ```bash
 # Ce que le serveur doit renvoyer, en tête de chaque réponse
@@ -149,9 +134,7 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 DNSSEC (DNS Security Extensions, les extensions de sécurité du DNS) fait signer
 les réponses de résolution par le détenteur de la zone. Le client vérifie la
 signature et refuse une réponse falsifiée. Ce n'est pas du chiffrement — la
-requête reste lisible — mais l'usurpation devient détectable. La montée en
-chiffrement du DNS lui-même arrive ensuite, avec DoH (DNS over HTTPS, la
-résolution de noms transportée dans HTTPS) et DoT (DNS over TLS).
+requête reste lisible — mais l'usurpation devient détectable.
 
 ### Administrer par clé, pas par mot de passe
 
@@ -171,11 +154,6 @@ PermitRootLogin no
 AllowUsers admin-data
 ```
 
-> 💡 **Astuce** —
-> Avant de désactiver l'authentification par mot de passe, vérifiez qu'une clé est
-> bien installée et testée sur un second canal. Se verrouiller dehors de son propre
-> serveur est le seul incident que ce durcissement provoque lui-même.
-
 ---
 
 ## IV. Aller plus loin
@@ -193,6 +171,50 @@ la journée.*
 - **La surveillance des certificats** — les journaux publics de certificats
   permettent de détecter un certificat émis pour votre domaine sans votre accord.
   Un abonnement à ces alertes coûte quelques minutes et en sauve des jours.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Le détail de l'attaque STARTTLS**
+>
+> Le cas de STARTTLS est emblématique : le client annonce « je peux chiffrer », le
+> serveur répond « moi aussi », puis les deux basculent. Entre les deux messages,
+> l'attaquant peut effacer la proposition — les deux extrémités croient que l'autre
+> ne chiffre pas et poursuivent en clair. Le chiffrement était disponible, il n'a
+> simplement jamais été utilisé.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+>
+> **Les versions et les algorithmes morts**
+>
+>
+> Un protocole vivant garde ses anciennes versions pour compatibilité — et chacune
+> porte ses faiblesses. SSL (Secure Sockets Layer, l'ancêtre de TLS) est cassé
+> depuis des années ; TLS 1.0 et 1.1 sont déconseillés. Les maintenir « pour les
+> vieux clients », c'est offrir à l'attaquant la porte d'entrée qu'il cherche : il
+> demande la version faible, le serveur accepte.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Chiffrer la résolution de noms (DoH, DoT)**
+>
+> La montée en
+> chiffrement du DNS lui-même arrive ensuite, avec DoH (DNS over HTTPS, la
+> résolution de noms transportée dans HTTPS) et DoT (DNS over TLS).
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **La première visite et le préchargement HSTS**
+>
+> La première visite reste à protéger par ailleurs —
+> d'où l'inscription du domaine dans les listes de préchargement des navigateurs.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> 💡 **Astuce** —
+> Avant de désactiver l'authentification par mot de passe, vérifiez qu'une clé est
+> bien installée et testée sur un second canal. Se verrouiller dehors de son propre
+> serveur est le seul incident que ce durcissement provoque lui-même.
 
 ---
 

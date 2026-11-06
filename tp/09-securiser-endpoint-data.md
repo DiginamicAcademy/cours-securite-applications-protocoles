@@ -1,7 +1,7 @@
 # Exercice — Sécuriser un endpoint qui en dit trop
 
 > **Nature :** exercice · **Durée :** 30 min · **Notion :** les données sensibles — classification, minimisation, masquage
-> 🟡 **À vous de jouer** · **Durée :** 30 min · **Lien :** chapitre [Données
+> 🟡 **À vous de jouer** · **Lien :** chapitre [Données
 > sensibles](../09-donnees-sensibles.md)
 > **Objectif :** appliquer la minimisation et le masquage sur un endpoint
 > réellement trop bavard, et justifier les choix au regard du RGPD.
@@ -16,8 +16,7 @@ paiement » affiche trois informations : le nom du client, ses prochaines
 pendant la refonte, « en reprenant la fiche client complète, comme ça on aura
 tout ce qu'il faut ».
 
-Voici ce que renvoie actuellement l'endpoint GET (lecture d'une ressource),
-`/compte/{id}` :
+Voici ce que renvoie actuellement l'endpoint `/compte/{id}` :
 
 ```json
 {
@@ -55,9 +54,8 @@ de l'énergie.
 
 ### Partie 1 — Classifier les champs
 
-Classez chaque champ de la réponse dans les quatre niveaux du chapitre
-(publique, interne, confidentielle, strictement confidentielle). Justifiez en
-une phrase les deux classements les plus élevés.
+Classez chaque champ de la réponse dans les quatre niveaux du chapitre.
+Justifiez en une phrase les deux classements les plus élevés.
 
 ### Partie 2 — Minimiser la réponse
 
@@ -67,8 +65,8 @@ chacun, l'usage qui justifierait — le cas échéant — un endpoint dédié.
 
 ### Partie 3 — Masquer et pseudonymiser
 
-L'application partenaire a besoin d'afficher « le RIB (relevé d'identité
-bancaire) du prélèvement » sans le montrer en entier, et d'analyser la consommation par profil sans que l'identité des clients
+L'application partenaire a besoin d'afficher « le RIB du prélèvement »
+sans le montrer en entier, et d'analyser la consommation par profil sans que l'identité des clients
 apparaisse. Décrivez le masquage du RIB et la pseudonymisation des
 relevés : que devient chaque donnée, et que garde-t-on derrière ?
 

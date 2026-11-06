@@ -1,7 +1,7 @@
 # Exercice — Auditer l'API d'un service de mobilité
 
 > **Nature :** exercice · **Durée :** 25 min · **Notion :** la surface d'attaque d'une API — autorisation et limitation
-> 🟢 **Débutant** · **Durée :** 25 min · **Lien :** chapitre [Sécurité des
+> 🟢 **Débutant** · **Lien :** chapitre [Sécurité des
 > API](../07-securite-api.md)
 > **Objectif :** cartographier la surface d'attaque d'une API et repérer ses
 > manques d'autorisation et de limitation avant sa mise en production.
@@ -16,8 +16,8 @@ interne que la ville s'apprête à **ouvrir à des partenaires** (une applicatio
 de mobilité, le journal local). Avant cette ouverture, vous êtes missionné pour
 auditer l'API.
 
-La documentation interne décrit cinq endpoints — GET (consulter une
-ressource) et POST (agir) étant les deux verbes en jeu :
+La documentation interne décrit cinq endpoints (les deux verbes sont vus au
+chapitre) :
 
 | Endpoint | Ce qu'il renvoie ou fait | Jeton requis |
 | --- | --- | --- |
@@ -36,10 +36,9 @@ sensibles demandent un jeton, donc ils sont protégés. »
 
 ### Partie 1 — Cartographier la surface d'attaque
 
-Pour chaque endpoint, notez : les **paramètres** qu'il accepte, les **données**
-qu'il échange, et ce qu'un appelant malveillant pourrait y chercher. Classez
-ensuite les cinq endpoints du plus exposé au moins exposé, en justifiant votre
-premier choix en une phrase.
+Pour chaque endpoint, notez les **paramètres** qu'il accepte, les **données**
+qu'il échange et ce qu'un attaquant pourrait y chercher. Classez les cinq du
+plus exposé au moins exposé ; une phrase pour justifier le premier.
 
 ### Partie 2 — Auditer l'autorisation
 

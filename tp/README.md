@@ -1,14 +1,14 @@
 # Travaux pratiques — mode d'emploi
 
 Chaque énoncé se fait **juste après le chapitre** qu'il pratique. Le corrigé est
-un **corrigé formatif** : il reste dans ce dépôt public et sert à s'auto-corriger.
+un **corrigé formatif** : il reste dans ce dépôt public et sert à s'auto-corriger.
 Le TP intégrateur, lui, est **facultatif** ; s'il est rendu, il est **noté** : son corrigé est réservé à l'évaluation et
 n'est pas publié.
 
 > ⚖️ **Cadre légal.** Toutes les manipulations de ce cours se pratiquent sur
 > **vos propres conteneurs** (lab Docker) et sur des données fictives. Accéder ou
 > se maintenir sans droit dans un système d'autrui est un délit (articles 323-1
-> et suivants du Code pénal), même « pour tester ». Les tests d'intrusion réels
+> et suivants du Code pénal), même « pour tester ». Les tests d'intrusion réels
 > se font sous contrat, dans un périmètre défini.
 
 ## Table des exercices
@@ -19,8 +19,8 @@ n'est pas publié.
 | 🟢 | [Corriger une injection dans une recherche](02-corriger-injection.md) | 02 — Validation et injections | [corrigé](corrige/02-corriger-injection.md) |
 | 🟢 | [Échapper les sorties d'un livre d'or](03-echapper-les-sorties.md) | 03 — XSS et sorties | [corrigé](corrige/03-echapper-les-sorties.md) |
 | 🟡 | [Durcir un endpoint de réservation](04-durcir-un-endpoint.md) | 04 — Erreurs et logging | [corrigé](corrige/04-durcir-un-endpoint.md) |
-| 🟡 | [Traiter une CVE sur son propre projet](05-traiter-une-cve.md) | 05 — Dépendances et configuration | [corrigé](corrige/05-traiter-une-cve.md) |
-| 🔵 | [Auditer un module de gestion des adhésions](06-auditer-un-module.md) | 06 — Revue de code sécurité | [corrigé](corrige/06-auditer-un-module.md) |
+| 🔵 | [Traiter une CVE sur son propre projet](05-traiter-une-cve.md) — **facultatif** | 05 — Dépendances et configuration | [corrigé](corrige/05-traiter-une-cve.md) |
+| 🔵 | [Auditer un module de gestion des adhésions](06-auditer-un-module.md) — **facultatif** | 06 — Revue de code sécurité | [corrigé](corrige/06-auditer-un-module.md) |
 | 🟢 | [Auditer l'API d'un service de mobilité](07-auditer-api.md) | 07 — Sécurité des API | [corrigé](corrige/07-auditer-api.md) |
 | 🟡 | [Sécuriser un endpoint qui en dit trop](09-securiser-endpoint-data.md) | 09 — Données sensibles | [corrigé](corrige/09-securiser-endpoint-data.md) |
 | 🔵 | [Analyser les risques d'un pipeline de données](11-analyser-pipeline.md) | 11 — Pipelines de données | [corrigé](corrige/11-analyser-pipeline.md) |

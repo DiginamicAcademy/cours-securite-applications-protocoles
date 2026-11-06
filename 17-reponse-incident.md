@@ -10,7 +10,7 @@
 > mauvais ordre. La réponse à incident ne consiste pas à être plus brillant le jour
 > venu : elle consiste à avoir **écrit à l'avance** ce qu'on fera.
 
-**Durée de lecture :** 50 min · **Prérequis :** les notions de vulnérabilités et
+**Durée de lecture :** 55 min hors approfondissements facultatifs · **Prérequis :** les notions de vulnérabilités et
 d'incident des journées précédentes
 
 ---
@@ -140,8 +140,6 @@ Le document tient en quelques parties :
 4. les **changements** : ce qui doit bouger, avec un responsable et une échéance
    pour chacun.
 
-> 💡 **Astuce** — une action de post-mortem sans responsable ni échéance est un
-> vœu. Trois actions datées valent mieux qu'une liste de quinze intentions.
 
 ---
 
@@ -161,6 +159,11 @@ la journée.*
 - **La préparation technique** — centraliser les journaux, conserver des sauvegardes
   vérifiées, documenter les dépendances : tout ce qui a été préparé avant l'incident
   se paie le jour venu.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> 💡 **Astuce** — une action de post-mortem sans responsable ni échéance est un
+> vœu. Trois actions datées valent mieux qu'une liste de quinze intentions.
 
 ---
 

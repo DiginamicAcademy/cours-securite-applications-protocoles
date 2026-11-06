@@ -9,7 +9,7 @@
 > vraiment ? Le partage de données sort du système d'information : les
 > contrats et l'anonymisation deviennent des sujets de **sécurité**.
 
-**Durée de lecture :** 45 min · **Prérequis :** les chapitres [Données sensibles](09-donnees-sensibles.md) et [RGPD appliqué](10-rgpd-applique.md)
+**Durée de lecture :** 40 min hors approfondissements facultatifs · **Prérequis :** les chapitres [Données sensibles](09-donnees-sensibles.md) et [RGPD appliqué](10-rgpd-applique.md)
 
 ---
 
@@ -66,21 +66,7 @@ ce jeu avec une autre source pour re-trouver une personne ?** Le cas classique
 est le croisement de quasi-identifiants — des champs qui ne sont pas des
 identifiants pris isolément, mais qui le deviennent ensemble.
 
-> 🧪 **Atelier rapide (5 min)**
->
-> Un jeu de données « anonymisé » d'adhérents contient : code postal, date de
-> naissance, sexe. Sans nom, sans courriel. Répondez aux deux questions :
->
-> 1. Dans une commune de 400 habitants, combien de personnes partagent le
-> même code postal et la même date de naissance ?
-> 2. Que devient ce chiffre si on ajoute le sexe, puis la rue ?
-
-L'exercice est célèbre dans la littérature : aux États-Unis, des chercheurs ont
-ré-identifié une gouverneure dans un jeu de données de santé publique
-« anonymisé » à partir de son code postal, sa date de naissance et son sexe —
-trois informations que chacun donne sans hésiter. La leçon tient en une phrase :
-**l'anonymat se mesure à la ré-identification possible, pas aux colonnes
-supprimées**.
+**L'anonymat se mesure à la ré-identification possible, pas aux colonnes supprimées.**
 
 > [!DANGER]
 > Un jeu pseudonymisé transmis à un tiers reste une donnée personnelle : si le
@@ -103,11 +89,6 @@ risque**.
 | **Agréger avant de partager** | moins de transferts | moins de données détaillées hors du système |
 | **Alléger les exports** | moins de bande passante | une copie légère fuit moins qu'une copie complète |
 
-La convergence est rarement enseignée et pourtant évidente : la donnée qu'on ne
-détient pas ne peut ni fuir, ni être réclamée, ni coûter de l'énergie à stocker.
-Le registre des traitements (chapitre [RGPD appliqué](10-rgpd-applique.md)) sert
-ici de tableau de bord : ce qui n'a plus de finalité n'a plus de raison d'être.
-
 ---
 
 ## IV. Aller plus loin
@@ -128,6 +109,43 @@ terminer la journée.*
   obligatoire pour les traitements à risque
   élevé (données sensibles à grande échelle, surveillance), elle force à
   décrire les risques **avant** de déployer.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> Le récit ci-dessous montre ce que ces deux questions visent ; le défi à faire, lui, est l'exercice [Brouillon de registre des traitements](tp/12-defi-registre.md).
+>
+> 🧪 **Atelier rapide (5 min)**
+>
+> Un jeu de données « anonymisé » d'adhérents contient : code postal, date de
+> naissance, sexe. Sans nom, sans courriel. Répondez aux deux questions :
+>
+> 1. Dans une commune de 400 habitants, combien de personnes partagent le
+> même code postal et la même date de naissance ?
+> 2. Que devient ce chiffre si on ajoute le sexe, puis la rue ?
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Une ré-identification célèbre**
+>
+> Rappel de littérature — instructif, jamais requis.
+>
+> L'exercice est célèbre dans la littérature : aux États-Unis, des chercheurs ont
+> ré-identifié une gouverneure dans un jeu de données de santé publique
+> « anonymisé » à partir de son code postal, sa date de naissance et son sexe —
+> trois informations que chacun donne sans hésiter. La leçon tient en une phrase :
+> **l'anonymat se mesure à la ré-identification possible, pas aux colonnes
+> supprimées**.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Une donnée non détenue ne fuit pas**
+>
+> Reprend en une phrase ce que la table ci-dessus détaille, et renvoie au registre du chapitre [RGPD appliqué](10-rgpd-applique.md).
+>
+> La convergence est rarement enseignée et pourtant évidente : la donnée qu'on ne
+> détient pas ne peut ni fuir, ni être réclamée, ni coûter de l'énergie à stocker.
+> Le registre des traitements (chapitre [RGPD appliqué](10-rgpd-applique.md)) sert
+> ici de tableau de bord : ce qui n'a plus de finalité n'a plus de raison d'être.
 
 ---
 

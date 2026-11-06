@@ -10,7 +10,7 @@
 > fallait la changer, il faut d'abord avoir compris ce qui, dans la requête,
 > faisait office de **donnée** et ce qui faisait office d'**instruction**.
 
-**Durée de lecture :** 75 min · **Prérequis :** les injections étudiées lors des
+**Durée de lecture :** 50 min hors approfondissements facultatifs · **Prérequis :** les injections étudiées lors des
 journées précédentes, et le chapitre
 [Principes du secure coding](01-principes-secure-coding.md)
 
@@ -69,15 +69,6 @@ devenir une instruction, même si elle en a exactement l'apparence.
 > été prévu, la requête redevient injectable. La séparation se fait avec le
 > pilote, pas avec des remplacements de caractères.
 
-> 🧪 **Atelier rapide (10 min)**
->
-> Dans le lab du cours, ouvrez `lab/vulnerable/app.py` et repérez la route de
-> recherche de produits : la requête y est assemblée par une f-string.
-> Remplacez-la par une requête paramétrée, redémarrez le service, puis relancez
-> la même recherche avec la valeur `' OR '1'='1`. La liste complète ne revient
-> plus : seule la recherche littérale reste, et la comparaison avec
-> `lab/secure/app.py` montre le même résultat.
-
 Ce geste est la correction la plus fréquente du secure coding. Il est court
 précisément parce que tout le travail a été fait en amont : reconnaître qu'une
 valeur utilisateur arrivait dans une instruction.
@@ -113,9 +104,8 @@ def valider_recherche(q):
     return q
 ```
 
-Le `fullmatch` est le détail qui change tout : `re.match(r"[\w\s\-']*", q)`
-accepterait `bonjour` suivi de n'importe quoi, puisqu'il ne regarde que le
-commencement.
+`re.match(r"[\w\s\-']*", q)` accepterait `bonjour` suivi de n'importe quoi :
+il ne regarde que le commencement.
 
 > ⚠️ **Attention** — Valider n'est pas **nettoyer**. Supprimer les caractères
 > interdits et laisser
@@ -123,43 +113,18 @@ commencement.
 > valeur hors format est refusée, avec un message qui dit pourquoi — c'est le
 > fail-closed du chapitre précédent, appliqué à la saisie.
 
-La longueur maximale mérite un mot : elle n'est pas un détail de confort. Un
-champ de recherche borné limite la surface de ce qui peut arriver jusqu'à la
-base, jusqu'aux journaux et jusqu'à l'écran. Elle se décide une fois, dans le
-code, et se retrouve partout où la valeur circule.
+La longueur maximale se décide une fois, dans le code, et se retrouve
+partout où la valeur circule : elle borne la surface de ce qui peut
+atteindre la base, les journaux et l'écran.
 
 ---
 
 ## III. ORM
 
-Un ORM (Object-Relational Mapping) construit les requêtes à partir d'objets : le
-développeur décrit ce qu'il veut lire ou écrire, la bibliothèque assemble la
-requête et y place les valeurs. Dans le cas courant, il apporte donc la même
-séparation qu'une requête paramétrée — sans qu'on ait à y penser.
-
-```python
-# avec un ORM : la valeur est un filtre, pas un morceau de requête
-produits = session.query(Produit).filter(Produit.nom.ilike(f"%{q}%")).all()
-```
-
-L'ORM aide donc beaucoup, mais il ne **remplace** pas la réflexion. Trois
-situations le contournent :
-
-| Situation | Pourquoi ça échappe |
-| --- | --- |
-| **Requête écrite à la main** | la chaîne redevient une instruction, l'ORM ne la voit pas |
-| **Tri ou filtre dynamique** | un nom de colonne vient de la saisie, et un nom de colonne n'est pas une valeur |
-| **Motif de recherche** | le caractère générique reste dans la valeur : il faut le borner soi-même |
-
-```python
-# dangereux : le nom de colonne vient de la saisie
-session.execute(text(f"SELECT * FROM produits ORDER BY {tri}"))
-
-# sûr : la valeur choisie dans une liste fermée
-COLONNES = {"nom": Produit.nom, "prix": Produit.prix}
-if tri not in COLONNES:
-    raise ValueError("tri inconnu")
-```
+Un ORM (Object-Relational Mapping) construit les requêtes à partir d'objets
+et apporte, dans le cas courant, la même séparation qu'une requête
+paramétrée. Les trois situations où une saisie lui échappe, et l'exemple du
+nom de colonne, sont développés en « Aller plus loin ».
 
 > 💡 **À retenir**
 > La règle de décision est simple : dès qu'une saisie influence **la forme** de
@@ -188,6 +153,55 @@ terminer la journée.*
 - **La validation côté client** — une contrainte de formulaire dans une page web
   améliore le confort, pas la sécurité : elle se contourne en une requête. Tout
   ce qui compte se vérifie côté serveur.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> Le réflexe à appliquer reste celui de l'encadré « À retenir », ci-dessous.
+>
+> Un ORM (Object-Relational Mapping) construit les requêtes à partir d'objets : le
+> développeur décrit ce qu'il veut lire ou écrire, la bibliothèque assemble la
+> requête et y place les valeurs. Dans le cas courant, il apporte donc la même
+> séparation qu'une requête paramétrée — sans qu'on ait à y penser.
+>
+> ```python
+> # avec un ORM : la valeur est un filtre, pas un morceau de requête
+> produits = session.query(Produit).filter(Produit.nom.ilike(f"%{q}%")).all()
+> ```
+>
+> L'ORM aide donc beaucoup, mais il ne **remplace** pas la réflexion. Trois
+> situations le contournent :
+>
+> | Situation | Pourquoi ça échappe |
+> | --- | --- |
+> | **Requête écrite à la main** | la chaîne redevient une instruction, l'ORM ne la voit pas |
+> | **Tri ou filtre dynamique** | un nom de colonne vient de la saisie, et un nom de colonne n'est pas une valeur |
+> | **Motif de recherche** | le caractère générique reste dans la valeur : il faut le borner soi-même |
+>
+> ```python
+> # dangereux : le nom de colonne vient de la saisie
+> session.execute(text(f"SELECT * FROM produits ORDER BY {tri}"))
+>
+> # sûr : la valeur choisie dans une liste fermée
+> COLONNES = {"nom": Produit.nom, "prix": Produit.prix}
+> if tri not in COLONNES:
+>     raise ValueError("tri inconnu")
+> ```
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> La même correction est conduite de bout en bout dans
+> l'exercice [Corriger une injection dans une recherche](tp/02-corriger-injection.md).
+>
+> 🧪 **Atelier rapide (10 min)**
+>
+> Dans le lab du cours, ouvrez `lab/vulnerable/app.py` et repérez la route de
+> recherche de produits : la requête y est assemblée par une f-string.
+> Remplacez-la par une requête paramétrée, redémarrez le service, puis relancez
+> la même recherche avec la valeur `' OR '1'='1`. La liste complète ne revient
+> plus : seule la recherche littérale reste, et la comparaison avec
+> `lab/secure/app.py` montre le même résultat.
 
 ---
 

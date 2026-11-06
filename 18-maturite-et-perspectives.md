@@ -11,7 +11,7 @@
 > trouver plus vite, l'autre pour corriger plus vite. Ce dernier chapitre ferme le
 > parcours en vous donnant de quoi continuer sans lui.
 
-**Durée de lecture :** 55 min · **Prérequis :** les journées précédentes du parcours
+**Durée de lecture :** 45 min hors approfondissements facultatifs · **Prérequis :** les journées précédentes du parcours
 
 ---
 
@@ -61,14 +61,6 @@ Pour chaque domaine, on se situe avec une note de **1 à 5** :
 > chacun. Interdiction de mettre la même note partout : si tout est à 3, c'est que
 > l'évaluation n'a pas été faite.
 
-### Ce que la note ne dit pas
-
-Une note est un signal, pas un verdict. Deux précautions : une note haute obtenue
-« parce qu'on a un outil » ne vaut rien si personne ne regarde ce qu'il produit,
-et une note basse n'est pas une faute — c'est une **décision à prendre**. Le but
-de la grille est de faire apparaître les écarts qui coûtent cher, pas de classer
-les équipes.
-
 ---
 
 ## II. La feuille de route : prioriser par le risque
@@ -102,18 +94,6 @@ questions suffisent à ordonner :
 
 ## III. La veille continue
 
-### Ce qu'il faut suivre
-
-La veille n'est pas une lecture du dimanche : c'est un processus, avec des
-sources, un rythme et un **délai de réaction**.
-
-| Source | Ce qu'elle apporte |
-| --- | --- |
-| **GHSA** (GitHub Security Advisory, l'alerte de sécurité publiée sur GitHub) | les alertes sur les composants que vous utilisez réellement |
-| **NVD** (National Vulnerability Database, la base publique de vulnérabilités) | la référence des failles publiées, leur gravité, leurs correctifs |
-| **Les listes des éditeurs** | les annonces de versions corrigées, pour vos outils et vos langages |
-| **Les CERT** (Computer Emergency Response Team, les équipes de réponse à incident) | les alertes et recommandations par secteur et par pays |
-
 ### Le délai de réaction
 
 Ce qui compte n'est pas le nombre d'alertes lues, mais le temps entre la
@@ -123,33 +103,10 @@ jour, alertes automatiques sur les dépendances, et une personne nommée pour
 traiter ce qui arrive. Cet inventaire est le SBOM (Software Bill of Materials, la
 liste des composants) décrit au chapitre sur la chaîne de livraison.
 
-> 💡 **Astuce** — automatisez la collecte, jamais la décision. Une alerte
-> automatique qui crée une tâche assignée est utile ; un correctif appliqué sans
-> regarder ce qu'il change ne l'est pas toujours.
 
 ---
 
 ## IV. L'effet de l'IA
-
-### Ce que ça change pour l'attaquant
-
-L'IA accélère ce qui était lent : la reconnaissance d'une cible, la rédaction de
-messages de phishing crédibles et personnalisés, la génération de PoC (proof of
-concept, la preuve de concept qu'une faille est exploitable) à partir d'une
-description publique. Un LLM (large language model, un modèle de langage de grande
-taille) ne découvre pas de faille inédite par magie : il **réduit le délai** entre
-la publication d'une faille et sa tentative d'exploitation à grande échelle.
-
-### Ce que ça change pour le défenseur
-
-Exactement le même levier, de l'autre côté :
-
-| Usage défensif | Ce qu'il apporte |
-| --- |---|
-| **Aide à la revue de code** | repérer les schémas dangereux dans de gros volumes de code |
-| **Priorisation des alertes** | trier ce qui arrive des contrôles automatisés, expliquer pourquoi |
-| **Rédaction de correctifs et de tests** | produire le premier jet, que l'humain vérifie |
-| **Compréhension d'un incident** | résumer des journaux, reconstituer une chronologie |
 
 La ligne de conduite reste la même que pour tout le parcours : **l'IA propose,
 l'humain décide**. Un correctif généré sans revue est un changement de plus dans
@@ -173,6 +130,66 @@ la journée.*
 - **Les CTF défensifs** — un CTF (Capture The Flag, une compétition de sécurité)
   n'est pas réservé à l'attaque : il existe des formats défensifs, où l'on doit
   retrouver et corriger une faille dans un temps donné.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+>
+> **Ce que la note ne dit pas**
+>
+>
+> Une note est un signal, pas un verdict. Deux précautions : une note haute obtenue
+> « parce qu'on a un outil » ne vaut rien si personne ne regarde ce qu'il produit,
+> et une note basse n'est pas une faute — c'est une **décision à prendre**. Le but
+> de la grille est de faire apparaître les écarts qui coûtent cher, pas de classer
+> les équipes.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+>
+> **Ce qu'il faut suivre**
+>
+>
+> La veille n'est pas une lecture du dimanche : c'est un processus, avec des
+> sources, un rythme et un **délai de réaction**.
+>
+> | Source | Ce qu'elle apporte |
+> | --- | --- |
+> | **GHSA** (GitHub Security Advisory, l'alerte de sécurité publiée sur GitHub) | les alertes sur les composants que vous utilisez réellement |
+> | **NVD** (National Vulnerability Database, la base publique de vulnérabilités) | la référence des failles publiées, leur gravité, leurs correctifs |
+> | **Les listes des éditeurs** | les annonces de versions corrigées, pour vos outils et vos langages |
+> | **Les CERT** (Computer Emergency Response Team, les équipes de réponse à incident) | les alertes et recommandations par secteur et par pays |
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> 💡 **Astuce** — automatisez la collecte, jamais la décision. Une alerte
+> automatique qui crée une tâche assignée est utile ; un correctif appliqué sans
+> regarder ce qu'il change ne l'est pas toujours.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+>
+> **Ce que ça change pour l'attaquant**
+>
+>
+> L'IA accélère ce qui était lent : la reconnaissance d'une cible, la rédaction de
+> messages de phishing crédibles et personnalisés, la génération de PoC (proof of
+> concept, la preuve de concept qu'une faille est exploitable) à partir d'une
+> description publique. Un LLM (large language model, un modèle de langage de grande
+> taille) ne découvre pas de faille inédite par magie : il **réduit le délai** entre
+> la publication d'une faille et sa tentative d'exploitation à grande échelle.
+>
+>
+> **Ce que ça change pour le défenseur**
+>
+>
+> Exactement le même levier, de l'autre côté :
+>
+> | Usage défensif | Ce qu'il apporte |
+> | --- |---|
+> | **Aide à la revue de code** | repérer les schémas dangereux dans de gros volumes de code |
+> | **Priorisation des alertes** | trier ce qui arrive des contrôles automatisés, expliquer pourquoi |
+> | **Rédaction de correctifs et de tests** | produire le premier jet, que l'humain vérifie |
+> | **Compréhension d'un incident** | résumer des journaux, reconstituer une chronologie |
 
 ---
 

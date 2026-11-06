@@ -8,7 +8,7 @@
 > technique** à concevoir dès le départ, comme on conçoit une contrainte de
 > performance ou de disponibilité.
 
-**Durée de lecture :** 60 min · **Prérequis :** le chapitre [Données sensibles](09-donnees-sensibles.md)
+**Durée de lecture :** 40 min hors approfondissements facultatifs · **Prérequis :** le chapitre [Données sensibles](09-donnees-sensibles.md)
 
 ---
 
@@ -62,26 +62,6 @@ base existe ». Passé ce délai, deux gestes sont possibles selon l'usage :
 | **Archivage intermédiaire** | une obligation légale la retient (facturation, garantie) | isolée, hors des applications actives, avec un accès restreint |
 | **Anonymisation** | on veut garder des statistiques sans garder la personne | la donnée sort du champ du RGPD, définitivement |
 
-> 🧪 **Atelier rapide (5 min)**
->
-> Une chaîne de magasins de sport conserve sa table `ventes` indéfiniment.
-> Voici ses colonnes. Pour chacune, décidez : **effacer**, **archiver** ou
-> **anonymiser** après 5 ans, et pourquoi ?
-
-```sql
-CREATE TABLE ventes (
-    id INT PRIMARY KEY,
-    client_id INT,            -- décision : ?
-    date_achat DATE,          -- décision : ?
-    montant DECIMAL(8, 2),    -- décision : ?
-    magasin VARCHAR(64),      -- décision : ?
-    mode_paiement VARCHAR(16) -- décision : ?
-);
-```
-
-Notez vos décisions : la question « qui a besoin de quoi, et encore combien de
-temps ? » est exactement celle que pose l'exercice de fin de bloc.
-
 ---
 
 ## III. Droits des personnes
@@ -108,11 +88,6 @@ Deux écueils reviennent dans les audits :
   L'effacement doit couvrir **tous les endroits** où la donnée vit, ou documenter
   pourquoi certains la retiennent temporairement.
 
-> [!TIP]
-> Traitez chaque droit comme un ticket de bug : un besoin, un responsable, un
-> délai, une preuve de clôture. Les droits qui ne sont jamais demandés sont
-  ceux qui tombent le plus vite en panne.
-
 ---
 
 ## IV. Aller plus loin
@@ -134,6 +109,40 @@ terminer la journée.*
   conformité, point de contact de la CNIL. Dans une petite structure, la
   responsabilité reste collective — désigner quelqu'un suffit à structurer le
   travail.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> Même question, autre jeu de données : la Partie 4 de l'exercice [Sécuriser un endpoint qui en dit trop](tp/09-securiser-endpoint-data.md) demande finalité, base légale et sort de la donnée.
+>
+> 🧪 **Atelier rapide (5 min)**
+>
+> Une chaîne de magasins de sport conserve sa table `ventes` indéfiniment.
+> Voici ses colonnes. Pour chacune, décidez : **effacer**, **archiver** ou
+> **anonymiser** après 5 ans, et pourquoi ?
+>
+> ```sql
+> CREATE TABLE ventes (
+>     id INT PRIMARY KEY,
+>     client_id INT,            -- décision : ?
+>     date_achat DATE,          -- décision : ?
+>     montant DECIMAL(8, 2),    -- décision : ?
+>     magasin VARCHAR(64),      -- décision : ?
+>     mode_paiement VARCHAR(16) -- décision : ?
+> );
+> ```
+>
+> Notez vos décisions : la question « qui a besoin de quoi, et encore combien de
+> temps ? » est exactement celle que pose l'exercice de fin de bloc.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Chaque droit est un ticket à fermer**
+>
+> Réflexe d'organisation pour celui qui exploite l'application ; la table ci-dessus suffit pour la journée.
+>
+> Traitez chaque droit comme un ticket de bug : un besoin, un responsable, un
+> délai, une preuve de clôture. Les droits qui ne sont jamais demandés sont
+>   ceux qui tombent le plus vite en panne.
 
 ---
 

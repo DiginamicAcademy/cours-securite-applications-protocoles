@@ -1,11 +1,15 @@
 # Traiter une CVE sur son propre projet
 
 > **Nature :** exercice · **Durée :** 25 min · **Notion :** le traitement d'une CVE — avis, exposition, correctif, validation
-> 🟡 **Intermédiaire** · **Durée :** 25 min · **Lien :** chapitre
+> 🔵 **Avancé** · **Durée :** 25 min · **Lien :** chapitre
 > [Dépendances et configuration](../05-dependances-et-configuration.md)
 > **Objectif :** traiter une vulnérabilité signalée sur une dépendance de votre
 > projet — lire l'avis, situer l'exposition, corriger, vérifier — et rédiger un
 > avis d'exposition interne.
+>
+> Cet exercice est **facultatif** : il prolonge la partie « Répondre à une
+> CVE » du chapitre, devenue approfondissement. Il n'est jamais noté et ne
+> bloque la progression nulle part.
 
 ---
 

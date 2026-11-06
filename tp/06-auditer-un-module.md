@@ -5,6 +5,9 @@
 > [Revue de code sécurité](../06-revue-de-code-securite.md)
 > **Objectif :** appliquer la revue en trois passes sur un module complet, puis
 > en tirer un rapport de dette priorisé, exploitable par l'équipe.
+>
+> Cet exercice est **facultatif** : il prolonge le chapitre et s'intègre au
+> [TP intégrateur](TP-INTEGRATEUR.md). Il ne bloque la progression nulle part.
 
 ---
 

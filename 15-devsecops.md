@@ -10,7 +10,7 @@
 > mise à jour. Sécuriser le code sans sécuriser la chaîne qui le livre, c'est
 > vérifier la serrure de sa porte tout en laissant la porte de service ouverte.
 
-**Durée de lecture :** 70 min · **Prérequis :** les bases du développement et de
+**Durée de lecture :** 55 min hors approfondissements facultatifs · **Prérequis :** les bases du développement et de
 l'intégration continue, les vulnérabilités des journées précédentes
 
 ---
@@ -34,12 +34,6 @@ l'intégration continue, les vulnérabilités des journées précédentes
 
 ### Pourquoi si tôt
 
-La sécurité arrivait autrefois en fin de projet : une revue, un audit, quelques
-semaines avant la mise en production. Trop tard pour être économique — corriger
-une conception coûte alors dix fois plus cher qu'au moment où on l'écrivait — et
-trop tard pour être fiable, parce que la pression de la livraison fait sauter ce
-qui reste à faire.
-
 L'intégration continue (CI, l'exécution automatique des vérifications à chaque
 modification du code) offre un meilleur endroit : **à chaque commit**, pendant que
 le contexte est encore frais dans la tête de la personne qui écrit.
@@ -56,17 +50,12 @@ Chaque famille répond à une question différente. SAST dit « votre code est-
 écrit dangereusement ? ». SCA dit « ce que vous importez est-il sain ? ». La
 recherche de secrets dit « avez-vous laissé une clé traîner ? ». Aucune ne
 remplace les deux autres.
-
-> 💡 **Astuce** —
-> Un contrôle qui tourne en local avant le commit coûte quelques secondes et
-> évite un aller-retour complet de pipeline. Les mêmes outils s'exécutent dans
-> les deux endroits : en local pour aller vite, en CI pour ne rien oublier.
-
 > 🧪 **Atelier rapide (10 min)**
 >
 > Écrivez un workflow GitHub Actions minimal qui exécute `pip-audit` (composants)
 > et `bandit` (code) sur le dossier `lab/` du cours. Deux étapes suffisent :
->
+
+
 ```yaml
 name: controle-securite
 on: [push]
@@ -93,10 +82,6 @@ d'effacer la ligne, c'est de **révoquer** la clé, puis de corriger. Un outil d
 recherche de secrets qui alerte à la seconde du commit transforme un incident en
 simple corvée de rotation de clé.
 
-> 🚨 **Piège à éviter** —
-> Un dépôt public n'est pas la seule exposition. Un dépôt privé partagé avec un
-> prestataire, un fork, une sauvegarde, un export : la clé commitée doit être
-> considérée comme publique dès qu'elle a quitté votre machine.
 
 ---
 
@@ -125,46 +110,15 @@ est le coût d'une erreur dans les deux sens ? » :
 > les contrôles de sécurité **séparés** des contrôles de style, pour que la
 > première reste crédible.
 
-### Monter la pression progressivement
-
-Une équipe qui active tout en mode bloquant du jour au lendemain passe sa semaine
-à éteindre des incendies. La méthode douce :
-
-1. activer chaque contrôle en **avertissement** pendant deux semaines ;
-2. mesurer le bruit : fausses alertes, alertes répétitives, alertes déjà connues ;
-3. corriger le stock existant, puis **bloquer** sur ce qui est désormais propre ;
-4. ne jamais régresser : ce qui est bloqué le reste.
-
-C'est la même logique que la progression douce du parcours : on monte en pression
-quand le niveau de pratique suit.
-
 ---
 
 ## III. Le SBOM : savoir ce qu'on embarque
-
-### Le problème de Log4Shell
-
-Le 9 décembre 2021, une faille critique est publiée dans Log4j, une bibliothèque
-de journalisation très répandue dans l'écosystème Java. Elle porte la référence
-CVE-2021-44228 — une CVE (Common Vulnerabilities and Exposures) est l'identifiant
-public d'une faille publiée — et sera surnommée Log4Shell. En quelques heures,
-des scans automatisés exploitaient la faille sur Internet. La question de chaque organisation fut la même : **sommes-nous
-concernés, et où ?**
-
-Pour beaucoup, la réponse a pris des jours — parce que la bibliothèque était
-présente en transitive (importée par une autre bibliothèque, sans jamais avoir été
-choisie explicitement), dans des applications dont personne n'avait l'inventaire.
-Sans inventaire, pas de réponse rapide : on ne peut pas patcher ce qu'on ne sait
-pas posséder.
 
 ### Ce qu'est un SBOM
 
 Un SBOM (Software Bill of Materials, la liste des composants d'un logiciel) est à
 une application ce qu'une liste d'ingrédients est à un produit alimentaire : chaque
-composant, sa version, son origine, ses dépendances. Deux formats dominent :
-CycloneDX et SPDX (Software Package Data Exchange, l'autre format d'inventaire),
-tous deux en XML (Extensible Markup Language, un format de données structurées)
-ou JSON.
+composant, sa version, son origine, ses dépendances.
 
 ```bash
 # Générer un inventaire avec syft, au format CycloneDX
@@ -187,11 +141,6 @@ déjà faite**.
 Un SBOM généré une fois et rangé dans un dossier ne sert à rien : c'est un
 instantané, et les composants bougent à chaque livraison.
 
-> 🧭
-> **Progression :** les contrôles disent « ce commit est-il dangereux ? », les
-> gates décident « livre-t-on malgré tout ? », le SBOM répond « qu'avons-nous
-> livré, exactement ? ». Les trois se complètent : le premier regarde l'instant,
-> le troisième garde la mémoire.
 
 ---
 
@@ -210,6 +159,84 @@ la journée.*
 - **La revue humaine des dépendances nouvelles** — ajouter une bibliothèque est un
   choix d'architecture. Une règle simple : toute nouvelle dépendance est examinée
   (activité du projet, mainteneurs, droits demandés) avant d'entrer.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Ce que la sécurité de fin de projet coûtait**
+>
+> La sécurité arrivait autrefois en fin de projet : une revue, un audit, quelques
+> semaines avant la mise en production. Trop tard pour être économique — corriger
+> une conception coûte alors dix fois plus cher qu'au moment où on l'écrivait — et
+> trop tard pour être fiable, parce que la pression de la livraison fait sauter ce
+> qui reste à faire.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> 💡 **Astuce** —
+> Un contrôle qui tourne en local avant le commit coûte quelques secondes et
+> évite un aller-retour complet de pipeline. Les mêmes outils s'exécutent dans
+> les deux endroits : en local pour aller vite, en CI pour ne rien oublier.
+>
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> 🚨 **Piège à éviter** —
+> Un dépôt public n'est pas la seule exposition. Un dépôt privé partagé avec un
+> prestataire, un fork, une sauvegarde, un export : la clé commitée doit être
+> considérée comme publique dès qu'elle a quitté votre machine.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+>
+> **Monter la pression progressivement**
+>
+>
+> Une équipe qui active tout en mode bloquant du jour au lendemain passe sa semaine
+> à éteindre des incendies. La méthode douce :
+>
+> 1. activer chaque contrôle en **avertissement** pendant deux semaines ;
+> 2. mesurer le bruit : fausses alertes, alertes répétitives, alertes déjà connues ;
+> 3. corriger le stock existant, puis **bloquer** sur ce qui est désormais propre ;
+> 4. ne jamais régresser : ce qui est bloqué le reste.
+>
+> C'est la même logique que la progression douce du parcours : on monte en pression
+> quand le niveau de pratique suit.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+>
+> **Le problème de Log4Shell**
+>
+>
+> Le 9 décembre 2021, une faille critique est publiée dans Log4j, une bibliothèque
+> de journalisation très répandue dans l'écosystème Java. Elle porte la référence
+> CVE-2021-44228 — une CVE (Common Vulnerabilities and Exposures) est l'identifiant
+> public d'une faille publiée — et sera surnommée Log4Shell. En quelques heures,
+> des scans automatisés exploitaient la faille sur Internet. La question de chaque organisation fut la même : **sommes-nous
+> concernés, et où ?**
+>
+> Pour beaucoup, la réponse a pris des jours — parce que la bibliothèque était
+> présente en transitive (importée par une autre bibliothèque, sans jamais avoir été
+> choisie explicitement), dans des applications dont personne n'avait l'inventaire.
+> Sans inventaire, pas de réponse rapide : on ne peut pas patcher ce qu'on ne sait
+> pas posséder.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Les deux formats d'inventaire**
+>
+> Deux formats dominent :
+> CycloneDX et SPDX (Software Package Data Exchange, l'autre format d'inventaire),
+> tous deux en XML (Extensible Markup Language, un format de données structurées)
+> ou JSON.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> 🧭
+> **Progression :** les contrôles disent « ce commit est-il dangereux ? », les
+> gates décident « livre-t-on malgré tout ? », le SBOM répond « qu'avons-nous
+> livré, exactement ? ». Les trois se complètent : le premier regarde l'instant,
+> le troisième garde la mémoire.
 
 ---
 

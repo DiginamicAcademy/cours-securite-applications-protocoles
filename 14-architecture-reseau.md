@@ -9,7 +9,7 @@
 > ne sait plus très bien où il passe. C'est là qu'une autre idée a émergé : ne plus
 > faire confiance à la position d'une machine, mais à ce qu'elle prouve.
 
-**Durée de lecture :** 60 min · **Prérequis :** le chapitre
+**Durée de lecture :** 70 min hors approfondissements facultatifs · **Prérequis :** le chapitre
 [Protocoles réseau](13-protocoles-reseau.md), les notions de pare-feu
 
 ---
@@ -133,11 +133,6 @@ compromise donne accès à toute la chaîne. En Zero Trust :
 - les échanges entre maillons sont **chiffrés**, même au sein du même réseau ;
 - les appels sont **journalisés**, pour qu'un dérangement se voie.
 
-> ⚠️ **Point d'attention** —
-> Zero Trust n'est pas un produit qu'on achète, ni un projet qu'on finit. C'est
-> une direction : on l'applique d'abord là où la donnée est la plus sensible, puis
-> on étend. Une équipe qui tente de tout convertir d'un coup n'achève rien.
-
 ---
 
 ## III. L'API Gateway : un point d'entrée unique
@@ -161,11 +156,6 @@ Les services derrière la passerelle n'ont alors plus qu'à faire leur métier. 
 restent protégés même si l'un d'eux contient une faille : il n'est joignable que
 par la passerelle, avec les droits qu'elle accorde.
 
-> 🧭
-> **Progression :** la difficulté monte **en continu**. La segmentation pose les
-> zones, Zero Trust change la règle de confiance, la passerelle applique cette
-> règle à chaque appel. Chaque idée reprend là où la précédente s'est arrêtée.
-
 ---
 
 ## IV. Aller plus loin
@@ -183,6 +173,20 @@ la journée.*
 - **Le modèle de maturité Zero Trust** — plusieurs cadres publics décrivent des
   jalons progressifs. Ils servent de boussole pour prioriser, pas de certification
   à obtenir.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> ⚠️ **Point d'attention** —
+> Zero Trust n'est pas un produit qu'on achète, ni un projet qu'on finit. C'est
+> une direction : on l'applique d'abord là où la donnée est la plus sensible, puis
+> on étend. Une équipe qui tente de tout convertir d'un coup n'achève rien.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> 🧭
+> **Progression :** la difficulté monte **en continu**. La segmentation pose les
+> zones, Zero Trust change la règle de confiance, la passerelle applique cette
+> règle à chaque appel. Chaque idée reprend là où la précédente s'est arrêtée.
 
 ---
 

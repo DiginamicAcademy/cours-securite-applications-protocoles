@@ -8,7 +8,7 @@
 > pas de les *voir* — c'est de les *corriger*, sans en introduire de nouvelles.
 > Et pour corriger sans casser, il faut d'abord **écrire autrement**.
 
-**Durée de lecture :** 50 min · **Prérequis :** les vulnérabilités web vues lors
+**Durée de lecture :** 40 min hors approfondissements facultatifs · **Prérequis :** les vulnérabilités web vues lors
 des journées précédentes
 
 ---
@@ -41,9 +41,6 @@ c'est une **façon d'écrire**. Trois réflexes reviennent sans cesse :
   aucune mesure ne suffit seule ; on emploie plusieurs couches, pour qu'une
   erreur n'ouvre pas tout.
 
-On commence par le deuxième, le plus immédiat à appliquer dans un fichier de
-code.
-
 ### Ce dont un composant a réellement besoin
 
 Le moindre privilège se vérifie avec trois questions, à poser pour chaque script,
@@ -58,50 +55,12 @@ chaque service, chaque requête :
 Un droit en trop n'est pas un détail de confort : c'est une porte qu'on laisse
 ouverte le jour où le code est détourné.
 
-> 🧪 **Atelier rapide (5 min)**
->
-> La fromagerie fait tourner chaque soir un script d'export des commandes, repris
-> le lendemain par le service comptabilité. Il s'exécute avec le même compte que
-> la boutique en ligne. Voici le script :
-
-```python
-import os
-import sqlite3
-
-BASE = "/data/commandes.db"
-SORTIE = "/data/export/fidelite.csv"
-
-def exporter(jour):
-    try:
-        connexion = sqlite3.connect(BASE)
-        curseur = connexion.cursor()
-        curseur.execute(
-            "SELECT * FROM commandes WHERE jour = ?", (jour,)
-        )
-        lignes = curseur.fetchall()
-        fichier = open(SORTIE, "w")
-        for ligne in lignes:
-            print("ligne exportée :", ligne)
-            fichier.write(";".join(str(champ) for champ in ligne) + "\n")
-        fichier.close()
-        connexion.close()
-        os.system("chmod 666 " + SORTIE)
-        return len(lignes)
-    except Exception:
-        return 0
-```
-
-Repérez les trois endroits où le **moindre privilège** est violé. Notez-les sans
-chercher à corriger : la correction vient dans [l'exercice qui suit](tp/01-appliquer-les-principes.md).
-
 ---
 
 ## II. Defense in depth en code
 
 Valider en entrée, maîtriser la sortie, journaliser sans exposer : la defense in
-depth appliquée au code ne fait jamais confiance à **une seule** barrière. Le jour
-où elle cède — un champ qu'on n'avait pas prévu, un appel qui échoue, une personne
-qui se trompe — tout est ouvert.
+depth appliquée au code ne fait jamais confiance à **une seule** barrière. Le jour où elle cède, tout est ouvert.
 
 Trois couches se complètent :
 
@@ -111,19 +70,16 @@ Trois couches se complètent :
 | **En sortie** | rendre à chaque système ce qu'il attend — du texte reste du texte | la confusion entre une donnée et une instruction |
 | **Dans les journaux** | tracer ce qui s'est passé, sans y mettre les données ni les secrets | l'aveuglement quand vient l'incident |
 
-Aucune de ces couches ne remplace les autres. Une validation d'entrée qui échoue
-ne dispense pas de maîtriser ce qui sort ; un journal trop bavard annule le
-bénéfice des deux autres, parce qu'il redonne à tout le monde ce qu'on avait
-protégé.
+Aucune couche ne remplace les autres : un journal trop bavard annule le bénéfice
+des deux premières, parce qu'il redonne à tout le monde ce qu'on avait protégé.
 
 ---
 
 ## III. Fail-closed
 
-Face à une erreur, un programme a deux façons de réagir :
-
-- **fail-open** — il continue comme si de rien n'était, et accepte par défaut ;
-- **fail-closed** — il s'arrête, refuse, et signale ce qui ne va pas.
+Face à une erreur, un programme réagit en **fail-open** (il continue
+et accepte par défaut) ou en **fail-closed** (il s'arrête, refuse et
+signale).
 
 | Ce qui arrive | Fail-open | Fail-closed |
 | --- | --- | --- |
@@ -152,6 +108,48 @@ la journée.*
 - **Les recommandations de sécurité de votre langage** — Python, Java ou PHP (Hypertext Preprocessor)
   publient chacun leurs propres guides : gestion des erreurs, validation des
   entrées, journalisation.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> L'analyse de ce script est conduite de bout en bout dans
+> l'exercice [Appliquer les principes du secure coding](tp/01-appliquer-les-principes.md) qui suit ce chapitre.
+>
+> 🧪 **Atelier rapide (5 min)**
+>
+> La fromagerie fait tourner chaque soir un script d'export des commandes, repris
+> le lendemain par le service comptabilité. Il s'exécute avec le même compte que
+> la boutique en ligne. Voici le script :
+>
+> ```python
+> import os
+> import sqlite3
+>
+> BASE = "/data/commandes.db"
+> SORTIE = "/data/export/fidelite.csv"
+>
+> def exporter(jour):
+>     try:
+>         connexion = sqlite3.connect(BASE)
+>         curseur = connexion.cursor()
+>         curseur.execute(
+>             "SELECT * FROM commandes WHERE jour = ?", (jour,)
+>         )
+>         lignes = curseur.fetchall()
+>         fichier = open(SORTIE, "w")
+>         for ligne in lignes:
+>             print("ligne exportée :", ligne)
+>             fichier.write(";".join(str(champ) for champ in ligne) + "\n")
+>         fichier.close()
+>         connexion.close()
+>         os.system("chmod 666 " + SORTIE)
+>         return len(lignes)
+>     except Exception:
+>         return 0
+> ```
+>
+> Repérez les trois endroits où le **moindre privilège** est violé. Notez-les sans
+> chercher à corriger : la correction vient dans [l'exercice qui suit](tp/01-appliquer-les-principes.md).
 
 ---
 

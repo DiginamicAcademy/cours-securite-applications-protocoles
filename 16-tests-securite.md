@@ -40,9 +40,6 @@ XSS (Cross-Site Scripting, l'injection de script dans une page). Le jour où on
 corrige la faille, ce payload cesse de fonctionner. Le smoke test de sécurité
 consiste à **le rejouer à chaque exécution** et à vérifier qu'il échoue toujours.
 
-Le test est minuscule, et c'est sa force : il tourne en quelques secondes, il ne
-demande aucune infrastructure, et il dit vrai.
-
 ### Un premier test, contre le lab
 
 Le lab du cours expose deux versions de la même API : `vulnerable` (port 8080),
@@ -70,10 +67,6 @@ Trois détails font la qualité de ce test :
 - il attend un **code de réponse précis** (ici 400, la requête est refusée), et
   pas seulement « ça ne plante pas » ;
 - il est **indépendant** : il ne dépend d'aucune donnée laissée par un autre test.
-
-> 💡 **Astuce** — un test de sécurité qui échoue est une bonne nouvelle : il vient
-> de vous apprendre que la protection a disparu, avant vos utilisateurs. Traitez
-> un test rouge comme un incident naissant, pas comme du bruit de build.
 
 > 🧪 **Atelier rapide (10 min)**
 >
@@ -150,15 +143,8 @@ l'application. Elle se voit dans les journaux d'un attaquant.
 ### Où les faire tourner
 
 Ces tests prennent place dans le pipeline décrit au chapitre précédent :
-[DevSecOps et traçabilité des dépendances](15-devsecops.md). La différence avec
-les contrôles de ce chapitre : le SAST (Static Application Security Testing,
-l'analyse statique du code) **devine** les risques à partir du code, tandis qu'un
-smoke test **constate** le comportement réel de l'API. Les deux se complètent —
-l'un regarde le code, l'autre regarde ce qui tourne.
+[DevSecOps et traçabilité des dépendances](15-devsecops.md).
 
-> ⚠️ **Point d'attention** — un test de sécurité qui passe parce qu'il interroge
-> le mauvais service ne protège rien. Vérifiez toujours que votre test vise la
-> bonne adresse : un test vert contre `vulnerable` est un test qui vous ment.
 
 ---
 
@@ -178,6 +164,35 @@ la journée.*
   Ce qui protège une application protège souvent les autres.
 - **Le fuzzing structuré** — fournir au fuzzing le format attendu (un schéma de
   requête, un modèle de données) multiplie les cas pertinents et réduit le bruit.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Ce qui fait la force du smoke test**
+>
+> Le test est minuscule, et c'est sa force : il tourne en quelques secondes, il ne
+> demande aucune infrastructure, et il dit vrai.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> 💡 **Astuce** — un test de sécurité qui échoue est une bonne nouvelle : il vient
+> de vous apprendre que la protection a disparu, avant vos utilisateurs. Traitez
+> un test rouge comme un incident naissant, pas comme du bruit de build.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **SAST et smoke test : deux regards complémentaires**
+>
+> La différence avec
+> les contrôles de ce chapitre : le SAST (Static Application Security Testing,
+> l'analyse statique du code) **devine** les risques à partir du code, tandis qu'un
+> smoke test **constate** le comportement réel de l'API. Les deux se complètent —
+> l'un regarde le code, l'autre regarde ce qui tourne.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> ⚠️ **Point d'attention** — un test de sécurité qui passe parce qu'il interroge
+> le mauvais service ne protège rien. Vérifiez toujours que votre test vise la
+> bonne adresse : un test vert contre `vulnerable` est un test qui vous ment.
 
 ---
 

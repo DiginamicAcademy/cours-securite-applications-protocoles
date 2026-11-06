@@ -8,7 +8,7 @@
 > base ne fuit pas : c'est l'**endpoint** qui donne trop. Le meilleur moyen de
 > protéger une donnée, c'est souvent de ne pas la renvoyer.
 
-**Durée de lecture :** 65 min · **Prérequis :** les chapitres [Sécurité des API](07-securite-api.md) et [Auth et limitation d'API](08-auth-et-limitation-api.md)
+**Durée de lecture :** 40 min hors approfondissements facultatifs · **Prérequis :** les chapitres [Sécurité des API](07-securite-api.md) et [Auth et limitation d'API](08-auth-et-limitation-api.md)
 
 ---
 
@@ -41,64 +41,13 @@ Le critère n'est pas la « valeur » de la donnée mais le **dommage** causé
 divulgation — et la réglementation vient ensuite renforcer ce classement pour
 les données personnelles (le RGPD est traité au chapitre suivant).
 
-> 🧪 **Atelier rapide (8 min)**
->
-> Voici le schéma simplifié de la base d'un SaaS de gestion RH. Classez chaque
-> colonne dans les quatre niveaux ci-dessus :
-
-```sql
-CREATE TABLE employes (
-    id INT PRIMARY KEY,
-    nom VARCHAR(64),              -- niveau : ?
-    email VARCHAR(254),           -- niveau : ?
-    poste VARCHAR(64),            -- niveau : ?
-    salaire DECIMAL(8, 2),        -- niveau : ?
-    numero_secu CHAR(15),         -- niveau : ?
-    mot_de_passe_hash CHAR(60)    -- niveau : ?
-);
-
-CREATE TABLE formations (
-    id INT PRIMARY KEY,
-    employe_id INT,
-    intitule VARCHAR(128),        -- niveau : ?
-    date_session DATE             -- niveau : ?
-);
-```
-
-Notez votre classement : deux colonnes reviendront dans l'exercice du bloc. La
-question utile pour chacune est : « si cette valeur apparaissait dans un journal
-d'application lu par toute l'équipe, que se passerait-il ? »
-
 ---
 
 ## II. Minimisation
 
-La minimisation consiste à ne **renvoyer que les champs utiles** à la fonction
-exacte de l'endpoint. Le contraste se lit dans deux réponses du même endpoint GET (lecture d'une
-ressource), `/planning/{id}` :
-
-```json
-// Avant : la requête SQL faisait un SELECT * et tout partait dans la réponse
-{
-  "id": 42,
-  "nom": "Durand",
-  "email": "c.durand@example.fr",
-  "salaire": 3200.00,
-  "numero_secu": "2850376123456 78",
-  "mot_de_passe_hash": "$2b$12$...",
-  "semaine": "2026-04-13"
-}
-```
-
-```json
-// Après : la réponse porte ce dont l'écran de planning a besoin, rien d'autre
-{
-  "id": 42,
-  "nom": "Durand",
-  "poste": "technicienne support",
-  "semaine": "2026-04-13"
-}
-```
+La minimisation consiste à ne **renvoyer que les champs utiles** à la fonction exacte
+de l'endpoint : sur un écran de planning, l'identifiant, le nom, le poste et la semaine
+suffisent — pas le numéro de sécurité sociale, pas le hash du mot de passe.
 
 La minimisation se prend à trois endroits :
 
@@ -107,17 +56,6 @@ La minimisation se prend à trois endroits :
 | **La requête** | nommer les colonnes au lieu de toutes les prendre | les champs qui n'ont rien à faire ici |
 | **Le modèle de réponse** | déclarer un schéma de sortie explicite | les champs ajoutés « au cas où » par la suite |
 | **Le code mort** | supprimer les anciens endpoints généreux | les vieilles portes qu'on croyait fermées |
-
-```sql
-SELECT * FROM employes;            -- prend tout, y compris le superflu
-SELECT nom, poste FROM employes;   -- prend l'utile
-```
-
-> [!TIP]
-> Un champ retiré de la réponse n'a pas besoin d'être retiré de la base : c'est
-> l'**exposition** qui compte. Mais un champ que personne n'utilise plus mérite
-> d'être retiré des deux côtés — il coûte de l'espace et de la surface
-> d'attaque.
 
 ---
 
@@ -162,6 +100,93 @@ terminer la journée.*
 - **La traçabilité des accès** — journaliser qui a lu une donnée sensible, quand
   et pourquoi. Une donnée confidentielle sans journal d'accès est une donnée
   qu'on ne saura pas avoir été lue.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> Classer ces colonnes est exactement la Partie 1 de l'exercice [Sécuriser un endpoint qui en dit trop](tp/09-securiser-endpoint-data.md), sur un autre jeu de données.
+>
+> 🧪 **Atelier rapide (8 min)**
+>
+> Voici le schéma simplifié de la base d'un SaaS de gestion RH. Classez chaque
+> colonne dans les quatre niveaux ci-dessus :
+>
+> ```sql
+> CREATE TABLE employes (
+>     id INT PRIMARY KEY,
+>     nom VARCHAR(64),              -- niveau : ?
+>     email VARCHAR(254),           -- niveau : ?
+>     poste VARCHAR(64),            -- niveau : ?
+>     salaire DECIMAL(8, 2),        -- niveau : ?
+>     numero_secu CHAR(15),         -- niveau : ?
+>     mot_de_passe_hash CHAR(60)    -- niveau : ?
+> );
+>
+> CREATE TABLE formations (
+>     id INT PRIMARY KEY,
+>     employe_id INT,
+>     intitule VARCHAR(128),        -- niveau : ?
+>     date_session DATE             -- niveau : ?
+> );
+> ```
+>
+> Notez votre classement : deux colonnes reviendront dans l'exercice du bloc. La
+> question utile pour chacune est : « si cette valeur apparaissait dans un journal
+> d'application lu par toute l'équipe, que se passerait-il ? »
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Le même endpoint, avant et après minimisation**
+>
+> L'exercice [Sécuriser un endpoint qui en dit trop](tp/09-securiser-endpoint-data.md) fait parcourir ce chemin, sur une réponse tout aussi bavarde.
+>
+> La minimisation consiste à ne **renvoyer que les champs utiles** à la fonction
+> exacte de l'endpoint. Le contraste se lit dans deux réponses du même endpoint GET (lecture d'une
+> ressource), `/planning/{id}` :
+>
+> ```json
+> // Avant : la requête SQL faisait un SELECT * et tout partait dans la réponse
+> {
+>   "id": 42,
+>   "nom": "Durand",
+>   "email": "c.durand@example.fr",
+>   "salaire": 3200.00,
+>   "numero_secu": "2850376123456 78",
+>   "mot_de_passe_hash": "$2b$12$...",
+>   "semaine": "2026-04-13"
+> }
+> ```
+>
+> ```json
+> // Après : la réponse porte ce dont l'écran de planning a besoin, rien d'autre
+> {
+>   "id": 42,
+>   "nom": "Durand",
+>   "poste": "technicienne support",
+>   "semaine": "2026-04-13"
+> }
+> ```
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Deux SELECT, deux intentions**
+>
+> Le tableau ci-dessus énonce le geste ; ces deux lignes ne font que le montrer.
+>
+> ```sql
+> SELECT * FROM employes;            -- prend tout, y compris le superflu
+> SELECT nom, poste FROM employes;   -- prend l'utile
+> ```
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Retirer de la réponse, pas forcément de la base**
+>
+> Nuance utile en revue de code, jamais exigée pour faire l'exercice.
+>
+> Un champ retiré de la réponse n'a pas besoin d'être retiré de la base : c'est
+> l'**exposition** qui compte. Mais un champ que personne n'utilise plus mérite
+> d'être retiré des deux côtés — il coûte de l'espace et de la surface
+> d'attaque.
 
 ---
 

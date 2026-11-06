@@ -9,7 +9,7 @@
 > pourtant, c'est votre service qui est exposé. Tu ne changes pas le monde — tu
 > changes **ta version**.
 
-**Durée de lecture :** 65 min · **Prérequis :** le cycle de vie d'une
+**Durée de lecture :** 50 min hors approfondissements facultatifs · **Prérequis :** le cycle de vie d'une
 vulnérabilité connue, et le chapitre
 [XSS (Cross-Site Scripting) et sorties](03-xss-et-sorties.md)
 
@@ -48,25 +48,9 @@ L'ordre compte. Corriger sans lire conduit à monter une version majeure qui
 casse le service ; lire sans situer conduit à traiter en urgence une
 dépendance qui n'est jamais exécutée.
 
-### Lire un avis de sécurité
-
-Un avis se lit pour quatre informations : l'identifiant, la gravité, les
-versions affectées, et le mécanisme. Exemple, sur le cas réel de PHP (Hypertext Preprocessor) en octobre
-2026 — l'advisory 2026-018 du CERT (Computer Emergency Response Team)
-européen :
-
-| Information | Ce qu'elle dit |
-| --- | --- |
-| **Identifiant** | un numéro d'avis, et les CVE (Common Vulnerabilities and Exposures) associées |
-| **Gravité** | un score CVSS (Common Vulnerability Scoring System), ici 9.2 sur 10 |
-| **Versions** | ce qui est affecté, ce qui est corrigé |
-| **Mécanisme** | deux exécutions de code à distance non authentifiées |
-
-Le calendrier de cet avis est instructif : annonce le 20 octobre, correctif le
-21, preuve de concept en circulation dans la foulée, troisième faille annoncée
-le 23. Le temps de correction se compte en heures ; le temps d'exploitation, en
-minutes. C'est pour cela que « lire l'avis » n'est pas une lecture de fin de
-journée.
+**Rétro-patcher** applique le correctif de sécurité sur la version en place,
+sans prendre le reste des changements : plus lourd à maintenir, donc
+temporaire et daté.
 
 > 🧪 **Atelier rapide (10 min)**
 >
@@ -76,33 +60,9 @@ journée.
 > Comparez avec le contenu de `lab/cve/requirements.txt`, qui fige
 > volontairement une version obsolète.
 
-### Situer l'exposition
-
-La présence d'une dépendance vulnérable n'est pas l'exposition. Trois questions
-tranchent :
-
-- **La fonctionnalité concernée est-elle appelée ?** Une bibliothèque entière
-  peut être installée pour une seule fonction, saine.
-- **Les entrées de la faille sont-elles atteignables ?** Une faille déclenchée
-  par un champ administratif n'a pas le même poids que celle déclenchée par
-  n'importe quelle requête.
-- **Quel est l'impact métier ?** Les données concernées, l'exposition du
-  service, la possibilité de reprendre la main.
-
 > 💡 **À retenir** — L'avis de sécurité décrit une faille de bibliothèque ;
-  l'avis d'exposition décrit **votre** situation. Les deux se rédigent
-  séparément, et c'est le second qui décide de l'urgence.
-
-### Corriger et vérifier
-
-Le correctif le plus sûr est la mise à jour vers la version corrigée. Quand elle
-n'est pas possible — dépendance majeure, compatibilité cassée — on
-**rétro-patche** : on applique le correctif de sécurité sur la version en place,
-sans prendre le reste des changements. C'est plus lourd à maintenir, donc
-temporaire, et daté.
-
-La vérification a deux volets : les tests existants passent toujours, et le cas
-décrit dans l'avis ne passe plus. L'un sans l'autre ne prouve rien.
+> l'avis d'exposition décrit **votre** situation. Les deux se rédigent
+> séparément, et c'est le second qui décide de l'urgence.
 
 ---
 
@@ -189,6 +149,70 @@ terminer la journée.*
 - **Les politiques de version** — figer les versions interdites, imposer une
   plage de versions corrigées, refuser les dépendances abandonnées : autant de
   règles qui se vérifient à chaque build, plutôt qu'à chaque incident.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> Ces deux volets détaillent les lignes « Corriger » et « Vérifier » du tableau
+> ci-dessus.
+>
+> **Corriger et vérifier**
+>
+>
+> Le correctif le plus sûr est la mise à jour vers la version corrigée. Quand elle
+> n'est pas possible — dépendance majeure, compatibilité cassée — on
+> **rétro-patche** : on applique le correctif de sécurité sur la version en place,
+> sans prendre le reste des changements. C'est plus lourd à maintenir, donc
+> temporaire, et daté.
+>
+> La vérification a deux volets : les tests existants passent toujours, et le cas
+> décrit dans l'avis ne passe plus. L'un sans l'autre ne prouve rien.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> Ces trois questions détaillent la ligne « Situer » du tableau ci-dessus.
+>
+> **Situer l'exposition**
+>
+>
+> La présence d'une dépendance vulnérable n'est pas l'exposition. Trois questions
+> tranchent :
+>
+> - **La fonctionnalité concernée est-elle appelée ?** Une bibliothèque entière
+>   peut être installée pour une seule fonction, saine.
+> - **Les entrées de la faille sont-elles atteignables ?** Une faille déclenchée
+>   par un champ administratif n'a pas le même poids que celle déclenchée par
+>   n'importe quelle requête.
+> - **Quel est l'impact métier ?** Les données concernées, l'exposition du
+>   service, la possibilité de reprendre la main.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> Ce cas PHP a déjà été ouvert à la journée sur les vulnérabilités ; il
+> illustre les quatre informations à retirer d'un avis.
+>
+> **Lire un avis de sécurité**
+>
+>
+> Un avis se lit pour quatre informations : l'identifiant, la gravité, les
+> versions affectées, et le mécanisme. Exemple, sur le cas réel de PHP (Hypertext Preprocessor) en octobre
+> 2026 — l'advisory 2026-018 du CERT (Computer Emergency Response Team)
+> européen :
+>
+> | Information | Ce qu'elle dit |
+> | --- | --- |
+> | **Identifiant** | un numéro d'avis, et les CVE (Common Vulnerabilities and Exposures) associées |
+> | **Gravité** | un score CVSS (Common Vulnerability Scoring System), ici 9.2 sur 10 |
+> | **Versions** | ce qui est affecté, ce qui est corrigé |
+> | **Mécanisme** | deux exécutions de code à distance non authentifiées |
+>
+> Le calendrier de cet avis est instructif : annonce le 20 octobre, correctif le
+> 21, preuve de concept en circulation dans la foulée, troisième faille annoncée
+> le 23. Le temps de correction se compte en heures ; le temps d'exploitation, en
+> minutes. C'est pour cela que « lire l'avis » n'est pas une lecture de fin de
+> journée.
 
 ---
 

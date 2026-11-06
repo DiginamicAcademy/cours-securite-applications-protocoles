@@ -8,7 +8,7 @@
 > entrées, une passe sur les sorties, une passe sur les appels système. À la fin
 > de l'heure, il sait où le module est fragile, et pourquoi.
 
-**Durée de lecture :** 55 min · **Prérequis :** les chapitres
+**Durée de lecture :** 45 min hors approfondissements facultatifs · **Prérequis :** les chapitres
 [Validation et injections](02-validation-et-injections.md) et
 [XSS (Cross-Site Scripting) et sorties](03-xss-et-sorties.md)
 
@@ -42,24 +42,11 @@ Chaque passe se fait sur **tout** le fichier, puis on passe à la suivante. C'es
 plus rapide qu'une relecture attentive ligne à ligne, et surtout plus fiable :
 le cerveau ne saute pas d'une préoccupation à l'autre.
 
-### Passe 1 — les entrées
-
-On liste tout ce qui vient de l'extérieur, puis on demande pour chacun : est-ce
-qu'il est **contrôlé** ? Un identifiant qui devrait être un entier, une date qui
-devrait suivre un format, une chaîne qui devrait être bornée en longueur.
-
-### Passe 2 — les sorties
-
-On liste tout ce qui sort, puis on demande dans quel **contexte** cela s'insère :
-du texte affiché, une adresse cliquable, un fichier téléchargeable, une ligne de
-journal. Chaque contexte attend son traitement — et l'absence de traitement se
-voit d'un coup d'œil quand on regarde toutes les sorties à la suite.
-
-### Passe 3 — les appels système
-
-On liste ce que le code déclenche : les requêtes vers la base, les commandes
-lancées, les fichiers ouverts, les appels vers d'autres services. Pour chacun, la
-question est la même : une donnée extérieure peut-elle en **modifier la forme** ?
+Reste ce que chaque passe vérifie. **Entrées** : ce qui arrive
+est-il **contrôlé** — type, format, longueur ? **Sorties** :
+dans quel **contexte** la valeur s'insère-t-elle, et son traitement est-il
+là ? **Appels système** : une donnée extérieure peut-elle en **modifier la
+forme** ?
 
 > 🧪 **Atelier rapide (10 min)**
 >
@@ -129,10 +116,6 @@ réservée à l'administration interne — même si le correctif est identique.
 > Un rapport qui dit « à corriger » sans dire « pourquoi maintenant » finit dans
 > la pile des choses qu'on fera plus tard.
 
-Deux formulations à éviter : le reproche sur le code existant, et la solution
-unique présentée comme la seule possible. La revue ouvre un arbitrage — elle ne
-le ferme pas.
-
 ---
 
 ## IV. Aller plus loin
@@ -151,6 +134,43 @@ terminer la journée.*
   patterns connus. La question « cette donnée peut-elle modifier la forme de ce
   que le code fait ? » reste un raisonnement, et c'est précisément celui que la
   méthode en trois passes rend rapide.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> Affinage de posture : le rapport reste obligatoire dans sa forme minimale
+> (où, pourquoi c'est grave, quoi faire).
+>
+> Deux formulations à éviter : le reproche sur le code existant, et la solution
+> unique présentée comme la seule possible. La revue ouvre un arbitrage — elle ne
+> le ferme pas.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> La version détaillée des trois passes, avec ses exemples de terrain.
+>
+> **Passe 1 — les entrées**
+>
+>
+> On liste tout ce qui vient de l'extérieur, puis on demande pour chacun : est-ce
+> qu'il est **contrôlé** ? Un identifiant qui devrait être un entier, une date qui
+> devrait suivre un format, une chaîne qui devrait être bornée en longueur.
+>
+> **Passe 2 — les sorties**
+>
+>
+> On liste tout ce qui sort, puis on demande dans quel **contexte** cela s'insère :
+> du texte affiché, une adresse cliquable, un fichier téléchargeable, une ligne de
+> journal. Chaque contexte attend son traitement — et l'absence de traitement se
+> voit d'un coup d'œil quand on regarde toutes les sorties à la suite.
+>
+> **Passe 3 — les appels système**
+>
+>
+> On liste ce que le code déclenche : les requêtes vers la base, les commandes
+> lancées, les fichiers ouverts, les appels vers d'autres services. Pour chacun, la
+> question est la même : une donnée extérieure peut-elle en **modifier la forme** ?
 
 ---
 

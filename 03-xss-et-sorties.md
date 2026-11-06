@@ -8,7 +8,7 @@
 > vide toute seule. Le problème est toujours le même : la confusion entre ce que
 > la personne **voit** et ce que le navigateur **exécute**.
 
-**Durée de lecture :** 60 min · **Prérequis :** les failles de type injection
+**Durée de lecture :** 45 min hors approfondissements facultatifs · **Prérequis :** les failles de type injection
 étudiées lors des journées précédentes, et le chapitre
 [Validation et injections](02-validation-et-injections.md)
 
@@ -63,19 +63,6 @@ pour le contexte où elle s'insère.
 > une adresse : c'est le traitement du contexte qui compte, pas une fonction
 > appliquée partout à l'aveugle.
 
-> 🧪 **Atelier rapide (8 min)**
->
-> Ouvrez un interpréteur Python et comparez deux façons d'afficher une saisie :
-> la chaîne brute, puis la même chaîne passée par `html.escape`. Faites de même
-> avec une valeur contenant une apostrophe et un chevron. Puis ouvrez
-> `lab/vulnerable/app.py`, repérez la route qui réaffiche la recherche dans une
-> page, et identifiez la ligne où la donnée redevient du code. La même route,
-> dans `lab/secure/app.py`, montre le traitement appliqué.
-
-Ce qui frappe en faisant l'exercice, c'est que la correction tient en un appel
-de fonction. Comme pour la requête paramétrée, tout le travail est dans le
-diagnostic : voir qu'une donnée arrive dans un contexte de code.
-
 ---
 
 ## II. CSP
@@ -85,22 +72,6 @@ page **charge** : une bibliothèque tierce, une image distante, un script hébe
 ailleurs. La CSP (Content Security Policy) est la liste de ce que la page a le
 droit de charger et d'exécuter — annoncée au navigateur par un en-tête de
 réponse.
-
-```http
-Content-Security-Policy: default-src 'self'; script-src 'self'
-```
-
-Cet en-tête signifie : par défaut, la page ne charge que ce qui vient de son
-propre domaine, et les scripts suivent la même règle. Un script injecté depuis
-une autre origine est refusé par le navigateur, même si l'échappement a été
-contourné.
-
-| Directive | Ce qu'elle borne | Effet en cas d'injection |
-| --- | --- | --- |
-| `default-src` | tout ce qui n'est pas couvert ailleurs | le chargement par défaut se limite à l'origine |
-| `script-src` | les scripts exécutables | un script distant ne tourne pas |
-| `style-src` | les feuilles de style | le détournement de mise en forme est limité |
-| `img-src` | les images | les pistages par pixel externe sont bloqués |
 
 > 💡 **À retenir** — La CSP est la ceinture et les bretelles : elle ne remplace
 > pas l'échappement, elle encaisse le jour où il a été oublié. Une politique
@@ -136,13 +107,6 @@ Deux habitudes annulent cette protection :
 | **Marquer une valeur comme sûre** | le moteur ne l'échappe plus, alors qu'elle vient de l'extérieur |
 | **Assembler le gabarit depuis une chaîne** | le texte n'est plus un gabarit, mais du code interprété |
 
-C'est exactement le mécanisme de la faille de gabarit étudiée lors du travail
-sur les vulnérabilités des bibliothèques : un filtre qui assemble des attributs
-de balise à partir d'un dictionnaire laissait passer des clés non validées, et
-une clé piégée ajoutait un attribut exécutable. La correction avait deux volets —
-mettre la bibliothèque à jour, **et** valider les clés côté applicatif. La
-mise à jour ferme la faille connue ; la validation empêche la suivante.
-
 > ⚠️ **Attention** — Un moteur de gabarit sûr ne protège que ce qu'il voit. Une
 > chaîne assemblée à la main, puis injectée dans la page, lui échappe
 > complètement : la sécurité du gabarit s'arrête là où le code reprend la main.
@@ -166,6 +130,60 @@ terminer la journée.*
   le navigateur rapporte les violations sans bloquer. Une fois la politique
   ajustée, on passe en application. C'est la façon réaliste de durcir une page
   existante.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> Ce cas de bibliothèque a déjà été ouvert à la journée sur les vulnérabilités ;
+> il illustre les deux habitudes du tableau ci-dessus.
+>
+> C'est exactement le mécanisme de la faille de gabarit étudiée lors du travail
+> sur les vulnérabilités des bibliothèques : un filtre qui assemble des attributs
+> de balise à partir d'un dictionnaire laissait passer des clés non validées, et
+> une clé piégée ajoutait un attribut exécutable. La correction avait deux volets —
+> mettre la bibliothèque à jour, **et** valider les clés côté applicatif. La
+> mise à jour ferme la faille connue ; la validation empêche la suivante.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> Le geste à retenir tient sans ce détail : une politique `default-src 'self'`
+> se pose, puis se resserre ressource par ressource.
+>
+> ```http
+> Content-Security-Policy: default-src 'self'; script-src 'self'
+> ```
+>
+> Cet en-tête signifie : par défaut, la page ne charge que ce qui vient de son
+> propre domaine, et les scripts suivent la même règle. Un script injecté depuis
+> une autre origine est refusé par le navigateur, même si l'échappement a été
+> contourné.
+>
+> | Directive | Ce qu'elle borne | Effet en cas d'injection |
+> | --- | --- | --- |
+> | `default-src` | tout ce qui n'est pas couvert ailleurs | le chargement par défaut se limite à l'origine |
+> | `script-src` | les scripts exécutables | un script distant ne tourne pas |
+> | `style-src` | les feuilles de style | le détournement de mise en forme est limité |
+> | `img-src` | les images | les pistages par pixel externe sont bloqués |
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> La même manipulation, menée de bout en bout sur un livre d'or, est l'exercice
+> [Échapper les sorties d'un livre d'or](tp/03-echapper-les-sorties.md).
+>
+> 🧪 **Atelier rapide (8 min)**
+>
+> Ouvrez un interpréteur Python et comparez deux façons d'afficher une saisie :
+> la chaîne brute, puis la même chaîne passée par `html.escape`. Faites de même
+> avec une valeur contenant une apostrophe et un chevron. Puis ouvrez
+> `lab/vulnerable/app.py`, repérez la route qui réaffiche la recherche dans une
+> page, et identifiez la ligne où la donnée redevient du code. La même route,
+> dans `lab/secure/app.py`, montre le traitement appliqué.
+>
+> Ce qui frappe en faisant l'exercice, c'est que la correction tient en un appel
+> de fonction. Comme pour la requête paramétrée, tout le travail est dans le
+> diagnostic : voir qu'une donnée arrive dans un contexte de code.
 
 ---
 

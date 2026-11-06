@@ -9,7 +9,7 @@
 > l'appelant n'est pas le tout : il faut aussi **limiter son débit** et
 > **valider ses données**.
 
-**Durée de lecture :** 60 min · **Prérequis :** le chapitre [Sécurité des API](07-securite-api.md)
+**Durée de lecture :** 45 min hors approfondissements facultatifs · **Prérequis :** le chapitre [Sécurité des API](07-securite-api.md)
 
 ---
 
@@ -43,45 +43,11 @@ billetterie délivré à une application partenaire peut porter le rôle
 `guichet` avec le seul scope `places:lire` : l'application voit les places,
 sans jamais pouvoir en réserver ni en rembourser.
 
-Deux verbes HTTP suffisent pour l'exemple : GET (consulter une ressource) et
-POST (en créer une). La règle d'or se vérifie endpoint par endpoint :
-
-| Endpoint | Scope exigé | Refus attendu sans ce scope |
-| --- | --- | --- |
-| `GET /places` | `places:lire` | `401` si pas de jeton, `403` si jeton sans ce scope |
-| `POST /reservations` | `places:reserver` | `403` |
-| `POST /remboursements` | `remboursements:creer` | `403` |
-
-Notez la différence entre les deux refus : `401 Unauthorized` dit « je ne sais
+Notez la différence entre les deux codes de refus : `401 Unauthorized` dit « je ne sais
 pas qui vous êtes » (ou votre jeton ne vaut plus rien) ; `403 Forbidden` dit
 « je sais qui vous êtes, et vous n'avez pas ce droit ». Un code `403` renvoyé
 à la place d'un `401` — ou l'inverse — est le premier indice d'une autorisation
 mal branchée.
-
-> [!TIP]
-> Écrivez la matrice « endpoint × scope » **avant** d'écrire le code des
-> contrôleurs. Une autorisation décidée au cas par cas, endpoint après
-> endpoint, finit toujours par en oublier un.
-
-> 🧪 **Atelier rapide (5 min)**
->
-> Voici deux réponses de la même API, pour le même endpoint administratif.
-> Identifiez, pour chacune, **quel contrôle** a produit le refus :
-
-```text
-Requête A — sans en-tête Authorization
-HTTP/1.1 401 Unauthorized
-{"detail": "token manquant"}
-
-Requête B — avec un jeton valide de scope "places:lire"
-HTTP/1.1 403 Forbidden
-{"detail": "accès réservé aux remboursements"}
-```
-
-La requête A échoue à l'**authentification** (personne n'est identifié) ; la
-requête B échoue à l'**autorisation** (l'appelant est identifié, mais son scope
-ne couvre pas l'action). Vérifiez que vous pouvez expliquer cette différence à
-quelqu'un sans regarder le tableau ci-dessus.
 
 ---
 
@@ -92,20 +58,6 @@ peut faire **dans un intervalle**. Il protège trois choses à la fois : la
 disponibilité du service, la base de données derrière, et le portefeuille (chaque
 appel coûte des ressources).
 
-Le cas le plus simple est un compteur par appelant :
-
-```python
-# Compteur minimal de tentatives — clair, mais limité (voir plus bas).
-TENTATIVES: dict[str, int] = {}
-MAX_TENTATIVES = 5
-
-def verifier_quota(cle: str) -> bool:
-    if TENTATIVES.get(cle, 0) >= MAX_TENTATIVES:
-        return False          # la requête sera refusée en 429
-    TENTATIVES[cle] = TENTATIVES.get(cle, 0) + 1
-    return True
-```
-
 Trois décisions se prennent dès qu'on pose un rate limiting :
 
 | Décision | Options | Ce qu'elle change |
@@ -115,16 +67,11 @@ Trois décisions se prennent dès qu'on pose un rate limiting :
 | **Que renvoyer ?** | `429 Too Many Requests` + en-tête `Retry-After` | l'appelant sait quand réessayer au lieu de marteler |
 
 > [!WARNING]
-> Un compteur en mémoire, comme ci-dessus, repart à zéro à chaque redémarrage
+> Un compteur tenu en mémoire repart à zéro à chaque redémarrage
 > du service et n'est pas partagé entre plusieurs instances. C'est parfait pour
 > un premier garde-fou, insuffisant pour une API exposée : le comptage se
 > déplace alors vers un stockage partagé (Redis, base de données) ou vers la
 > passerelle d'API.
-
-Le débit n'est pas la seule ressource à limiter : la **taille** des requêtes
-aussi. Un corps de requête de 50 Mo, un champ de recherche de 10 000
-caractères, une réponse paginée sans limite — chacun est un levier d'épuisement.
-La section suivante traite ces cas.
 
 ---
 
@@ -145,15 +92,6 @@ class Reservation(BaseModel):
     email: str = Field(max_length=254)                 # longueur bornée
     code_postal: str = Field(pattern=r"^\d{5}$")       # format exact
 ```
-
-Chaque contrainte répond à une question simple :
-
-| Contrainte | Question qu'elle tranche | Ce qu'elle écarte |
-| --- | --- | --- |
-| **Type** (`int`, `str`) | la valeur est-elle du bon type ? | `"six"` à la place de `6` |
-| **Bornes** (`ge`, `le`) | la valeur est-elle plausible ? | `-3` places, `999` places |
-| **Longueur** (`max_length`) | la saisie est-elle dimensionnée ? | un champ de commentaire de 10 Mo |
-| **Format** (`pattern`) | la valeur suit-elle le schéma attendu ? | un code postal qui n'en est pas un |
 
 Le réflexe est **fail-closed** : ce qui n'est pas explicitement accepté est
 refusé, jamais « réparé » en silence. Une API qui transforme `places=-3` en
@@ -186,6 +124,101 @@ terminer la journée.*
   scopes sont lus **sans appel à la base** — d'où l'importance de les écrire
   serrés au moment de la délivrance, puisqu'un jeton émis vit jusqu'à son
   expiration.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **La matrice endpoint × scope, exemple complet**
+>
+> Le principe — rôle large, scope fin — est dans le tableau ci-dessus ; cette matrice n'en est qu'une application, que l'exercice reprend à son compte.
+>
+> Deux verbes HTTP suffisent pour l'exemple : GET (consulter une ressource) et
+> POST (en créer une). La règle d'or se vérifie endpoint par endpoint :
+>
+> | Endpoint | Scope exigé | Refus attendu sans ce scope |
+> | --- | --- | --- |
+> | `GET /places` | `places:lire` | `401` si pas de jeton, `403` si jeton sans ce scope |
+> | `POST /reservations` | `places:reserver` | `403` |
+> | `POST /remboursements` | `remboursements:creer` | `403` |
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Écrire la matrice avant le code**
+>
+> Conseil de méthode pour celui qui rédige la sienne ; rien dans la journée ne le suppose appliqué.
+>
+> Écrivez la matrice « endpoint × scope » **avant** d'écrire le code des
+> contrôleurs. Une autorisation décidée au cas par cas, endpoint après
+> endpoint, finit toujours par en oublier un.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> Le même point que la section I, illustré : la distinction 401/403 y est déjé noncée, cet atelier ne fait que la montrer.
+>
+> 🧪 **Atelier rapide (5 min)**
+>
+> Voici deux réponses de la même API, pour le même endpoint administratif.
+> Identifiez, pour chacune, **quel contrôle** a produit le refus :
+>
+> ```text
+> Requête A — sans en-tête Authorization
+> HTTP/1.1 401 Unauthorized
+> {"detail": "token manquant"}
+>
+> Requête B — avec un jeton valide de scope "places:lire"
+> HTTP/1.1 403 Forbidden
+> {"detail": "accès réservé aux remboursements"}
+> ```
+>
+> La requête A échoue à l'**authentification** (personne n'est identifié) ; la
+> requête B échoue à l'**autorisation** (l'appelant est identifié, mais son scope
+> ne couvre pas l'action). Vérifiez que vous pouvez expliquer cette différence à
+> quelqu'un sans relire la section I.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Le compteur minimal, en Python**
+>
+> Amorce d'écriture : les trois décisions à prendre et les limites du procédé restent dans la section II, qui les énonce sans ce code.
+>
+> Le cas le plus simple est un compteur par appelant :
+>
+> ```python
+> # Compteur minimal de tentatives — clair, mais limité (voir la section II).
+> TENTATIVES: dict[str, int] = {}
+> MAX_TENTATIVES = 5
+>
+> def verifier_quota(cle: str) -> bool:
+>     if TENTATIVES.get(cle, 0) >= MAX_TENTATIVES:
+>         return False          # la requête sera refusée en 429
+>     TENTATIVES[cle] = TENTATIVES.get(cle, 0) + 1
+>     return True
+> ```
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Ce que chaque contrainte tranche**
+>
+> Le code ci-dessus porte déjà ces quatre contraintes ; la table les nomme, elle n'ajoute rien à faire.
+>
+> Chaque contrainte répond à une question simple :
+>
+> | Contrainte | Question qu'elle tranche | Ce qu'elle écarte |
+> | --- | --- | --- |
+> | **Type** (`int`, `str`) | la valeur est-elle du bon type ? | `"six"` à la place de `6` |
+> | **Bornes** (`ge`, `le`) | la valeur est-elle plausible ? | `-3` places, `999` places |
+> | **Longueur** (`max_length`) | la saisie est-elle dimensionnée ? | un champ de commentaire de 10 Mo |
+> | **Format** (`pattern`) | la valeur suit-elle le schéma attendu ? | un code postal qui n'en est pas un |
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Limiter la taille, pas seulement le débit**
+>
+> La section III en fait un cas ordinaire du schéma : `max_length` sur un champ, c'est cette limite posée à l'avance.
+>
+> Le débit n'est pas la seule ressource à limiter : la **taille** des requêtes
+> aussi. Un corps de requête de 50 Mo, un champ de recherche de 10 000
+> caractères, une réponse paginée sans limite — chacun est un levier d'épuisement.
+> La section suivante traite ces cas.
 
 ---
 

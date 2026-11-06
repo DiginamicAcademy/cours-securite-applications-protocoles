@@ -1,9 +1,9 @@
 # Exercice — Analyser les risques d'un pipeline de données
 
 > **Nature :** élément intégrable dans le TP intégrateur ([TP-INTEGRATEUR.md](TP-INTEGRATEUR.md)) — utilisable aussi en exercice autonome · **Durée :** 35 min · **Notion :** les risques d'un pipeline de données — fuite, intégrité, traçabilité
-> 🔵 **Intégration** · **Durée :** 35 min · **Lien :** chapitre [Pipelines de
+> 🔵 **Intégration** · **Lien :** chapitre [Pipelines de
 > données](../11-pipelines-data.md)
-> **Objectif :** analyser les risques de fuite et d'intégrité d'un pipeline ETL (Extract, Transform, Load)
+> **Objectif :** analyser les risques de fuite et d'intégrité d'un pipeline ETL
 > étape par étape, et prioriser des recommandations.
 
 ---
@@ -19,7 +19,7 @@ newsletter de la fidélité.
 Voici le flux, tel qu'il est documenté :
 
 1. **Extraction** — un job d'orchestration (type Airflow) se connecte aux bases
-   des 42 magasins et exporte les ventes du jour en fichiers CSV (Comma-Separated Values), avec un
+   des 42 magasins et exporte les ventes du jour en fichiers CSV, avec un
    compte de service unique créé « au début du projet », administrateur sur
    toutes les bases.
 2. **Dépôt intermédiaire** — les fichiers sont poussés dans un stockage objet
@@ -43,7 +43,7 @@ signale un tableau de bord faux.
 
 Reprenez les quatre étapes et, pour chacune, notez : les **données** qui y
 circulent, les **acteurs** (comptes, systèmes, personnes) qui y accèdent, et
-la **frontière** franchie (ce qui passe d'un système à un autre). Un tableau à
+la **frontière** franchie. Un tableau à
 quatre lignes suffit.
 
 ### Partie 2 — Analyser les risques

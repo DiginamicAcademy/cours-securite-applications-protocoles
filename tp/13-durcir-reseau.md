@@ -38,7 +38,7 @@ dites s'il s'agit d'un **flux en clair**, d'une **exposition inutile** ou d'un
 
 ### Partie 2 — Regrouper les machines en zones
 
-Le chapitre présente la segmentation et la zone tampon. Regroupez les six machines
+ Regroupez les six machines
 en **trois zones** : une zone publique, une zone interne, une zone de données.
 Justifiez chaque placement en une phrase.
 

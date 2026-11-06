@@ -73,7 +73,7 @@ Avant de passer au corrigé, vérifiez que :
 - [ ] Mes deux décisions de la partie 3 sont **justifiées par les faits du
   contexte**, et pas par une règle générale.
 - [ ] Ma notification tient compte du **délai** rappelé dans le contexte, et mon
-  message client ne spéculé sur rien.
+  message client ne spécule sur rien.
 - [ ] Mon plan dit explicitement **ce qu'on ne fait pas** (les gestes qui
   détruisent les traces ou aggravent la situation).
 

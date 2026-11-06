@@ -10,7 +10,7 @@
 > **chaque étape** : extraction, transformation, chargement — et le compte qui
 > les exécute.
 
-**Durée de lecture :** 55 min · **Prérequis :** les notions de base de l'ETL
+**Durée de lecture :** 45 min hors approfondissements facultatifs · **Prérequis :** les notions de base de l'ETL
 (Extract, Transform, Load) et du SQL
 
 ---
@@ -81,37 +81,8 @@ Trois familles de tests reviennent :
 | **Complétude** | rien ne manque-t-il ? | le nombre de lignes du jour est dans la plage attendue |
 | **Validité** | les valeurs sont-elles plausibles ? | durées positives, identifiants non nuls, formats respectés |
 
-Des outils comme Great Expectations formalisent ces tests sous forme de
-« expectations » déclaratives, versionnables et rejouables à chaque exécution.
-L'important n'est pas l'outil : c'est que le test **bloque le chargement** au
-lieu d'alerter dans un coin — un pipeline fail-closed.
-
-> [!TIP]
-> Un test de données qui échoue doit arrêter le job **avant** l'entrepôt. Une
-> alerte envoyée après chargement ne protège que la prochaine fois — entre-temps,
-> les données fausses sont déjà dans les rapports.
-
-> 🧪 **Atelier rapide (10 min)**
->
-> Écrivez un test de non-régression pour la table `locations` d'un service de
-> vélos en libre-service. Le schéma est le suivant — le test doit vérifier que
-> `duree_minutes` reste strictement positive et que `identifiant_velo` n'est
-> jamais nul :
-
-```sql
-CREATE TABLE locations (
-    id INT PRIMARY KEY,
-    identifiant_velo VARCHAR(12),
-    station_depart VARCHAR(64),
-    station_arrivee VARCHAR(64),
-    duree_minutes INT,
-    date_trajet DATE
-);
-```
-
-En Python avec pandas, ou en SQL avec une simple requête de filtrage, écrivez le
-test, puis **faites-le échouer volontairement** en insérant une ligne invalide :
-un test qui n'a jamais échoué n'a jamais rien prouvé.
+Peu importe l'outil : le test doit **bloquer le chargement** au lieu d'alerter dans un
+coin — un pipeline fail-closed.
 
 ---
 
@@ -132,11 +103,6 @@ Le cloisonnement se décrit en une phrase par acteur : « **qui** peut faire
 « tout le monde, sur tout, tout le temps », le pipeline n'a pas de cloison — il
 a un couloir.
 
-> [!NOTE]
-> Un export vers un tiers est une **sortie du système d'information** : le
-> fichier échappe au contrôle dès qu'il part. Le chapitre
-> [Partage et tiers](12-partage-et-tiers.md) traite ce cas pour lui-même.
-
 ---
 
 ## IV. Aller plus loin
@@ -156,6 +122,63 @@ terminer la journée.*
 - **L'observabilité des pipelines** — métriques de volume, temps d'exécution,
   taux d'échec par étape. Un pipeline dont personne ne regarde les métriques
   échoue exactement comme celui de l'accroche : en silence.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Des outils pour déclarer les tests**
+>
+> Great Expectations et ses pairs formalisent ces tests ; le garde-fou, lui, ne dépend d'aucun outil.
+>
+> Des outils comme Great Expectations formalisent ces tests sous forme de
+> « expectations » déclaratives, versionnables et rejouables à chaque exécution.
+> L'important n'est pas l'outil : c'est que le test **bloque le chargement** au
+> lieu d'alerter dans un coin — un pipeline fail-closed.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Le test arrête le job, il n'avertit pas après**
+>
+> Reprend, en l'insistant, ce que la phrase ci-dessus vient de poser.
+>
+> Un test de données qui échoue doit arrêter le job **avant** l'entrepôt. Une
+> alerte envoyée après chargement ne protège que la prochaine fois — entre-temps,
+> les données fausses sont déjà dans les rapports.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> Le modèle à copier reste dans la section II : cet atelier le fait écrire à la main. L'exercice [Analyser les risques d'un pipeline de données](tp/11-analyser-pipeline.md), lui, demande de **recommander** les tests — sa Partie 3 et son corrigé disent lesquels.
+>
+> 🧪 **Atelier rapide (10 min)**
+>
+> Écrivez un test de non-régression pour la table `locations` d'un service de
+> vélos en libre-service. Le schéma est le suivant — le test doit vérifier que
+> `duree_minutes` reste strictement positive et que `identifiant_velo` n'est
+> jamais nul :
+>
+> ```sql
+> CREATE TABLE locations (
+>     id INT PRIMARY KEY,
+>     identifiant_velo VARCHAR(12),
+>     station_depart VARCHAR(64),
+>     station_arrivee VARCHAR(64),
+>     duree_minutes INT,
+>     date_trajet DATE
+> );
+> ```
+>
+> En Python avec pandas, ou en SQL avec une simple requête de filtrage, écrivez le
+> test, puis **faites-le échouer volontairement** en insérant une ligne invalide :
+> un test qui n'a jamais échoué n'a jamais rien prouvé.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Un export qui part est une sortie du système**
+>
+> Le chapitre [Partage et tiers](12-partage-et-tiers.md), dans la même journée, traite ce cas pour lui-même.
+>
+> Un export vers un tiers est une **sortie du système d'information** : le
+> fichier échappe au contrôle dès qu'il part. Le chapitre
+> [Partage et tiers](12-partage-et-tiers.md) traite ce cas pour lui-même.
 
 ---
 

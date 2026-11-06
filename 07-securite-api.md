@@ -9,7 +9,7 @@
 > aussi son API au monde : 200 clients, 8 000 commandes, et une surface qu'il
 > faut auditer **avant** la mise en production.
 
-**Durée de lecture :** 70 min · **Prérequis :** les vulnérabilités web étudiées
+**Durée de lecture :** 45 min hors approfondissements facultatifs · **Prérequis :** les vulnérabilités web étudiées
 lors des journées précédentes
 
 ---
@@ -54,32 +54,6 @@ humain, une API est faite pour être **scriptée**. Un attaquant ne navigue pas,
 programme — et il peut tester des milliers de valeurs pendant que vous lisez
 cette phrase.
 
-> [!TIP]
-> Pour cartographier une API, commencez par ce qu'elle documente elle-même :
-> une page `/docs`, un fichier `/openapi.json`, ou le code du routeur. La
-> surface déclarée est déjà la moitié du travail d'audit.
-
-> 🧪 **Atelier rapide (8 min)**
->
-> Le lab du cours contient l'API sécurisée de la fromagerie (service `secure`,
-> `http://localhost:8081`). Listons ses endpoints et notons lesquels exigent un
-> jeton :
-
-```bash
-# La page d'accueil liste les endpoints de l'API
-curl -s http://localhost:8081/
-
-# Endpoint public : la recherche de produits répond sans authentification
-curl -s "http://localhost:8081/products/search?q=Comté"
-
-# Endpoint protégé : la requête est refusée, il manque un jeton
-curl -s http://localhost:8081/admin/users
-```
-
-Notez pour chaque endpoint : que demande-t-il, que renvoie-t-il, et
-**exige-t-il un jeton** ? Cette liste en trois colonnes est le premier livrable
-d'un audit d'API.
-
 ---
 
 ## II. OWASP API Top 10
@@ -96,18 +70,11 @@ de véhicules en est l'image exacte — `GET /users/4251` répond, donc
 `GET /users/4252` répondra aussi. L'API vérifie que vous êtes connecté, pas que
 le client 4252 est le vôtre.
 
-Sur le lab, la version vulnérable de la fromagerie expose `GET /admin/users`
-**sans vérifier le rôle** de l'appelant : n'importe quel compte connecté lit la
-table des utilisateurs. La version corrigée refuse la requête si le rôle n'est
-pas `admin`.
-
 ### La limitation de ressources
 
-Un appelant qui peut enchaîner les requêtes sans limite épuise l'API, la base de
-données, ou les deux. C'est le risque « consommation de ressources sans
-restriction » : le script qui envoie 10 000 requêtes par minute n'a pas besoin
-d'être malveillant pour faire tomber le service — un simple bug de boucle
-suffit. Le chapitre suivant traite ce point en détail.
+Le second risque est la **consommation de ressources sans restriction** : un appelant au
+débit non limité épuise l'API et la base de données derrière. Le chapitre suivant y est
+consacré.
 
 ### L'injection de masse
 
@@ -117,11 +84,6 @@ d'inscription qui accepte `role: admin`, une mise à jour de profil qui accepte
 `credit: 500`. On appelle cela l'injection de masse (mass assignment) : la
 propriété existe dans le modèle, donc elle est écrite — sans jamais avoir été
 prévue dans le formulaire.
-
-> [!WARNING]
-> Une API qui renvoie « tout ce qu'il y a dans la table » est déjà en échec,
-> même sans injection : chaque champ exposé est un champ à protéger, à auditer
-> et à ficher. C'est le sujet du bloc *Données sensibles*.
 
 ---
 
@@ -144,11 +106,6 @@ La dépréciation n'est pas une question de confort : chaque version maintenue 
 une surface d'attaque maintenue. Garder `/v1` trois ans « au cas où », c'est
 garder trois ans les erreurs de `/v1`.
 
-> [!NOTE]
-> Une version obsolète qui tourne encore est invisible dans les tableaux de
-> bord fonctionnels — mais parfaitement visible depuis l'extérieur. Faites
-> l'inventaire des versions **avant** de décider lesquelles restent.
-
 ---
 
 ## IV. Aller plus loin
@@ -169,6 +126,84 @@ terminer la journée.*
 - **Les schémas de réponse** — décrire ce que renvoie chaque endpoint (champs,
   types, cardinalité) permet de détecter automatiquement une fuite de champ
   lors d'une revue de code.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Cartographier une API par ce qu'elle documente**
+>
+> Le geste est repris dans l'atelier ci-dessous et, en grand, dans l'exercice [Auditer l'API d'un service de mobilité](tp/07-auditer-api.md).
+>
+> Pour cartographier une API, commencez par ce qu'elle documente elle-même :
+> une page `/docs`, un fichier `/openapi.json`, ou le code du routeur. La
+> surface déclarée est déjà la moitié du travail d'audit.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> Atelier d'appropriation : le même travail est conduit de bout en bout dans l'exercice [Auditer l'API d'un service de mobilité](tp/07-auditer-api.md), qui ne suppose pas celui-ci fait.
+>
+> 🧪 **Atelier rapide (8 min)**
+>
+> Le lab du cours contient l'API sécurisée de la fromagerie (service `secure`,
+> `http://localhost:8081`). Listons ses endpoints et notons lesquels exigent un
+> jeton :
+>
+> ```bash
+> # La page d'accueil liste les endpoints de l'API
+> curl -s http://localhost:8081/
+>
+> # Endpoint public : la recherche de produits répond sans authentification
+> curl -s "http://localhost:8081/products/search?q=Comté"
+>
+> # Endpoint protégé : la requête est refusée, il manque un jeton
+> curl -s http://localhost:8081/admin/users
+> ```
+>
+> Notez pour chaque endpoint : que demande-t-il, que renvoie-t-il, et
+> **exige-t-il un jeton** ? Cette liste en trois colonnes est le premier livrable
+> d'un audit d'API.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Le même trou sur le lab du cours**
+>
+> L'accroche et la définition du BOLA ci-dessus suffisent pour aborder l'exercice.
+>
+> Sur le lab, la version vulnérable de la fromagerie expose `GET /admin/users`
+> **sans vérifier le rôle** de l'appelant : n'importe quel compte connecté lit la
+> table des utilisateurs. La version corrigée refuse la requête si le rôle n'est
+> pas `admin`.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Consommation de ressources sans restriction**
+>
+> L'exemple développé est ci-dessous ; le chapitre [Auth et limitation d'API](08-auth-et-limitation-api.md) traite le sujet en profondeur.
+>
+> Un appelant qui peut enchaîner les requêtes sans limite épuise l'API, la base de
+> données, ou les deux. C'est le risque « consommation de ressources sans
+> restriction » : le script qui envoie 10 000 requêtes par minute n'a pas besoin
+> d'être malveillant pour faire tomber le service — un simple bug de boucle
+> suffit. Le chapitre suivant traite ce point en détail.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Renvoyer toute la table est déjà un échec**
+>
+> Avertissement qui renvoie au bloc suivant de la journée : le chapitre [Données sensibles](09-donnees-sensibles.md) en fait son objet.
+>
+> Une API qui renvoie « tout ce qu'il y a dans la table » est déjà en échec,
+> même sans injection : chaque champ exposé est un champ à protéger, à auditer
+> et à ficher. C'est le sujet du bloc *Données sensibles*.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
+>
+> **Les versions obsolètes sont invisibles côté métier**
+>
+> Bon réflexe d'audit, mais rien dans la journée ne dépend de ce développement.
+>
+> Une version obsolète qui tourne encore est invisible dans les tableaux de
+> bord fonctionnels — mais parfaitement visible depuis l'extérieur. Faites
+> l'inventaire des versions **avant** de décider lesquelles restent.
 
 ---
 

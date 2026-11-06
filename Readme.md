@@ -64,25 +64,29 @@ de l'organisme au titre du RGPD (Règlement général sur la protection des donn
 
 | # | Chapitre | Durée de lecture |
 | --- | --- | --- |
-| 01 | [Principes du secure coding — écrire pour que ça ne casse pas](01-principes-secure-coding.md) | 50 min |
-| 02 | [Validation et injections — séparer les données des instructions](02-validation-et-injections.md) | 75 min |
-| 03 | [XSS et sorties — que le texte reste du texte](03-xss-et-sorties.md) | 60 min |
-| 04 | [Erreurs et logging — ne rien exposer, tout tracer](04-erreurs-et-logging.md) | 55 min |
-| 05 | [Dépendances et configuration — ce qui tourne autour du code](05-dependances-et-configuration.md) | 65 min |
-| 06 | [Revue de code sécurité — chercher les patterns, pas relire tout](06-revue-de-code-securite.md) | 55 min |
-| 07 | [Sécurité des API — la porte d'entrée des applications modernes](07-securite-api.md) | 70 min |
-| 08 | [Auth et limitation d'API — qui appelle, et à quelle vitesse](08-auth-et-limitation-api.md) | 60 min |
-| 09 | [Données sensibles — classer, minimiser, masquer](09-donnees-sensibles.md) | 65 min |
-| 10 | [RGPD appliqué — la donnée personnelle a une date de péremption](10-rgpd-applique.md) | 60 min |
-| 11 | [Pipelines de données — sécuriser chaque étape du flux](11-pipelines-data.md) | 55 min |
-| 12 | [Partage et tiers — quand la donnée sort du système](12-partage-et-tiers.md) | 45 min |
-| 13 | [Protocoles réseau — ce que le réseau chiffre, et ce qu'il laisse ouvert](13-protocoles-reseau.md) | 70 min |
-| 14 | [Architecture réseau — segmenter, cloisonner, ne rien croire sur parole](14-architecture-reseau.md) | 60 min |
-| 15 | [DevSecOps et traçabilité des dépendances — sécuriser la chaîne, pas seulement le code](15-devsecops.md) | 70 min |
+| 01 | [Principes du secure coding — écrire pour que ça ne casse pas](01-principes-secure-coding.md) | 40 min |
+| 02 | [Validation et injections — séparer les données des instructions](02-validation-et-injections.md) | 50 min |
+| 03 | [XSS et sorties — que le texte reste du texte](03-xss-et-sorties.md) | 45 min |
+| 04 | [Erreurs et logging — ne rien exposer, tout tracer](04-erreurs-et-logging.md) | 45 min |
+| 05 | [Dépendances et configuration — ce qui tourne autour du code](05-dependances-et-configuration.md) | 50 min |
+| 06 | [Revue de code sécurité — chercher les patterns, pas relire tout](06-revue-de-code-securite.md) | 45 min |
+| 07 | [Sécurité des API — la porte d'entrée des applications modernes](07-securite-api.md) | 45 min |
+| 08 | [Auth et limitation d'API — qui appelle, et à quelle vitesse](08-auth-et-limitation-api.md) | 45 min |
+| 09 | [Données sensibles — classer, minimiser, masquer](09-donnees-sensibles.md) | 40 min |
+| 10 | [RGPD appliqué — la donnée personnelle a une date de péremption](10-rgpd-applique.md) | 40 min |
+| 11 | [Pipelines de données — sécuriser chaque étape du flux](11-pipelines-data.md) | 45 min |
+| 12 | [Partage et tiers — quand la donnée sort du système](12-partage-et-tiers.md) | 40 min |
+| 13 | [Protocoles réseau — ce que le réseau chiffre, et ce qu'il laisse ouvert](13-protocoles-reseau.md) | 60 min |
+| 14 | [Architecture réseau — segmenter, cloisonner, ne rien croire sur parole](14-architecture-reseau.md) | 70 min |
+| 15 | [DevSecOps et traçabilité des dépendances — sécuriser la chaîne, pas seulement le code](15-devsecops.md) | 55 min |
 | 16 | [Tests de sécurité — empêcher la faille corrigée de revenir](16-tests-securite.md) | 55 min |
-| 17 | [Réponse à incident — le jour où ça casse](17-reponse-incident.md) | 50 min |
-| 18 | [Maturité et perspectives — la sécurité est une trajectoire](18-maturite-et-perspectives.md) | 55 min |
+| 17 | [Réponse à incident — le jour où ça casse](17-reponse-incident.md) | 55 min |
+| 18 | [Maturité et perspectives — la sécurité est une trajectoire](18-maturite-et-perspectives.md) | 45 min |
 | A | [Glossaire et ressources](A-Glossaire-et-ressources.md) | — |
+
+*Les durées ci-dessus couvrent le contenu obligatoire. Chaque chapitre
+propose des approfondissements « Pour aller plus loin » : ils restent
+facultatifs et ne sont pas comptés dans ces durées.*
 
 **Travaux pratiques** — chaque énoncé se fait juste après le chapitre
 correspondant, puis se corrige soi-même :
@@ -93,8 +97,8 @@ correspondant, puis se corrige soi-même :
 | 🟢 | [Corriger une injection dans une recherche](tp/02-corriger-injection.md) · [corrigé](tp/corrige/02-corriger-injection.md) | 25 min |
 | 🟢 | [Échapper les sorties d'un livre d'or](tp/03-echapper-les-sorties.md) · [corrigé](tp/corrige/03-echapper-les-sorties.md) | 20 min |
 | 🟡 | [Durcir un endpoint de réservation](tp/04-durcir-un-endpoint.md) · [corrigé](tp/corrige/04-durcir-un-endpoint.md) | 50 min |
-| 🟡 | [Traiter une CVE sur son propre projet](tp/05-traiter-une-cve.md) · [corrigé](tp/corrige/05-traiter-une-cve.md) | 40 min |
-| 🔵 | [Auditer un module de gestion des adhésions](tp/06-auditer-un-module.md) · [corrigé](tp/corrige/06-auditer-un-module.md) | 55 min |
+| 🔵 | [Traiter une CVE sur son propre projet](tp/05-traiter-une-cve.md) — **facultatif** · [corrigé](tp/corrige/05-traiter-une-cve.md) | 40 min |
+| 🔵 | [Auditer un module de gestion des adhésions](tp/06-auditer-un-module.md) — **facultatif** · [corrigé](tp/corrige/06-auditer-un-module.md) | 55 min |
 | 🟢 | [Auditer l'API d'un service de mobilité](tp/07-auditer-api.md) · [corrigé](tp/corrige/07-auditer-api.md) | 25 min |
 | 🟡 | [Sécuriser un endpoint qui en dit trop](tp/09-securiser-endpoint-data.md) · [corrigé](tp/corrige/09-securiser-endpoint-data.md) | 50 min |
 | 🔵 | [Analyser les risques d'un pipeline de données](tp/11-analyser-pipeline.md) · [corrigé](tp/corrige/11-analyser-pipeline.md) | 55 min |

@@ -63,7 +63,7 @@ devient une alerte qui n'est pas bloquante : qui la traite, et quand.
 
 ### Partie 4 — Assurer la traçabilité
 
-Le chapitre présente le SBOM (Software Bill of Materials, l'inventaire des
+Le SBOM (Software Bill of Materials, l'inventaire des
 composants livrés). Pour ce dépôt, répondez aux quatre questions : **ce qu'il
 contient**, **quand** il est produit, **où** il est conservé, et **à quoi** il
 sert le jour où une faille est publiée sur une dépendance de `requirements.txt`.

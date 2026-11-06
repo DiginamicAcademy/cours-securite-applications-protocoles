@@ -8,7 +8,7 @@
 > Une stack trace en production, c'est le plan du système d'incendie affiché sur
 > la porte du coffre-fort.
 
-**Durée de lecture :** 55 min · **Prérequis :** le chapitre
+**Durée de lecture :** 45 min hors approfondissements facultatifs · **Prérequis :** le chapitre
 [Principes du secure coding](01-principes-secure-coding.md)
 
 ---
@@ -29,10 +29,9 @@
 
 ## I. Ne pas exposer
 
-Une erreur est une information. Quand un programme échoue, il sait des choses —
-le nom des tables, le chemin des fichiers, la version des bibliothèques, parfois
-la requête complète. Renvoyer tout cela à la personne qui a déclenché l'erreur,
-c'est donner le plan du système à quiconque appuie sur le mauvais bouton.
+Une erreur est une information : le programme qui échoue sait des choses —
+les chemins, les versions, la requête. Les renvoyer à qui a déclenché
+l'erreur, c'est lui donner le plan du système.
 
 La règle se résume ainsi : **le détail aide le développeur, le général rassure
 l'utilisateur**.
@@ -51,16 +50,14 @@ except Exception:
 ```
 
 L'identifiant de suivi est le joint entre les deux mondes : la personne signale
-un numéro, l'équipe retrouve la trace complète dans les journaux. Personne
-d'autre n'a le détail.
+un numéro, l'équipe retrouve la trace complète dans les journaux.
 
 > ⚠️ **Attention** — Un message d'erreur trop précis reste une fuite, même sans
 > trace technique. « Le compte n'existe pas » et « mot de passe incorrect » ne
 > disent pas la même chose à quelqu'un qui énumère des comptes : le premier
 > confirme ce qui existe, le second ne dit rien.
 
-C'est le fail-closed du chapitre sur les principes, appliqué à l'affichage : en
-cas de doute, on montre moins, et on garde le détail pour l'équipe.
+C'est le fail-closed du chapitre sur les principes, appliqué à l'affichage.
 
 ---
 
@@ -78,15 +75,6 @@ l'essentiel.
 | **Les erreurs** | ce qui a échoué, avec la trace côté serveur | erreur |
 | **Les actions sensibles** | un changement de rôle, une suppression, un export | information, conservé plus longtemps |
 
-> 🧪 **Atelier rapide (5 min)**
->
-> Dans le lab du cours, lancez `lab/vulnerable/app.py`, puis provoquez une
-> erreur de base de données en appelant la route de recherche avec une valeur
-> qui casse la requête. Regardez ce que reçoit le client, puis ce qui apparaît
-> dans la sortie du serveur. Notez ce qui, dans la réponse, renseigne la
-> personne — et ce qui renseigne surtout quelqu'un qui chercherait à cartographier
-> le service.
-
 Trois décisions se prennent en même temps que le contenu du journal :
 
 - **Où** — un emplacement que le code applicatif ne sert pas lui-même, pour
@@ -95,11 +83,6 @@ Trois décisions se prennent en même temps que le contenu du journal :
   « jusqu'à ce que le disque soit plein ».
 - **Qui peut lire** — les journaux contiennent ce qui s'est passé dans le
   système : leur accès se limite à ceux qui en ont besoin.
-
-La durée de conservation n'est pas un détail d'exploitation : elle engage la
-conformité. Le RGPD (Règlement général sur la protection des données) impose de
-ne garder les données que le temps nécessaire — et un journal qui accumule des
-données personnelles pendant des années est un traitement comme un autre.
 
 ---
 
@@ -151,6 +134,32 @@ terminer la journée.*
 - **Le droit à l'oubli, appliqué aux journaux** — anonymiser, tronquer ou
   supprimer les données personnelles au fil du temps est un travail de
   conception, pas une opération de nettoyage lancée quand quelqu'un le demande.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> Le RGPD a son chapitre dans ce cours : [RGPD appliqué](10-rgpd-applique.md). Ici,
+> seule la décision compte — la durée de conservation se fixe à l'avance.
+>
+> La durée de conservation n'est pas un détail d'exploitation : elle engage la
+> conformité. Le RGPD (Règlement général sur la protection des données) impose de
+> ne garder les données que le temps nécessaire — et un journal qui accumule des
+> données personnelles pendant des années est un traitement comme un autre.
+
+> 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
+> d'obligatoire n'en dépend
+>
+> La partie 1 de l'exercice [Durcir un endpoint de réservation](tp/04-durcir-un-endpoint.md)
+> est cette manipulation même, conduite sur un service complet.
+>
+> 🧪 **Atelier rapide (5 min)**
+>
+> Dans le lab du cours, lancez `lab/vulnerable/app.py`, puis provoquez une
+> erreur de base de données en appelant la route de recherche avec une valeur
+> qui casse la requête. Regardez ce que reçoit le client, puis ce qui apparaît
+> dans la sortie du serveur. Notez ce qui, dans la réponse, renseigne la
+> personne — et ce qui renseigne surtout quelqu'un qui chercherait à cartographier
+> le service.
 
 ---
 
