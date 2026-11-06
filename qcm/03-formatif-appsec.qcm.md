@@ -80,10 +80,10 @@ Un commentaire saisi par un utilisateur est affiché sur une page. Dans quel cas
 
 Que fait une Content Security Policy (CSP) ?
 
-- [ ] A. Elle échappe les sorties HTML au moment de l'affichage
+- [ ] A. Elle échappe les sorties HTML au moment de l'affichage, ce qui rend les balises inoffensives dans la page
 - [x] B. Elle liste ce qu'une page a le droit de charger et d'exécuter, et se déclare dans un en-tête de réponse HTTP
-- [ ] C. Elle remplace l'échappement dès lors qu'elle est en place
-- [ ] D. Elle interdit l'exécution de tout script sur le site
+- [ ] C. Elle remplace l'échappement en sortie dès qu'elle est en place, et l'équipe peut alors cesser d'échapper
+- [ ] D. Elle interdit l'exécution de tout script sur le site, y compris ceux que la page charge elle-même
 
 > **Réponse : B** — La CSP est une liste posée côté serveur dans un en-tête de réponse : ceinture et bretelles derrière l'échappement, jamais à sa place.
 > **Chapitre à revoir : 03.**
@@ -166,10 +166,10 @@ Un appel arrive avec un jeton valide dont le scope ne couvre pas l'action demand
 
 Un appelant dépasse le quota que l'API lui fixe. Que doit-il recevoir pour cesser de marteler ?
 
-- [ ] A. Un 403 sans information complémentaire
-- [ ] B. Une réponse vide, pour ne rien divulguer
-- [x] C. Un 429 (Too Many Requests) accompagné de l'en-tête `Retry-After`
-- [ ] D. Un 500, pour que le client retente plus tard
+- [ ] A. Un 403 (Forbidden) sans information complémentaire, puisque l'appelant a dépassé son quota
+- [ ] B. Une réponse vide, sans code ni en-tête, pour ne rien divulguer de la limitation en place
+- [x] C. Un 429 (Too Many Requests), accompagné de l'en-tête `Retry-After` qui indique quand réessayer
+- [ ] D. Un 500 (Erreur interne), pour que le client comprenne un souci serveur et retente plus tard
 
 > **Réponse : C** — Le rate limiting se décide sur trois points : qui compte, quel rythme, que renvoyer — un 429 avec `Retry-After`, pour que l'appelant sache quand réessayer.
 > **Chapitre à revoir : 08.**
@@ -288,10 +288,10 @@ Une clé d'API vient d'être découverte dans un commit déjà poussé sur un d�
 
 Au printemps, une injection est corrigée dans la recherche d'une API. À l'automne, une réécriture réintroduit la concaténation d'origine, sans que personne s'en aperçoive. Quel geste aurait empêché cette régression ?
 
-- [ ] A. Une revue de code supplémentaire à la livraison d'automne
-- [ ] B. Un audit de sécurité annuel
-- [ ] C. Le passage de l'API derrière une passerelle d'API
-- [x] D. Un test qui rejoue le payload d'origine et attend un code de refus précis
+- [ ] A. Une revue de code supplémentaire sur le module concerné, à la livraison d'automne suivante
+- [ ] B. Un audit de sécurité annuel confié à un prestataire extérieur, mené hors du périmètre de production
+- [ ] C. Le passage de l'API derrière une passerelle d'API, qui filtrerait les requêtes avant d'atteindre le code
+- [x] D. Un test automatisé qui rejoue le payload d'origine et attend un code de refus précis, exécuté à chaque build
 
 > **Réponse : D** — Chaque faille corrigée devient un test : le smoke test rejoue le payload qui marchait avant et vérifie qu'il échoue toujours, en attendant un code de réponse précis.
 > **Chapitre à revoir : 16.**

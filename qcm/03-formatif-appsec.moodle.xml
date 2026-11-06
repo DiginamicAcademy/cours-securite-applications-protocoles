@@ -82,10 +82,10 @@
     <single>true</single>
     <shuffleanswers>1</shuffleanswers>
     <answernumbering>abc</answernumbering>
-    <answer fraction="0" format="markdown"><text>Elle échappe les sorties HTML au moment de l'affichage</text></answer>
+    <answer fraction="0" format="markdown"><text>Elle échappe les sorties HTML au moment de l'affichage, ce qui rend les balises inoffensives dans la page</text></answer>
     <answer fraction="100" format="markdown"><text>Elle liste ce qu'une page a le droit de charger et d'exécuter, et se déclare dans un en-tête de réponse HTTP</text></answer>
-    <answer fraction="0" format="markdown"><text>Elle remplace l'échappement dès lors qu'elle est en place</text></answer>
-    <answer fraction="0" format="markdown"><text>Elle interdit l'exécution de tout script sur le site</text></answer>
+    <answer fraction="0" format="markdown"><text>Elle remplace l'échappement en sortie dès qu'elle est en place, et l'équipe peut alors cesser d'échapper</text></answer>
+    <answer fraction="0" format="markdown"><text>Elle interdit l'exécution de tout script sur le site, y compris ceux que la page charge elle-même</text></answer>
   </question>
 
   <question type="multichoice">
@@ -198,10 +198,10 @@
     <single>true</single>
     <shuffleanswers>1</shuffleanswers>
     <answernumbering>abc</answernumbering>
-    <answer fraction="0" format="markdown"><text>Un 403 sans information complémentaire</text></answer>
-    <answer fraction="0" format="markdown"><text>Une réponse vide, pour ne rien divulguer</text></answer>
-    <answer fraction="100" format="markdown"><text>Un 429 (Too Many Requests) accompagné de l'en-tête `Retry-After`</text></answer>
-    <answer fraction="0" format="markdown"><text>Un 500, pour que le client retente plus tard</text></answer>
+    <answer fraction="0" format="markdown"><text>Un 403 (Forbidden) sans information complémentaire, puisque l'appelant a dépassé son quota</text></answer>
+    <answer fraction="0" format="markdown"><text>Une réponse vide, sans code ni en-tête, pour ne rien divulguer de la limitation en place</text></answer>
+    <answer fraction="100" format="markdown"><text>Un 429 (Too Many Requests), accompagné de l'en-tête `Retry-After` qui indique quand réessayer</text></answer>
+    <answer fraction="0" format="markdown"><text>Un 500 (Erreur interne), pour que le client comprenne un souci serveur et retente plus tard</text></answer>
   </question>
 
   <question type="multichoice">
@@ -362,10 +362,10 @@
     <single>true</single>
     <shuffleanswers>1</shuffleanswers>
     <answernumbering>abc</answernumbering>
-    <answer fraction="0" format="markdown"><text>Une revue de code supplémentaire à la livraison d'automne</text></answer>
-    <answer fraction="0" format="markdown"><text>Un audit de sécurité annuel</text></answer>
-    <answer fraction="0" format="markdown"><text>Le passage de l'API derrière une passerelle d'API</text></answer>
-    <answer fraction="100" format="markdown"><text>Un test qui rejoue le payload d'origine et attend un code de refus précis</text></answer>
+    <answer fraction="0" format="markdown"><text>Une revue de code supplémentaire sur le module concerné, à la livraison d'automne suivante</text></answer>
+    <answer fraction="0" format="markdown"><text>Un audit de sécurité annuel confié à un prestataire extérieur, mené hors du périmètre de production</text></answer>
+    <answer fraction="0" format="markdown"><text>Le passage de l'API derrière une passerelle d'API, qui filtrerait les requêtes avant d'atteindre le code</text></answer>
+    <answer fraction="100" format="markdown"><text>Un test automatisé qui rejoue le payload d'origine et attend un code de refus précis, exécuté à chaque build</text></answer>
   </question>
 
   <question type="multichoice">

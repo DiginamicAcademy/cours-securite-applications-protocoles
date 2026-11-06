@@ -205,49 +205,43 @@ la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Pourquoi le modèle « un pare-feu, un mur, et derrière la paix » tient-il mal aujourd'hui ?
 
-- A. Parce que les pare-feu sont devenus moins fiables qu'avant
-- B. Parce que les données, les utilisateurs et les API tierces se sont éloignés du périmètre : dès qu'un poste interne est compromis, le réseau plat offre tout le reste sans effort
-- C. Parce que le pare-feu périmétrique ne sait pas filtrer le trafic chiffré
-- D. Parce que le télétravail est interdit par la réglementation
-
-- [ ] ✓ je savais
+- A. Parce que les pare-feu modernes sont devenus moins fiables qu'à leurs débuts et laissent passer davantage
+- B. Parce que données, utilisateurs et API tierces ont quitté le périmètre : un poste interne compromis offre tout le reste sur un réseau plat
+- C. Parce que le pare-feu périmétrique est aveugle sur le trafic chiffré et ne peut donc plus rien filtrer d'utile
+- D. Parce que la réglementation interdit le télétravail sur des postes manipulant des données personnelles
 
 **2.** Dans une architecture segmentée, que met-on dans la DMZ (zone tampon) ?
 
-- A. Les bases de données, protégées au centre du dispositif
+- A. Les bases de données, qu'on protège au centre du dispositif, derrière tous les autres composants
 - B. Ce qui doit être visible de l'extérieur — portail web, API publique — sans que rien de sensible n'y vive
-- C. Les sauvegardes, pour les isoler du réseau de production
-- D. Les postes de travail des développeurs
-
-- [ ] ✓ je savais
+- C. Les sauvegardes, qu'on isole du réseau de production pour les mettre à l'abri d'une rançongiciel
+- D. Les postes de travail des développeurs, qui concentrent l'accès au code et aux secrets de service
 
 **3.** Pour placer un composant dans une zone, le chapitre pose une seule question. Laquelle ?
 
-- A. « Combien ce composant coûte-t-il à héberger ? »
-- B. « Depuis où doit-on pouvoir le joindre ? » — une base de données joignable depuis Internet est un placement faux, quel que soit le pare-feu autour
-- C. « Qui a écrit ce composant ? »
-- D. « Ce composant est-il compatible avec le pare-feu ? »
-
-- [ ] ✓ je savais
+- A. « Combien ce composant coûte-t-il à héberger, et pourrait-on le déplacer vers une offre moins chère ? »
+- B. « Depuis où doit-on pouvoir le joindre ? » — une base de données joignable depuis Internet est mal placée, quel que soit le pare-feu autour
+- C. « Qui a écrit ce composant, et son éditeur est-il encore actif pour publier des correctifs ? »
+- D. « Ce composant est-il compatible avec le pare-feu en place et avec la supervision existante ? »
 
 **4.** Que change le principe Zero Trust par rapport au réflexe « on s'authentifie une fois, à l'entrée » ?
 
-- A. Rien : la position sur le réseau interne reste un critère de confiance suffisant
-- B. On authentifie les machines une par une au démarrage du réseau
+- A. Rien : être placé sur le réseau interne reste, en soi, un critère de confiance suffisant pour appeler un service
+- B. On authentifie les machines une par une au démarrage du réseau, et tout ce qui vient d'elles est ensuite digne de confiance
 - C. La position ne prouve rien : chaque appel est authentifié et autorisé, y compris entre services internes, et le trafic est chiffré partout
-- D. On supprime l'authentification et on la remplace par la journalisation
-
-- [ ] ✓ je savais
+- D. On remplace l'authentification par la journalisation : on ne bloque rien, mais on relit ce qui s'est appelé
 
 **5.** *Question ouverte (2-3 lignes).* Que rassemble une API Gateway, et qu'en reste-t-il à faire pour les services placés derrière elle ?
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -265,6 +259,8 @@ la journée.*
 
 **5.** Attendu : la passerelle rassemble les contrôles communs — authentification de l'appelant, autorisation, limitation de débit, journalisation, routage et versions. Les services derrière n'ont plus qu'à faire leur métier.
 **Pourquoi :** multiplier les points d'entrée multiplie les oublis ; derrière la passerelle, un service même fautif n'est joignable que par elle, avec les droits qu'elle accorde.
+
+</details>
 
 ---
 

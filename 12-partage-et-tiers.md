@@ -91,6 +91,156 @@ risque**.
 
 ---
 
+### Exercice bonus — Brouillon de registre des traitements (durée libre, facultatif)
+
+#### Contexte
+
+Le club de randonnée des Trois Vallées compte **200 adhérents**. Son
+secrétariat tient à jour une petite application de gestion qui collecte :
+
+- le nom, le courriel et le téléphone de chaque adhérent ;
+- la date de naissance, exigée par le contrat d'assurance de la fédération ;
+- le certificat médical, demandé **chaque année** à la rentrée ;
+- l'historique des sorties auxquelles l'adhérent a participé.
+
+Ces données servent à quatre choses : gérer les adhésions et les cotisations,
+envoyer la **newsletter mensuelle**, transmettre à la fédération les
+informations nécessaires à l'assurance, et produire des statistiques d'activité
+pour l'assemblée générale.
+
+La fédération propose cette année un hébergement mutualisé de l'application.
+Le président du club vous demande, avant de répondre, un **brouillon de registre
+des traitements** : « juste pour y voir clair sur ce qu'on garde, pourquoi, et
+combien de temps. »
+
+---
+
+#### Le défi
+
+Produisez ce brouillon de registre : **une ligne par traitement**, avec les
+colonnes suivantes :
+
+| Colonne | Ce qu'elle doit contenir |
+| --- | --- |
+| Traitement | le nom du traitement (ce qu'il fait, en quelques mots) |
+| Finalité | pourquoi ce traitement existe |
+| Base légale | la base du RGPD qui le justifie |
+| Données | les données qu'il utilise |
+| Destinataires | qui les reçoit, à l'intérieur comme à l'extérieur |
+| Durée de conservation | combien de temps, et ce qui arrive ensuite |
+| Mesures de sécurité | ce qui protège concrètement ces données |
+
+Le registre reste un **brouillon** : il doit être complet et honnête, pas
+parfait. Là où vous ne savez pas, écrivez la question à poser au club plutôt
+que de deviner.
+
+---
+
+#### Indices
+
+- Commencez par **lister les traitements** avant de remplir les colonnes : les
+  quatre usages décrits dans le contexte ne donnent pas forcément quatre
+  traitements — et un traitement peut en cacher un autre.
+- Chaque traitement porte **une** finalité. Si vous écrivez « et » dans la
+  colonne finalité, vous avez probablement deux traitements à séparer.
+- La durée de conservation se justifie par la finalité ou par une obligation
+  légale — jamais par « on ne sait pas ».
+- Le partage avec la fédération est un **transfert** : il se décrit comme les
+  autres (quoi, à qui, combien de temps, quelle preuve).
+
+---
+
+#### ✅ Auto-évaluation
+
+Avant de confronter votre travail à la grille de vérification, vérifiez que :
+
+- [ ] Mon registre contient **une ligne par traitement**, et chaque traitement
+  tient en une finalité unique.
+- [ ] Chaque ligne porte une **base légale** nommée (consentement, contrat,
+  obligation légale, intérêt légitime).
+- [ ] Chaque ligne nomme ses **destinataires**, y compris la fédération.
+- [ ] Chaque ligne donne une **durée** et ce qui arrive à la donnée ensuite —
+  aucune durée n'est « illimitée ».
+- [ ] Les questions que je ne peux pas trancher sont **écrites** comme des
+  questions, pas comblées par des suppositions.
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif.* La fédération propose aussi de mutualiser les certificats médicaux
+dans son hébergement. Dites, en quelques lignes, ce que ce transfert change par
+rapport aux autres données du registre — et ce que vous demanderiez avant de
+l'accepter.
+
+<details>
+<summary>Voir la correction</summary>
+
+> Un défi se vérifie par **critères**, pas par une correction pas-à-pas : confrontez chaque colonne de votre registre aux repères ci-dessous.
+
+#### Repérage des traitements
+
+Un brouillon solide distingue au moins les traitements suivants — la découpe
+peut varier, à condition que chaque traitement porte **une seule finalité** :
+
+| Traitement | Ce qui le rend distinct |
+| --- | --- |
+| Gestion des adhésions et des cotisations | il exécute le contrat d'adhésion |
+| Envoi de la newsletter mensuelle | il repose sur le consentement, révocable |
+| Transmission à la fédération (assurance) | il sort du système : c'est un transfert |
+| Statistiques d'activité | il n'a pas besoin de l'identité des adhérents |
+
+**Point de vigilance :** le certificat médical mérite une attention
+particulière — c'est une **donnée de santé**, au niveau de sensibilité le plus
+élevé. S'il apparaît dans un traitement, ce traitement doit le dire
+explicitement, avec des mesures à la hauteur.
+
+---
+
+#### Vérification colonne par colonne
+
+| Colonne | Ce qui est attendu | Ce qui trahit une réponse faible |
+| --- | --- | --- |
+| **Traitement** | un nom qui décrit une action (« gestion des adhésions ») | un nom vague (« base de données ») |
+| **Finalité** | une phrase, sans « et » | plusieurs usages mélangés dans une même ligne |
+| **Base légale** | l'une des quatre bases, cohérente avec l'usage | « le consentement » pour une donnée indispensable à l'adhésion |
+| **Données** | les données réellement utilisées, pas « toutes celles du formulaire » | une liste qui inclut des données que le traitement n'utilise pas |
+| **Destinataires** | le club, la fédération le cas échéant, et personne d'autre sans raison | « l'équipe » ou « nos partenaires » sans précision |
+| **Durée** | une durée explicite, justifiée, avec le sort de la donnée ensuite | « illimitée », « tant que possible », ou aucune durée |
+| **Mesures** | des gestes concrets (droits d'accès, chiffrement, restriction) | « conforme au RGPD » ou « sécurisé » |
+
+---
+
+#### Erreurs fréquentes
+
+- **Un traitement par donnée** — le registre devient illisible et personne ne
+  le tient à jour. On regroupe par finalité, pas par champ.
+- **La durée oubliée** — la colonne la plus souvent vide, et la première
+  question posée en contrôle. Une donnée sans durée de conservation est une
+  donnée qu'on garde pour toujours.
+- **Le transfert non décrit** — la fédération reçoit des données : le registre
+  doit dire quoi, pourquoi, et ce qui advient de la copie chez elle.
+- **Les questions comblées** — un registre honnête contient des trous assumés
+  (« durée à confirmer auprès du trésorier »). Un registre rempli de
+  suppositions est plus dangereux qu'un registre incomplet.
+
+---
+
+#### Points à retenir
+
+- Un registre se construit **traitement par traitement**, une finalité par
+  ligne — c'est ce qui le rend tenable dans la durée.
+- La colonne **durée** est la plus révélatrice : elle oblige à décider ce que
+  devient chaque donnée.
+- Un transfert vers un tiers (la fédération) se décrit comme les autres
+  traitements : quoi, à qui, combien de temps, quelle preuve.
+- Un brouillon honnête, avec ses questions écrites, vaut mieux qu'un registre
+  complet mais faux.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour
@@ -112,7 +262,7 @@ terminer la journée.*
 
 > 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
 >
-> Le récit ci-dessous montre ce que ces deux questions visent ; le défi à faire, lui, est l'exercice [Brouillon de registre des traitements](tp/12-defi-registre.md).
+> Le récit ci-dessous montre ce que ces deux questions visent ; le défi à faire, lui, est l'exercice bonus de ce chapitre, plus haut.
 >
 > 🧪 **Atelier rapide (5 min)**
 >
@@ -164,7 +314,7 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Une mutuelle confie l'envoi de ses courriers à un prestataire. Qu'est-ce qui protège réellement les données transmises ?
 
@@ -173,8 +323,6 @@ terminer la journée.*
 - C. Le chiffrement du fichier au moment de l'envoi, et rien d'autre
 - D. Rien ne protège : dès qu'une donnée sort, elle est perdue de vue
 
-- [ ] ✓ je savais
-
 **2.** Dans le langage du RGPD, comment nomme-t-on un prestataire qui traite des données pour le compte du responsable de traitement, sur ses instructions documentées ?
 
 - A. Le responsable de traitement conjoint
@@ -182,31 +330,27 @@ terminer la journée.*
 - C. Le sous-traitant
 - D. Le co-responsable solidaire
 
-- [ ] ✓ je savais
-
 **3.** Un jeu « anonymisé » d'adhérents ne contient plus de nom ni de courriel, mais garde code postal, date de naissance et sexe. À quoi mesure-t-on l'anonymat réel du jeu ?
 
-- A. Au nombre de colonnes supprimées
-- B. À l'absence du mot « anonymisé » dans le nom du fichier
+- A. Au nombre de colonnes supprimées du fichier avant de le confier au destinataire
+- B. À la présence ou non du mot « anonymisé » dans le nom du fichier et dans celui de la table d'origine
 - C. À la ré-identification possible : un croisement avec une autre source peut-il retrouver une personne (quasi-identifiants)
-- D. À la taille du fichier : un petit fichier est forcément anonyme
-
-- [ ] ✓ je savais
+- D. À la taille du fichier exporté : un petit fichier ne contient pas assez de matière pour retrouver quelqu'un
 
 **4.** Comment l'éco-conception et la sécurité des données convergent-elles ?
 
-- A. Elles n'ont aucun rapport : l'une est écologique, l'autre réglementaire
+- A. Elles n'ont aucun rapport : l'une est une question d'énergie, l'autre une obligation réglementaire sans recouvrement
 - B. Moins de données détenues, c'est moins de risque : ne collecter que l'utile, purger, agréger avant de partager, alléger les exports
-- C. L'éco-conception impose de tout conserver longtemps pour éviter les recalculs
-- D. La sécurité impose de tout dupliquer, l'éco-conception de tout supprimer
-
-- [ ] ✓ je savais
+- C. L'éco-conception pousse à tout conserver longtemps pour éviter de recalculer, ce qui contredit la minimisation
+- D. Elles s'opposent : la sécurité veut des duplications pour la disponibilité, l'éco-conception des suppressions
 
 **5.** *Question ouverte (2-3 lignes).* Pseudonymiser et anonymiser sont « deux promesses très différentes ». Lesquelles, et dans quel cas un jeu pseudonymisé transmis à un tiers reste-t-il une donnée personnelle ?
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -224,6 +368,8 @@ terminer la journée.*
 
 **5.** Attendu : la pseudonymisation remplace l'identité par un identifiant stable (ex. `ADH-00482`) et reste réversible avec la table de correspondance ; l'anonymisation rend la ré-identification non raisonnablement possible, définitivement. Le jeu pseudonymisé transmis à un tiers reste une donnée personnelle si le tiers détient — ou peut obtenir — la table de correspondance.
 **Pourquoi :** dans ce cas il faut le traiter avec les mêmes contrôles d'accès qu'une donnée nominative.
+
+</details>
 
 ---
 

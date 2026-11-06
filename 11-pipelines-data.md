@@ -105,6 +105,187 @@ a un couloir.
 
 ---
 
+### Exercice 1 — Analyser les risques d'un pipeline de données (35 min)
+
+#### Contexte
+
+Une chaîne de librairies compte **42 magasins**. Chaque caisse enregistre les
+ventes de la journée ; chaque nuit, un pipeline alimente l'entrepôt de données
+qui sert aux tableaux de bord de la direction. Depuis le début de l'année, un
+export **quotidien** part vers un prestataire d'e-mailing, qui anime la
+newsletter de la fidélité.
+
+Voici le flux, tel qu'il est documenté :
+
+1. **Extraction** — un job d'orchestration (type Airflow) se connecte aux bases
+   des 42 magasins et exporte les ventes du jour en fichiers CSV, avec un
+   compte de service unique créé « au début du projet », administrateur sur
+   toutes les bases.
+2. **Dépôt intermédiaire** — les fichiers sont poussés dans un stockage objet
+   (type MinIO), dans un compartiment unique où le prestataire d'e-mailing
+   dépose aussi ses fichiers de réponses.
+3. **Transformation** — un script Python nettoie, déduplique et agrège les
+   ventes, puis charge l'entrepôt.
+4. **Restitution** — les tableaux de bord lisent l'entrepôt ; l'export
+   quotidien vers le prestataire part depuis le même script de transformation.
+
+La semaine dernière, un fichier CSV malformé (un séparateur différent) a fait
+planter le job de transformation. **Deux jours de ventes** sont manquants dans
+l'entrepôt — personne ne s'en est aperçu avant qu'un responsable de magasin
+signale un tableau de bord faux.
+
+---
+
+#### Consignes
+
+##### Partie 1 — Décrire le flux
+
+Reprenez les quatre étapes et, pour chacune, notez : les **données** qui y
+circulent, les **acteurs** (comptes, systèmes, personnes) qui y accèdent, et
+la **frontière** franchie. Un tableau à
+quatre lignes suffit.
+
+##### Partie 2 — Analyser les risques
+
+Pour chaque étape, identifiez **un risque de fuite** et **un risque
+d'intégrité**. Appuyez-vous sur les faits du contexte (le compte administrateur,
+le compartiment partagé, l'incident du fichier malformé) — pas sur des cas
+génériques.
+
+##### Partie 3 — Recommander
+
+Proposez des mesures pour : les **comptes de service**, les **flux** entre les
+briques, les **tests de données**, le **cloisonnement** du stockage et de
+l'entrepôt, et la **traçabilité** de l'envoi au prestataire. Une mesure par
+sujet, formulée comme une action concrète.
+
+##### Partie 4 — Prioriser
+
+Classez vos mesures en **trois actions** à mener en premier, de la plus urgente
+à la moins urgente. Chaque action est justifiée par le dommage qu'elle évite.
+
+---
+
+#### ✅ Auto-évaluation
+
+Avant de passer au corrigé, vérifiez que :
+
+- [ ] Chaque étape du flux nomme ses **données**, ses **acteurs** et sa
+  **frontière**.
+- [ ] Pour chaque étape, j'ai donné **un risque de fuite et un risque
+  d'intégrité** — pas un seul des deux.
+- [ ] Mes risques s'appuient sur les **faits du contexte**, pas sur des
+  généralités.
+- [ ] Mes mesures couvrent les **cinq sujets** demandés (comptes, flux, tests,
+  cloisonnement, traçabilité).
+- [ ] Mes trois actions prioritaires sont **justifiées par un dommage** évité.
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif.* Le prestataire d'e-mailing propose de déposer ses fichiers de
+réponses dans le même compartiment que les exports, « pour simplifier ».
+Sans écrire de code, décrivez ce que ce partage change pour la sécurité du
+pipeline, et l'alternative que vous proposeriez.
+
+<details>
+<summary>Voir la correction</summary>
+
+> Comparez d'abord votre travail aux **étapes** ci-dessous : la méthode compte autant que le résultat.
+
+#### Partie 1 — Décrire le flux
+
+**Éléments attendus :**
+
+| Étape | Données | Acteurs | Frontière franchie |
+| --- | --- | --- | --- |
+| Extraction | les ventes du jour des 42 magasins | le job d'orchestration, le compte de service unique | les bases des magasins → le job |
+| Dépôt intermédiaire | fichiers CSV (Comma-Separated Values) de ventes, fichiers de réponses du prestataire | le job, le prestataire d'e-mailing | le réseau de l'entreprise → le stockage objet partagé |
+| Transformation | les mêmes fichiers, nettoyés et agrégés | le script de transformation | le stockage objet → l'entrepôt |
+| Restitution | agrégats de ventes, export quotidien | les tableaux de bord, le prestataire | l'entrepôt → l'extérieur du système |
+
+**Ce qu'il faut retenir :** la carte du flux n'est pas un schéma technique —
+c'est la liste de **ce qui franchit quoi**. Chaque ligne de ce tableau est une
+frontière à protéger, et deux d'entre elles sortent du système d'information
+(le compartiment partagé, l'export quotidien).
+
+---
+
+#### Partie 2 — Analyser les risques
+
+**Éléments attendus :**
+
+| Étape | Risque de fuite | Risque d'intégrité |
+| --- | --- | --- |
+| Extraction | le compte de service administrateur peut lire **toutes** les bases : quiconque le détourne lit bien au-delà des ventes | un export partiel (une base injoignable) produit un fichier incomplet, sans signal |
+| Dépôt intermédiaire | le compartiment unique mélange les fichiers de ventes et ceux du prestataire : un accès trop large expose les deux | un fichier écrasé ou déposé deux fois corrompt la chaîne en aval |
+| Transformation | le script manipule des données clients pour la fidélité : ses journaux peuvent les recopier | l'incident du fichier malformé le montre : un séparateur différent fait planter le job, et **deux jours de ventes** manquent sans alerte |
+| Restitution | l'export quotidien envoie des données clients **hors** du système, vers un tiers | un export incomplet ou dupliqué alimente le prestataire en données fausses |
+
+**Erreurs fréquentes :** ne lister que des risques de fuite (le sujet le plus
+visible) et oublier l'intégrité — alors que l'incident réel du contexte est un
+incident d'**intégrité** ; ou décrire des risques génériques (« un pirate
+pourrait… ») sans les rattacher aux faits : le compte administrateur, le
+compartiment partagé, le job qui plante en silence.
+
+---
+
+#### Partie 3 — Recommander
+
+**Éléments attendus :**
+
+| Sujet | Mesure attendue |
+| --- | --- |
+| **Comptes de service** | remplacer le compte administrateur unique par un compte par job, avec les seuls droits nécessaires (lecture des tables de ventes, écriture dans le stockage) |
+| **Flux** | activer TLS (Transport Layer Security) entre chaque brique, y compris vers le stockage objet, et sortir les identifiants du script vers un coffre de secrets |
+| **Tests de données** | poser avant chargement des tests de fraîcheur, de complétude et de validité — dont un qui vérifie la forme attendue des fichiers — et **bloquer** le chargement en cas d'échec |
+| **Cloisonnement** | séparer les compartiments de stockage (celui des exports, celui des réponses du prestataire) et donner à l'entrepôt des vues restreintes plutôt qu'un accès aux tables brutes |
+| **Traçabilité** | journaliser chaque envoi au prestataire : quoi, quand, combien de lignes, à qui — et encadrer la suppression du fichier chez le tiers |
+
+**Sur la forme :** une mesure se formule comme une action (« remplacer »,
+« activer », « bloquer »), pas comme un principe (« il faudrait être prudent »).
+Si la mesure ne dit pas **qui fait quoi**, elle ne sera pas faite.
+
+---
+
+#### Partie 4 — Prioriser
+
+**Éléments attendus** (un ordre différent est acceptable s'il est justifié) :
+
+1. **Bloquer le chargement sur échec de test** — c'est le dommage déjà arrivé :
+   deux jours de ventes manquants, découverts par hasard. Un pipeline qui
+   produit des données fausses corrompt tout ce qui en dépend.
+2. **Réduire le compte de service aux droits strictement nécessaires** — le
+   compte administrateur est la pire exposition du flux : il transforme une
+   faille isolée en accès à toutes les bases.
+3. **Cloisonner le compartiment partagé et tracer les envois** — la frontière
+   la plus sensible est celle qui sort du système : elle se sépare et se
+   journalise avant de s'étendre.
+
+**Sur la hiérarchie :** on range d'abord ce qui **corrompt les données**
+(l'intégrité, qui trompe silencieusement), ensuite ce qui **élargit l'accès**
+(la fuite), enfin ce qui **facilite l'enquête** (la traçabilité). L'ordre
+inverse est fréquent — et il laisse l'incident se répéter pendant qu'on
+sécurise ailleurs.
+
+---
+
+#### Points à retenir
+
+- La carte d'un pipeline est une liste de **frontières** : données, acteurs,
+  franchissements — c'est là que se posent les contrôles.
+- Chaque étape porte **deux** risques : la fuite **et** l'intégrité. L'incident
+  réel du contexte était un incident d'intégrité.
+- Les mesures se formulent en **actions** : un compte par job, TLS partout,
+  tests qui bloquent, compartiments séparés, envois tracés.
+- On priorise par dommage : ce qui **corrompt** d'abord, ce qui **élargit
+  l'accès** ensuite.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour
@@ -146,7 +327,7 @@ terminer la journée.*
 
 > 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
 >
-> Le modèle à copier reste dans la section II : cet atelier le fait écrire à la main. L'exercice [Analyser les risques d'un pipeline de données](tp/11-analyser-pipeline.md), lui, demande de **recommander** les tests — sa Partie 3 et son corrigé disent lesquels.
+> Le modèle à copier reste dans la section II : cet atelier le fait écrire à la main. L'exercice 1 de ce chapitre, plus haut, lui, demande de **recommander** les tests — sa Partie 3 et son corrigé disent lesquels.
 >
 > 🧪 **Atelier rapide (10 min)**
 >
@@ -198,7 +379,7 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Le script d'extraction d'un pipeline tourne avec un compte administrateur « pour ne pas être bloqué ». Quel est le risque principal ?
 
@@ -207,8 +388,6 @@ terminer la journée.*
 - C. Quiconque détourne le script dispose de la totalité du système d'information
 - D. La base source refuse les connexions administrateur la nuit
 
-- [ ] ✓ je savais
-
 **2.** Quelles sont les trois familles de tests de données du chapitre ?
 
 - A. Unitaires, intégration, bout en bout
@@ -216,16 +395,12 @@ terminer la journée.*
 - C. Charge, latence, disponibilité
 - D. Volume, coût, volumétrie
 
-- [ ] ✓ je savais
-
 **3.** Un test de données détecte des durées négatives, mais seulement en envoyant une alerte après le chargement. Que vaut cette protection ?
 
-- A. Elle est suffisante : l'équipe est prévenue le jour même
-- B. Elle ne protège que la prochaine fois : entre-temps, les données fausses sont déjà dans les rapports — le test doit bloquer le chargement avant l'entrepôt
-- C. Elle est équivalente au blocage, avec moins de faux positifs
-- D. Elle est supérieure : bloquer un job de nuit est plus coûteux qu'alerter
-
-- [ ] ✓ je savais
+- A. Elle est suffisante : l'équipe est prévenue le jour même et peut corriger avant la prochaine réunion
+- B. Elle ne protège que la fois suivante : entre-temps les données fausses sont dans les rapports — le test doit bloquer avant l'entrepôt
+- C. Elle est équivalente au blocage, avec en moins les faux positifs qui arrêtent un job pour rien
+- D. Elle est supérieure : bloquer un job de nuit coûte plus cher à l'équipe que laisser passer et prévenir
 
 **4.** Dans le cloisonnement d'un pipeline, quelle règle s'applique au stockage intermédiaire (MinIO, S3) ?
 
@@ -234,13 +409,13 @@ terminer la journée.*
 - C. Accès libre en lecture pour les analystes, l'entrepôt étant déjà protégé
 - D. Suppression immédiate après lecture, sans exception
 
-- [ ] ✓ je savais
-
 **5.** *Question ouverte (2-3 lignes).* « Un pipeline qui échoue en silence est plus dangereux qu'un pipeline en panne. » Expliquez, en vous appuyant sur l'accroche du chapitre (le fichier CSV malformé).
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -258,6 +433,8 @@ terminer la journée.*
 
 **5.** Attendu : un pipeline en panne se voit et stoppe la chaîne ; un pipeline qui échoue en silence livre des données manquantes ou fausses qui ont l'air vraies — dans l'accroche, un CSV malformé fait planter le job et les données manquantes partent en production sans alerte, donc les tableaux de bord mentent.
 **Pourquoi :** le danger n'est pas l'absence de données mais la fausse donnée crue : personne ne soupçonne les rapports, et l'erreur se décide avec eux.
+
+</details>
 
 ---
 

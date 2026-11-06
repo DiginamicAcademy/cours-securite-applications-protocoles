@@ -144,6 +144,226 @@ instantané, et les composants bougent à chaque livraison.
 
 ---
 
+### Exercice 1 — Intégrer la sécurité dans une intégration continue (35 min)
+
+#### Contexte
+
+**Nova Distribution** livre des produits alimentaires dans toute la région. Son
+équipe data maintient le dépôt `flux-ventes` : des scripts Python d'extraction et
+de transformation, un fichier `requirements.txt`, et une suite de tests. L'équipe
+livre plusieurs fois par semaine, et chaque livraison manuelle de vérification
+retarde la suivante.
+
+Après un audit interne, la direction demande « la sécurité dans l'intégration
+continue, sans paralyser l'équipe ». Vous êtes missionné pour poser les bases.
+
+Le contexte technique à respecter :
+
+| Élément | Valeur |
+| --- | --- |
+| Langage | Python 3.11 |
+| Dépendances | un fichier `requirements.txt` |
+| Actions du workflow | `actions/checkout` en v4, `actions/setup-python` en v5, `gitleaks/gitleaks-action` en v2 |
+| Contrôles visés | SAST (analyse statique du code) avec `bandit`, SCA (analyse des composants) avec `pip-audit`, recherche de secrets avec `gitleaks` |
+| Branche de livraison | `main` |
+
+---
+
+#### Consignes
+
+##### Partie 1 — Rattacher chaque risque à son contrôle
+
+L'audit a retenu trois incidents redoutés :
+
+1. un mot de passe de base de données commité par mégarde dans un script ;
+2. une bibliothèque de `requirements.txt` affectée par une faille publiée ;
+3. une concaténation d'une saisie utilisateur dans une requête SQL (Structured
+   Query Language, le langage de requête des bases relationnelles).
+
+Pour chacun, indiquez **quel contrôle** le détecte, **à quel moment** il s'exécute
+(avant le commit, à chaque modification, à la livraison) et **ce qu'il produit**
+comme sortie exploitable.
+
+##### Partie 2 — Écrire le workflow
+
+Rédigez le fichier `.github/workflows/securite.yml` : il se déclenche sur les
+modifications de `main` et sur les demandes de fusion, puis exécute les trois
+contrôles. Les commandes exactes sont libres — le chapitre en donne deux — mais
+le workflow doit être complet, lisible et exécutable tel quel.
+
+##### Partie 3 — Décider les gates
+
+Pour chaque contrôle, décidez s'il **bloque** la livraison ou **avertit**
+seulement. Justifiez chaque décision par le coût des deux erreurs possibles :
+laisser passer un problème, ou bloquer une livraison saine. Précisez enfin ce que
+devient une alerte qui n'est pas bloquante : qui la traite, et quand.
+
+##### Partie 4 — Assurer la traçabilité
+
+Le SBOM (Software Bill of Materials, l'inventaire des
+composants livrés). Pour ce dépôt, répondez aux quatre questions : **ce qu'il
+contient**, **quand** il est produit, **où** il est conservé, et **à quoi** il
+sert le jour où une faille est publiée sur une dépendance de `requirements.txt`.
+
+---
+
+#### ✅ Auto-évaluation
+
+Avant de passer au corrigé, vérifiez que :
+
+- [ ] Chaque risque de la partie 1 est rattaché à **un seul** contrôle, avec le
+  moment où il s'exécute et sa sortie.
+- [ ] Mon workflow contient les **trois** contrôles, se déclenche comme demandé,
+  et se lit sans ambiguïté.
+- [ ] Chaque gate de la partie 3 est **décidée** (bloquer ou avertir) et justifiée
+  par le coût des deux erreurs.
+- [ ] J'ai dit ce que devient une alerte non bloquante : **qui** la traite et
+  **quand**.
+- [ ] Ma partie 4 répond aux quatre questions, et pas seulement à celle du
+  contenu.
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif.* Le dépôt existe depuis trois ans, et son historique contient
+peut-être des secrets commités bien avant l'arrivée de ces contrôles. Comment les
+détecter, et que faire de ce que vous trouvez ?
+
+<details>
+<summary>Voir la correction</summary>
+
+> Comparez d'abord votre travail aux **étapes** ci-dessous : la méthode compte autant que le résultat.
+
+#### Partie 1 — Rattacher chaque risque à son contrôle
+
+**Éléments attendus :**
+
+| Risque | Contrôle | Moment | Sortie exploitable |
+| --- | --- | --- | --- |
+| Un mot de passe commité | recherche de secrets (`gitleaks`) | à chaque modification, et sur l'historique du dépôt | le fichier et la ligne, pour savoir quelle clé révoquer |
+| Une bibliothèque affectée | SCA (analyse des composants) avec `pip-audit` | à chaque modification, sur `requirements.txt` | le composant, sa version, la référence de la faille publiée |
+| Une concaténation dans une requête | SAST (analyse statique du code) avec `bandit` | à chaque modification, sur les scripts | le fichier, la ligne, la règle enfreinte |
+
+**Ce qu'il faut retenir :** chaque contrôle répond à une question différente, et
+aucun ne détecte ce qui relève des deux autres. Un outil unique ne couvre jamais
+les trois risques.
+
+---
+
+#### Partie 2 — Écrire le workflow
+
+**Éléments attendus :** un fichier `.github/workflows/securite.yml` de cette
+forme :
+
+```yaml
+name: securite
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  controles:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Composants (SCA)
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt
+
+      - name: Code (SAST)
+        run: |
+          pip install bandit
+          bandit -r scripts/
+
+      - name: Secrets
+        uses: gitleaks/gitleaks-action@v2
+```
+
+**Points de méthode :**
+
+- Le déclenchement couvre **les deux portes d'entrée** du code : la modification
+  directe de `main` et les demandes de fusion. Un workflow qui ne surveille qu'une
+  des deux laisse l'autre ouverte.
+- Un seul job suffit : les étapes s'exécutent dans l'ordre, et la première qui
+  échoue arrête la suite. Séparer les contrôles en plusieurs jobs n'est utile que
+  pour les exécuter en parallèle.
+- Chaque étape installe son outil avant de lancer : un workflow qui suppose un
+  outil déjà présent fonctionne sur le poste de la personne qui l'écrit, et pas
+  ailleurs.
+
+**Erreurs fréquentes :** oublier le déclenchement sur les demandes de fusion,
+cibler le mauvais dossier (`lab/` au lieu de `scripts/`), ou écrire une étape qui
+échoue silencieusement quand l'outil remonte une alerte.
+
+---
+
+#### Partie 3 — Décider les gates
+
+**Éléments attendus :**
+
+| Contrôle | Décision | Justification par le coût des deux erreurs |
+| --- | --- | --- |
+| Recherche de secrets | **bloquer** | laisser passer coûte une clé compromise ; bloquer coûte quelques minutes de correction à la personne qui a commité |
+| SCA, faille critique | **bloquer** | laisser passer expose une faille déjà publiée, donc déjà cherchée ; bloquer coûte une mise à jour de dépendance |
+| SCA, faille moyenne ou faible | **avertir**, avec une tâche de suivi | bloquer paralyse les livraisons pour des risques modérés ; laisser sans suivi fait oublier le problème |
+| SAST, règle dangereuse | **avertir** d'abord, bloquer quand le stock est propre | le code existant contient souvent des écarts anciens : bloquer tout de suite empêche de livrer quoi que ce soit |
+
+**Ce que devient une alerte non bloquante :** elle devient une tâche de suivi dans
+le gestionnaire de tickets de l'équipe, avec une personne nommée et une échéance.
+Une alerte qui revient à chaque exécution sans jamais être traitée n'est pas une
+alerte : c'est du bruit, et la gate doit alors durcir.
+
+**Sur la montée en pression :** on commence en avertissement, on nettoie le stock
+existant, puis on bloque. Ce qui est bloqué le reste — régresser revient à
+réapprendre à ignorer les alertes.
+
+---
+
+#### Partie 4 — Assurer la traçabilité
+
+**Éléments attendus :**
+
+- **Contenu** — chaque composant de `requirements.txt` avec sa version et son
+  origine, ainsi que les dépendances qu'il entraîne lui-même.
+- **Moment** — à chaque livraison, sur l'artefact réellement livré, et pas
+  seulement sur le dépôt.
+- **Conservation** — avec l'artefact, daté et versionné, dans le stockage de
+  livraison de l'équipe. Un inventaire rangé à part et jamais mis à jour ne
+  reflète rien.
+- **Usage** — le jour où une faille est publiée, croiser la liste des versions
+  affectées avec l'inventaire donne en minutes la liste des scripts à corriger,
+  au lieu d'une recherche de plusieurs jours.
+
+**Erreurs fréquentes :** générer l'inventaire une seule fois « pour l'audit », ou
+le produire sur le dépôt au lieu de l'artefact livré — les deux donnent une
+réponse fausse le jour où on en a besoin.
+
+---
+
+#### Points à retenir
+
+- Un risque, un contrôle, un moment d'exécution : les trois familles se
+  complètent, aucune ne couvre les autres.
+- Les **gates** se décident selon le coût des deux erreurs : laisser passer, ou
+  bloquer une livraison saine.
+- Une alerte non bloquante doit avoir **un responsable et une échéance**, sinon
+  elle devient du bruit.
+- Le **SBOM** (Software Bill of Materials, l'inventaire des composants) transforme la question « sommes-nous concernés ? » en une liste de
+  travail immédiatement exploitable.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour terminer
@@ -254,7 +474,7 @@ la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** L'intégration continue signale : « une bibliothèque de l'application est affectée par une faille publiée ». Quelle famille de contrôles a produit ce signal ?
 
@@ -263,16 +483,12 @@ la journée.*
 - C. La recherche de secrets, qui balaie le code et l'historique
 - D. La gate, qui arbitre la livraison
 
-- [ ] ✓ je savais
-
 **2.** Un développeur a committé une clé d'API dans le dépôt, privé de surcroît. Quelle est la bonne réaction ?
 
-- A. Effacer la ligne au commit suivant : l'historique n'est plus lu par personne
-- B. Supprimer le dépôt et le recréer sans l'historique
+- A. Effacer la ligne au commit suivant : l'historique n'est plus relu par personne une fois la correction poussée
+- B. Supprimer le dépôt et le recréer sans l'historique, pour que la ligne disparaisse de toute trace
 - C. Révoquer la clé d'abord, puis corriger : un secret découvert dans un commit est déjà compromis
-- D. Attendre la prochaine revue de code pour en parler à l'équipe
-
-- [ ] ✓ je savais
+- D. Attendre la prochaine revue de code hebdomadaire pour en parler à l'équipe, qui en décidera à plusieurs
 
 **3.** Une faille de sévérité moyenne est détectée dans une dépendance, et le correctif disponible risque de casser l'application. Que décide la gate, selon le chapitre ?
 
@@ -281,22 +497,20 @@ la journée.*
 - C. Ne rien signaler : une faille moyenne n'est pas un sujet de sécurité
 - D. Mélanger l'alerte avec les contrôles de style pour tout traiter d'un coup
 
-- [ ] ✓ je savais
-
 **4.** À quoi sert un SBOM, et quand le produire ?
 
-- A. À lister les composants livrés (nom, version, origine) ; généré à chaque build et conservé avec l'artefact, il permet de répondre en minutes à « quelle application embarque la version affectée ? »
-- B. À signer chaque artefact pour empêcher son remplacement entre le build et la production
-- C. À bloquer les commits contenant des secrets ; il se configure une fois pour toutes
-- D. À inventorier les dépendances une fois au début du projet, puis à le ranger dans un dossier
-
-- [ ] ✓ je savais
+- A. À lister les composants livrés (nom, version, origine) à chaque build et le garder avec l'artefact : on répond en minutes à « qui embarque la version affectée ? »
+- B. À signer chaque artefact produit, afin d'empêcher qu'il soit remplacé entre le build et sa mise en production
+- C. À bloquer les commits qui contiennent un secret ; l'outil se configure une fois pour toutes puis tourne seul
+- D. À inventorier les dépendances une bonne fois au début du projet, puis à ranger la liste dans un dossier partagé
 
 **5.** *Question ouverte (2-3 lignes).* « Un contrôle qui alerte sans rien bloquer finit ignoré. Un contrôle qui bloque sur tout finit désactivé. » Expliquez ce qu'est une gate, sur quoi se décide son réglage, et pourquoi les contrôles de style doivent rester séparés des contrôles de sécurité.
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -314,6 +528,8 @@ la journée.*
 
 **5.** Attendu : la gate est la barrière qui décide si la livraison continue ; le réglage se décide contrôle par contrôle selon le coût des deux erreurs (laisser passer / bloquer) — secret et faille critique : bloquer ; faille moyenne et SAST faible sévérité : avertir.
 **Pourquoi :** une gate qui bloque sur du style finit contournée (on désactive le job, on force le merge) ; garder sécurité et style séparés préserve la crédibilité des contrôles de sécurité.
+
+</details>
 
 ---
 

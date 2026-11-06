@@ -118,6 +118,195 @@ réservée à l'administration interne — même si le correctif est identique.
 
 ---
 
+### Exercice 1 — Auditer un module de gestion des adhésions (35 min, facultatif)
+
+#### Contexte
+
+L'association sportive dont vous êtes membre gère ses adhésions depuis un module
+Python écrit au fil des saisons par plusieurs bénévoles. Il fonctionne, il est
+utilisé chaque semaine — et personne ne l'a jamais relu sous l'angle sécurité.
+Avant la prochaine campagne d'adhésions, le bureau vous demande cette revue.
+
+Voici le module en l'état :
+
+```python
+import logging
+import os
+import traceback
+
+from fastapi import FastAPI
+
+app = FastAPI()
+journal = logging.getLogger("adhesions")
+
+
+def chercher_adhesions(nom):
+    conn = get_db()
+    cursor = conn.cursor()
+    query = f"SELECT * FROM adhesions WHERE nom LIKE '%{nom}%'"
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+
+def page_resultats(nom, adhesions):
+    html = f"<h2>Adhésions — recherche : {nom}</h2><ul>"
+    for a in adhesions:
+        html += f"<li>{a['nom']} — {a['email']}</li>"
+    html += "</ul>"
+    return html
+
+
+def exporter_fichier(nom_du_fichier):
+    os.system("chmod 666 " + nom_du_fichier)
+    return nom_du_fichier
+
+
+def enregistrer_paiement(email, mot_de_passe):
+    journal.info("paiement de %s (compte %s)", email, mot_de_passe)
+    return {"statut": "enregistre"}
+
+
+@app.get("/adhesions")
+def route_adhesions(nom: str = ""):
+    try:
+        return page_resultats(nom, chercher_adhesions(nom))
+    except Exception as exc:
+        return {"erreur": str(exc), "trace": traceback.format_exc()}
+```
+
+Le bureau attend un document qu'il puisse utiliser : pas un avis général sur la
+qualité du code, mais une liste de points classés, avec pour chacun ce qu'il
+permet de faire et ce qu'il faudrait changer.
+
+---
+
+#### Consignes
+
+##### Partie 1 — Appliquer les trois passes
+
+Faites les trois passes du chapitre sur l'ensemble du module, dans l'ordre :
+entrées, sorties, appels système. Pour chaque passe, produisez une liste — sans
+encore chercher à comprendre le fonctionnement général du module.
+
+##### Partie 2 — Retracer l'anatomie d'un problème
+
+Choisissez l'un des problèmes relevés et retracez son anatomie : par où la
+donnée arrive, où elle est transformée, ce qu'elle permet de faire si personne
+ne corrige. Trois ou quatre phrases suffisent.
+
+##### Partie 3 — Rédiger le rapport de dette
+
+Rédigez le rapport destiné au bureau : pour chaque point, la localisation, le
+problème en une phrase, la gravité, et la proposition de correction. Classez les
+points selon l'exposition — ce qui est atteignable par n'importe quel adhérent
+passe avant ce qui exige un accès particulier.
+
+---
+
+#### ✅ Auto-évaluation
+
+- [ ] Mes trois listes (entrées, sorties, appels système) sont faites séparément.
+- [ ] Chaque problème du module apparaît dans au moins une de mes listes.
+- [ ] L'anatomie choisie suit la donnée de l'arrivée jusqu'à l'impact.
+- [ ] Mon rapport donne, pour chaque point, la localisation et la proposition.
+- [ ] Les points sont classés selon l'exposition, pas selon la facilité du
+      correctif.
+- [ ] Le rapport se lit sans moi pour être compris.
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif — ne bloque pas la suite du parcours.*
+
+🔴 **Défi** — Rédigez la checklist de revue de code de l'équipe : une page, les
+questions à se poser à chaque passe, les signaux qui déclenchent une revue
+approfondie. Puis appliquez-la à un ancien module de l'association, et notez ce
+que la checklist a fait trouver que la relecture libre n'avait pas vu.
+
+<details>
+<summary>Voir la correction</summary>
+
+> Comparez d'abord votre travail aux **étapes** ci-dessous : la méthode compte autant que le résultat.
+
+#### Partie 1 — Appliquer les trois passes
+
+**Passe 1 — les entrées.** Ce qui arrive de l'extérieur : le nom de recherche,
+le nom de fichier à exporter, l'adresse électronique et le mot de passe de
+paiement. Pour chacun, la question est de savoir s'il est contrôlé avant usage —
+et ici, aucun ne l'est.
+
+**Passe 2 — les sorties.** Ce qui sort du module : la page de résultats, la
+réponse d'erreur, la ligne de journal, le fichier exporté. La page insère des
+données sans traitement ; la réponse d'erreur renvoie la trace ; le journal
+contient un mot de passe.
+
+**Passe 3 — les appels système.** Ce que le module déclenche : la requête vers
+la base, la commande de changement de droits sur un fichier. Dans les deux cas,
+une donnée extérieure influence la **forme** de ce qui est exécuté.
+
+| Passe | Point relevé | Localisation |
+| --- | --- | --- |
+| **Entrées** | la saisie entre dans une requête | fonction de recherche |
+| **Entrées** | aucune vérification d'identité sur la route | route des adhésions |
+| **Sorties** | les données s'insèrent dans la page sans échappement | fonction de mise en page |
+| **Sorties** | la trace d'erreur part dans la réponse | route des adhésions |
+| **Sorties** | le mot de passe est écrit au journal | fonction de paiement |
+| **Appels système** | la saisie choisit l'argument d'une commande | fonction d'export |
+
+Les trois passes couvrent l'ensemble du module sans qu'il ait fallu le
+comprendre en détail — c'est ce qui rend la méthode applicable en une heure.
+
+---
+
+#### Partie 2 — Retracer l'anatomie d'un problème
+
+Prenons la saisie qui entre dans la requête. Le nom de recherche arrive depuis
+le champ de la page, sans contrôle de format ni de longueur. Il est collé dans
+la chaîne de la requête, où il rejoint le vocabulaire de la requête elle-même.
+Le moteur de base ne fait pas la différence entre ce qui vient du développeur et
+ce qui vient du champ : une valeur qui contient un signe de fin de condition
+termine la condition, et la suite est exécutée comme instruction.
+
+Si personne ne corrige, n'importe quel adhérent peut lire la table des
+adhésions au-delà de ce que la recherche devait montrer — et, selon les droits du
+compte de base, aller au-delà de la lecture.
+
+---
+
+#### Partie 3 — Rédiger le rapport de dette
+
+| Localisation | Problème | Gravité | Proposition |
+| --- | --- | --- | --- |
+| **Fonction de recherche** | la saisie entre dans la requête | haute — atteignable par n'importe quel adhérent | requête paramétrée, contrôle de format et de longueur |
+| **Fonction de mise en page** | les données s'insèrent sans échappement | haute — atteignable par n'importe quel adhérent | échappement de chaque insertion, politique de sécurité du contenu |
+| **Route des adhésions** | la trace d'erreur part dans la réponse | haute — renseigne sur le système | message générique et numéro de suivi, détail au journal |
+| **Route des adhésions** | aucun contrôle d'identité | haute — lecture des données d'autrui | vérification de l'identité demandée, refus explicite |
+| **Fonction d'export** | la saisie choisit l'argument d'une commande | moyenne — dépend de qui appelle l'export | appel direct de la fonction système, sans chaîne de commande |
+| **Fonction de paiement** | le mot de passe est écrit au journal | moyenne — fuite vers un support plus largement lu | journaliser le fait et l'identifiant technique, jamais le secret |
+
+Le classement suit l'exposition : les quatre premiers points sont atteignables
+par un simple adhérent, les deux derniers supposent un accès ou un usage
+particulier. Le correctif le plus rapide n'est pas forcément le plus urgent.
+
+---
+
+#### Points à retenir
+
+- Les trois passes — entrées, sorties, appels système — couvrent un module
+  complet sans qu'il faille le comprendre en détail.
+- Suivre la donnée de l'arrivée jusqu'à l'impact donne l'anatomie du problème,
+  et donc le bon endroit pour corriger.
+- Le rapport classe selon **l'exposition**, pas selon la facilité du correctif.
+- Un rapport exploitable dit où, pourquoi c'est grave, quoi faire — et se lit
+  sans son auteur.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour
@@ -189,49 +378,43 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Pourquoi la revue de sécurité se fait-elle en trois passes (entrées, sorties, appels système) plutôt qu'en relisant le fichier ligne à ligne ?
 
-- A. Parce que relire ligne à ligne est interdit en revue officielle
+- A. Parce que relire ligne à ligne est proscrit en revue officielle : on y passerait des journées que l'équipe n'a pas à perdre
 - B. Parce que chaque passe porte une seule question sur tout le fichier : c'est plus rapide et plus fiable, le cerveau ne saute pas d'une préoccupation à l'autre
-- C. Parce que les trois passes couvrent les bugs en plus des failles
-- D. Parce qu'une seule passe suffit dès que le fichier est court
-
-- [ ] ✓ je savais
+- C. Parce que les trois passes, à chercher des patterns, finissent par couvrir les bugs de fonctionnement en plus des failles
+- D. Parce qu'une seule passe suffit dès que le fichier est court : les trois visent les modules qui dépassent la centaine de lignes
 
 **2.** Dans un diff, le code ajouté est irréprochable. Que doit quand même regarder le relecteur ?
 
-- A. Rien : si les lignes ajoutées sont sûres, le changement est sûr
-- B. Seulement la taille du changement, pour estimer le temps de correction
+- A. Rien : seules comptent les lignes ajoutées, puisqu'elles portent le nouveau comportement du module
+- B. Seulement la taille du changement, pour estimer le temps de correction et répartir la dette entre développeurs
 - C. Ce que le diff retire : un contrôle supprimé peut être la seule vérification qui protégeait la route
-- D. Uniquement le nom de la personne qui a écrit le changement
-
-- [ ] ✓ je savais
+- D. Uniquement le nom de la personne qui a écrit le changement, pour lui demander des explications de vive voix
 
 **3.** Le même défaut existe sur deux routes : l'une est ouverte à tous, l'autre réservée à l'administration interne. Comment le rapport de revue priorise-t-il ?
 
-- A. À gravité égale, les deux corrections ont la même priorité
-- B. La route interne d'abord, parce que le correctif y est plus simple
-- C. Selon l'élégance du correctif disponible pour chacune
+- A. À gravité égale sur la fiche, les deux corrections ont la même priorité : c'est le score qui tranche
+- B. La route interne d'abord, puisque le correctif y est plus simple et libère la revue plus vite
+- C. Selon l'élégance du correctif disponible, pour ne pas laisser deux demi-mesures dans le code
 - D. La route ouverte à tous d'abord : la priorisation suit l'exposition, pas l'élégance du correctif
-
-- [ ] ✓ je savais
 
 **4.** Dans un diff, cette ligne attire l'attention : `os.system("chmod 666 " + nom_du_fichier)`. Quel est le problème ?
 
-- A. Le mode 666 est trop restrictif pour un fichier d'export
-- B. `os.system` est plus lent que `os.chmod`
+- A. Le mode 666 est trop restrictif pour un fichier que la comptabilité doit relire le lendemain matin
+- B. `os.system` est simplement plus lent que `os.chmod`, et la lenteur n'est pas un risque de sécurité
 - C. La saisie choisit l'argument de la commande : une donnée extérieure peut modifier la forme de l'appel système
-- D. Rien : la commande est fixe, donc l'appel est sûr
-
-- [ ] ✓ je savais
+- D. Rien : la commande elle-même est fixée dans le code, l'appel système ne peut donc pas être détourné
 
 **5.** *Question ouverte (2-3 lignes).* « Une revue qui ne produit rien de transmissible est une opinion. » Que doit contenir le rapport de revue, et pourquoi la mention « pourquoi c'est grave » est-elle indispensable ?
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -249,6 +432,8 @@ terminer la journée.*
 
 **5.** Attendu : le rapport donne la localisation (fichier, ligne), le problème (le pattern reconnu), la gravité (ce qui devient possible si personne ne corrige) et la proposition (correctif ou piste).
 **Pourquoi :** « pourquoi c'est grave » fournit le contexte de décision et la priorisation ; un rapport qui dit « à corriger » sans le dire reste dans les cartons.
+
+</details>
 
 ---
 

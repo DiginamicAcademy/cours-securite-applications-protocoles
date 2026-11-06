@@ -114,6 +114,190 @@ Deux habitudes annulent cette protection :
 
 ---
 
+### Exercice 1 — Échapper les sorties d'un livre d'or (15 min)
+
+#### Contexte
+
+Une association de randonnée tient un livre d'or en ligne : les adhérents y
+laissent un mot après chaque sortie. La page est servie par une petite
+application Python, écrite à la main, qui assemble le HTML (HyperText Markup
+Language) dans une chaîne.
+
+Depuis la dernière sortie, plusieurs adhérents signalent que la page « se
+comporte bizarrement » : un message ne s'affiche pas, et la session d'un
+modérateur s'est déconnectée toute seule.
+
+```python
+@app.get("/livre-d-or")
+def livre_d_or(q: str = ""):
+    messages = charger_messages()
+    html = f"<h2>Messages — recherche : {q}</h2><ul>"
+    for m in messages:
+        html += f"<li><b>{m['auteur']}</b> : {m['texte']}</li>"
+    html += "</ul>"
+    return html
+```
+
+L'association veut garder cette page simple : pas de framework, pas de
+refonte. Elle veut juste que les messages restent des messages.
+
+---
+
+#### Consignes
+
+##### Partie 1 — Repérer les contextes d'insertion
+
+Listez, dans le gabarit ci-dessus, chaque endroit où une donnée extérieure
+s'insère dans la page. Pour chacun, précisez le contexte : texte affiché,
+contenu d'une balise, ou autre. Identifiez celui où la donnée peut devenir du
+code exécuté.
+
+##### Partie 2 — Échapper les sorties
+
+Appliquez l'échappement adapté à chaque insertion. Le texte doit rester du texte
+dans tous les cas, y compris quand un message contient des chevrons ou des
+guillemets. Vérifiez qu'un message contenant une balise de script s'affiche
+comme du texte.
+
+##### Partie 3 — Poser une politique de sécurité du contenu
+
+Ajoutez l'en-tête de réponse qui limite la page à ses propres ressources. Notez
+la valeur exacte de l'en-tête, et expliquez en une phrase ce qu'elle change si
+l'échappement venait à être oublié ailleurs.
+
+##### Partie 4 — Vérifier
+
+Testez la page avec trois messages : un message normal, un message contenant une
+balise de script, un message contenant un chevron isolé. Notez ce qui s'affiche
+dans chaque cas.
+
+---
+
+#### ✅ Auto-évaluation
+
+- [ ] J'ai listé chaque insertion de donnée et son contexte.
+- [ ] Chaque valeur affichée passe par un échappement adapté à son contexte.
+- [ ] Une balise de script déposée dans un message s'affiche comme du texte.
+- [ ] L'en-tête de politique de sécurité du contenu est posé côté serveur.
+- [ ] Je peux expliquer ce que cette politique change en cas d'oubli d'échappement.
+- [ ] J'ai testé les trois messages de la partie 4.
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif — ne bloque pas la suite du parcours.*
+
+Le livre d'or affiche aussi, sous chaque message, un lien vers la page
+personnelle de l'auteur. Proposez le traitement de cette adresse pour qu'elle ne
+puisse pas devenir un lien vers une destination inattendue, et justifiez-le en
+une phrase.
+
+<details>
+<summary>Voir la correction</summary>
+
+> Comparez d'abord votre travail aux **étapes** ci-dessous : la méthode compte autant que le résultat.
+
+#### Partie 1 — Repérer les contextes d'insertion
+
+Le gabarit assemble la page à partir de trois données extérieures :
+
+| Insertion | Contexte | Risque |
+| --- | --- | --- |
+| **La valeur de recherche** | texte d'un titre de section | la donnée devient du code |
+| **Le nom de l'auteur** | contenu d'une balise de mise en gras | la donnée devient du code |
+| **Le texte du message** | contenu d'un élément de liste | la donnée devient du code |
+
+Les trois insertions sont du **texte affiché**. Aucune n'est traitée : la chaîne
+est assemblée telle quelle, donc une balise déposée par un adhérent est relue
+par le navigateur comme faisant partie de la page. C'est le mécanisme du XSS
+(Cross-Site Scripting) : la confusion entre le texte que la personne voit et le
+code que le navigateur exécute.
+
+Le cas le plus visible est le nom de l'auteur : il s'insère dans une balise de
+mise en gras, et une balise de script déposée à cet endroit s'exécute dès
+l'ouverture de la page.
+
+---
+
+#### Partie 2 — Échapper les sorties
+
+Chaque insertion passe par l'échappement HTML (HyperText Markup Language) :
+
+```python
+from html import escape
+
+
+@app.get("/livre-d-or")
+def livre_d_or(q: str = ""):
+    messages = charger_messages()
+    html = f"<h2>Messages — recherche : {escape(q or '')}</h2><ul>"
+    for m in messages:
+        html += (f"<li><b>{escape(m['auteur'])}</b> : "
+                 f"{escape(m['texte'])}</li>")
+    html += "</ul>"
+    return html
+```
+
+Rien n'est supprimé, rien n'est censuré : les chevrons et les guillemets sont
+réécrits de façon à rester du texte. Un message contenant une balise de script
+s'affiche littéralement, et le navigateur ne l'exécute pas.
+
+L'échappement est appliqué **au moment de l'insertion**, pas au moment de la
+saisie : c'est le contexte d'affichage qui décide du traitement, et une valeur
+stockée peut être réutilisée plus tard dans un autre contexte.
+
+---
+
+#### Partie 3 — Poser une politique de sécurité du contenu
+
+L'en-tête se pose sur la réponse, côté serveur :
+
+```python
+return HTMLResponse(html, headers={
+    "Content-Security-Policy": "default-src 'self'",
+})
+```
+
+Cette politique annonce au navigateur que la page ne charge que ses propres
+ressources. Si un échappement venait à être oublié ailleurs, un script injecté
+depuis une autre origine serait refusé au chargement : la page perdrait la
+ressource étrangère, mais ne l'exécuterait pas.
+
+C'est une seconde barrière, pas un substitut : elle encaisse l'oubli, elle ne le
+corrige pas.
+
+---
+
+#### Partie 4 — Vérifier
+
+| Message déposé | Résultat attendu |
+| --- | --- |
+| **Un message normal** | affiché tel quel, sans changement |
+| **Une balise de script** | affichée comme du texte, non exécutée |
+| **Un chevron isolé** | affiché comme du texte, la page reste structurée |
+
+Le troisième cas est celui qu'on oublie : un chevron seul ne casse rien quand il
+est échappé, alors qu'il peut faire disparaître le reste de la page quand il ne
+l'est pas.
+
+---
+
+#### Points à retenir
+
+- Toute insertion de donnée dans une page est un **contexte**, et chaque
+  contexte attend son traitement.
+- L'échappement réécrit les caractères sensibles : rien n'est perdu, la donnée
+  reste du texte.
+- Il s'applique **à l'insertion**, pas à la saisie — le stockage ne présume pas
+  de l'usage.
+- La politique de sécurité du contenu est la seconde barrière : elle limite ce
+  que la page charge, même quand l'échappement a été oublié.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour
@@ -170,8 +354,7 @@ terminer la journée.*
 > 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
 > d'obligatoire n'en dépend
 >
-> La même manipulation, menée de bout en bout sur un livre d'or, est l'exercice
-> [Échapper les sorties d'un livre d'or](tp/03-echapper-les-sorties.md).
+> La même manipulation, menée de bout en bout sur un livre d'or, est l'exercice 1 de ce chapitre, plus haut.
 >
 > 🧪 **Atelier rapide (8 min)**
 >
@@ -203,25 +386,21 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** D'où naît une faille XSS (Cross-Site Scripting) ?
 
-- A. D'une base de données mal indexée qui renvoie trop de lignes
+- A. D'une base de données mal indexée, qui renvoie bien plus de lignes que prévu pour la page demandée
 - B. De la confusion entre le texte que la personne voit et le code que le navigateur exécute
-- C. D'un mot de passe trop court deviné par un tiers
-- D. D'une page qui charge des images trop lourdes
-
-- [ ] ✓ je savais
+- C. D'un mot de passe trop court, deviné par un tiers qui prend la session de la personne à sa place
+- D. D'une page qui charge des images trop lourdes, dont les adresses exposées livrent l'arborescence du serveur
 
 **2.** Que fait exactement `html.escape` sur une saisie contenant `<script>alert(1)</script>` ?
 
-- A. Il supprime la balise de la valeur avant de l'afficher
-- B. Il refuse la saisie et renvoie un message d'erreur
+- A. Il supprime purement et simplement la balise de la valeur avant de l'afficher : il ne reste rien à exécuter
+- B. Il refuse toute saisie contenant un chevron et renvoie un message d'erreur, pour n'afficher aucun doute
 - C. Il réécrit les caractères qui ont un sens particulier : la balise s'affiche comme du texte au lieu d'être exécutée
-- D. Il chiffre la valeur pour que le navigateur ne puisse pas la lire
-
-- [ ] ✓ je savais
+- D. Il chiffre la valeur avant de l'afficher, si bien que le navigateur ne voit plus une balise mais un texte illisible
 
 **3.** Pourquoi la CSP (Content Security Policy) se pose-t-elle en en-tête de réponse HTTP, côté serveur, plutôt que dans une balise de la page ?
 
@@ -230,8 +409,6 @@ terminer la journée.*
 - C. Parce que les navigateurs ignorent les balises de politique de contenu
 - D. Parce que l'en-tête chiffre aussi les échanges avec le navigateur
 
-- [ ] ✓ je savais
-
 **4.** Le moteur de gabarit échappe les valeurs par défaut. Quelles habitudes annulent cette protection ?
 
 - A. Nommer les variables en minuscules et éviter les accents
@@ -239,13 +416,13 @@ terminer la journée.*
 - C. Marquer une valeur comme sûre, et assembler le gabarit depuis une chaîne
 - D. Journaliser les valeurs affichées et limiter la longueur des champs
 
-- [ ] ✓ je savais
-
 **5.** *Question ouverte (2-3 lignes).* « Une valeur correctement échappée pour du texte le devient beaucoup moins dans un bloc de script ou dans une adresse. » Expliquez pourquoi le contexte d'insertion décide du traitement, avec un exemple du chapitre.
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -263,6 +440,8 @@ terminer la journée.*
 
 **5.** Attendu : chaque contexte a son langage — entre deux balises un échappement HTML suffit ; dans un attribut il faut aussi les guillemets toujours posés ; dans un bloc de script l'échappement HTML ne sert à rien, il faut une sérialisation dédiée ; pour une adresse c'est le schéma qu'on valide.
 **Pourquoi :** c'est le traitement du contexte qui compte, pas une fonction appliquée partout à l'aveugle : la même valeur ne signifie pas la même chose selon l'endroit où elle s'insère.
+
+</details>
 
 ---
 

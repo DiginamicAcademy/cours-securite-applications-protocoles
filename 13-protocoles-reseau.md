@@ -156,6 +156,182 @@ AllowUsers admin-data
 
 ---
 
+### Exercice 1 — Durcir le réseau d'une petite entreprise (20 min)
+
+#### Contexte
+
+Les **Éditions Belcastel** publient une vingtaine de titres par an et vendent leurs
+livres en ligne. L'infrastructure a grandi au fil des besoins, sans plan de réseau.
+Voici ce qui tourne aujourd'hui :
+
+| Machine | Rôle | Ce qui est ouvert |
+| --- | --- | --- |
+| `web-boutique` | boutique en ligne | ports 80 et 443 depuis Internet |
+| `admin-boutique` | back-office de la boutique | port 80, depuis Internet **et** depuis le réseau interne |
+| `messagerie` | serveur de courrier interne | port 25, en clair, depuis Internet |
+| `bdd-commandes` | base des commandes | port 3306 ouvert à tout le réseau interne |
+| `sauvegarde` | copie des sauvegardes | partage de fichiers ouvert à tous les postes |
+| poste du prestataire | maintenance à distance | port 22 depuis Internet, authentification par mot de passe |
+
+Tout est sur **un seul réseau plat** : chaque machine peut joindre toutes les
+autres. L'administrateur résume : « Ça marche depuis des années. »
+
+---
+
+#### Consignes
+
+##### Partie 1 — Repérer les flux en clair et les expositions
+
+Listez, dans le tableau ci-dessus, les lignes qui posent problème. Pour chacune,
+dites s'il s'agit d'un **flux en clair**, d'une **exposition inutile** ou d'un
+**accès trop large**, et pourquoi.
+
+##### Partie 2 — Regrouper les machines en zones
+
+ Regroupez les six machines
+en **trois zones** : une zone publique, une zone interne, une zone de données.
+Justifiez chaque placement en une phrase.
+
+##### Partie 3 — Décrire les flux autorisés
+
+Pour chaque zone, indiquez **qui a le droit de joindre qui**, et sur quel port.
+Un flux non cité doit être refusé. Complétez ce tableau :
+
+| De | Vers | Port | Autorisé ? |
+| --- | --- | --- | --- |
+| Internet | `web-boutique` | 443 | oui |
+| Internet | `web-boutique` | 80 | à décider |
+| `web-boutique` | `bdd-commandes` | 3306 | à décider |
+| poste du prestataire | `admin-boutique` | 22 | à décider |
+| postes du bureau | `sauvegarde` | partage | à décider |
+
+##### Partie 4 — Durcir les accès restants
+
+Parmi les accès que vous maintenez, choisissez **deux durcissements** du chapitre
+(chiffrement imposé, authentification par clé, restriction de comptes) et décrivez
+la mesure exacte à appliquer, machine par machine.
+
+---
+
+#### ✅ Auto-évaluation
+
+Avant de passer au corrigé, vérifiez que :
+
+- [ ] Chaque ligne que je signale est rattachée à une **catégorie** (flux en clair,
+  exposition inutile, accès trop large), et pas seulement décrite.
+- [ ] Mes **trois zones** sont nommées, et chaque machine y est placée avec une
+  justification.
+- [ ] Mon tableau de flux dit **oui ou non** pour chaque ligne, et tout ce qui n'est
+  pas cité est refusé par défaut.
+- [ ] Mes deux durcissements sont **applicables tels quels** : je dis quoi changer,
+  sur quelle machine.
+- [ ] Je n'ai pas proposé de mesure qui empêche la maintenance ou la sauvegarde de
+  fonctionner.
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif.* Si vous ne pouviez ajouter qu'**une seule** règle de pare-feu à ce
+réseau, laquelle choisiriez-vous pour réduire le plus le risque, et pourquoi ?
+
+<details>
+<summary>Voir la correction</summary>
+
+> Comparez d'abord votre travail aux **étapes** ci-dessous : la méthode compte autant que le résultat.
+
+#### Partie 1 — Repérer les flux en clair et les expositions
+
+**Éléments attendus :**
+
+| Ligne | Catégorie | Pourquoi c'est un problème |
+| --- | --- | --- |
+| `messagerie`, port 25 en clair | Flux en clair | Le courrier et les identifiants de connexion transitent lisibles par quiconque est sur le chemin. |
+| `admin-boutique`, port 80 | Flux en clair | Le back-office est administré sans chiffrement : mots de passe et jetons de session circulent en clair. |
+| `admin-boutique`, depuis Internet | Exposition inutile | Un back-office n'a rien à faire accessible depuis l'extérieur : c'est une surface d'attaque offerte. |
+| poste du prestataire, port 22 depuis Internet | Exposition inutile + accès trop large | Un accès d'administration ouvert sur Internet avec un mot de passe est la combinaison la plus recherchée. |
+| `bdd-commandes`, port 3306 pour tout le réseau | Accès trop large | N'importe quel poste compromis peut joindre la base des commandes directement. |
+| `sauvegarde`, partage ouvert à tous | Accès trop large | La copie de sécurité vaut ce que vaut son accès : ouverte à tous, elle est compromise dès le premier poste infecté. |
+
+**Ce qu'il faut retenir :** aucun de ces problèmes n'est une panne. Tout
+fonctionne, et c'est exactement ce qui les rend invisibles — chaque ligne donne
+un peu plus d'accès que ce que le besoin justifie.
+
+---
+
+#### Partie 2 — Regrouper les machines en zones
+
+**Éléments attendus :**
+
+| Zone | Machines | Justification |
+| --- | --- | --- |
+| **Zone publique** — la zone tampon, ou DMZ (demilitarized zone) | `web-boutique` | Seule machine destinée à être jointe depuis Internet : elle reçoit les coups, elle ne doit rien contenir de sensible. |
+| **Zone interne** | `messagerie`, `admin-boutique`, les postes du bureau | Usage interne : ces machines n'ont pas à être visibles depuis l'extérieur. |
+| **Zone de données** | `bdd-commandes`, `sauvegarde` | Ce qu'il y a de plus précieux : isolé, joignable seulement par les machines qui en ont besoin. |
+
+**Sur la segmentation :** le but n'est pas de multiplier les machines, mais de
+faire en sorte qu'un poste compromis ne mène pas automatiquement aux données. Le
+prestataire, lui, n'appartient à aucune zone : son accès doit être traité comme un
+flux venant de l'extérieur.
+
+---
+
+#### Partie 3 — Décrire les flux autorisés
+
+**Éléments attendus :**
+
+| De | Vers | Port | Autorisé ? | Raison |
+| --- | --- | --- | --- | --- |
+| Internet | `web-boutique` | 443 | oui | c'est le service public, chiffré. |
+| Internet | `web-boutique` | 80 | uniquement pour rediriger vers le 443 | le clair ne sert qu'à renvoyer vers le chiffré, jamais à servir du contenu. |
+| `web-boutique` | `bdd-commandes` | 3306 | oui | la boutique doit lire et écrire les commandes ; c'est le seul chemin vers la base. |
+| poste du prestataire | `admin-boutique` | 22 | oui, mais depuis un point d'entrée unique et avec une clé | la maintenance doit rester possible, sans exposition directe. |
+| postes du bureau | `sauvegarde` | partage | non | les postes n'ont rien à faire sur la copie de sécurité : seul le serveur qui produit les sauvegardes y écrit. |
+
+**Erreurs fréquentes :** autoriser « tout le réseau interne » vers la zone de
+données par facilité, ou oublier de refuser explicitement ce qui n'est pas cité.
+Une règle de pare-feu qui n'autorise rien par défaut est la seule qui tient dans
+le temps.
+
+---
+
+#### Partie 4 — Durcir les accès restants
+
+**Éléments attendus** (deux mesures parmi celles du chapitre) :
+
+- **Authentification par clé sur le poste du prestataire** — désactiver
+  l'authentification par mot de passe sur le port 22, installer une clé publique
+  par intervenant, et journaliser les connexions. Un mot de passe deviné ne donne
+  alors plus rien.
+- **Chiffrement imposé sur la boutique** — faire répondre `web-boutique` avec
+  l'en-tête qui interdit le repli en clair, et faire du port 80 une simple
+  redirection vers le port 443. L'administration passe alors obligatoirement par
+  le chiffré.
+- **Compte dédié pour la maintenance** — le prestataire ne reçoit pas un compte
+  administrateur général, mais un compte limité à `admin-boutique`, avec les
+  seuls droits nécessaires à sa mission.
+
+**Sur le choix des mesures :** un durcissement qui empêche la maintenance de
+fonctionner sera désactivé à la première urgence. Les mesures ci-dessus gardent
+chaque usage légitime — elles retirent seulement ce que personne n'utilisait.
+
+---
+
+#### Points à retenir
+
+- Un réseau plat transforme chaque poste compromis en accès à tout : la
+  **segmentation** casse cette chaîne.
+- Les flux en clair (courrier, administration) livrent identifiants et contenus à
+  quiconque est sur le chemin : le chiffrement se **décide**, il n'arrive pas
+  seul.
+- Une exposition inutile (back-office depuis Internet, accès d'administration
+  ouvert) est un risque que personne n'a demandé : la fermer ne casse rien.
+- Par défaut, **tout ce qui n'est pas explicitement autorisé est refusé**.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour terminer
@@ -233,49 +409,43 @@ la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Un site de phishing arbore le cadenas du navigateur. Que peut-on en conclure ?
 
-- A. Le site est sûr : le cadenas l'atteste
-- B. L'échange est chiffré et le serveur prouve être le propriétaire du nom de domaine — rien de plus : un site de phishing parfaitement chiffré reste un site de phishing
-- C. Les données saisies seront bien stockées côté serveur
-- D. Le nom de domaine est forcément celui que la personne voulait joindre
-
-- [ ] ✓ je savais
+- A. Que le site est sûr et honnête : le cadenas est délivré après un examen du contenu des pages et de l'éditeur
+- B. L'échange est chiffré et le serveur prouve posséder le nom de domaine — rien de plus : un site de phishing chiffré reste un site de phishing
+- C. Que les données saisies seront conservées côté serveur, à l'abri sur le réseau local, et jamais revendues à des tiers
+- D. Que le nom de domaine affiché est forcément celui que la personne cherchait à joindre, sans confusion avec un imitateur
 
 **2.** « Notre messagerie est chiffrée, on utilise STARTTLS. » Pourquoi cette affirmation ne suffit-elle pas ?
 
-- A. Parce que STARTTLS est un protocole cassé, à bannir
-- B. Parce que STARTTLS ne s'emploie qu'avec DNS
-- C. Parce que si le repli en clair est accepté, un attaquant sur le chemin annule la montée en chiffrement et récupère la version en clair : un chiffrement optionnel est un chiffrement contournable
-- D. Parce que le chiffrement d'une messagerie ne protège jamais les identifiants
-
-- [ ] ✓ je savais
+- A. Parce que STARTTLS est un protocole au point cassé depuis l'origine, et qu'il faut le bannir des serveurs modernes
+- B. Parce que STARTTLS ne s'emploie qu'avec DNS, et jamais avec la messagerie ni le transfert de fichiers
+- C. Parce qu'un repli en clair accepté laisse un attaquant sur le chemin annuler la montée en chiffrement : un chiffrement optionnel est contournable
+- D. Parce que le chiffrement d'une session de messagerie ne protège de toute façon jamais les identifiants de connexion
 
 **3.** Une victime tape le bon nom de domaine mais aboutit sur une machine contrôlée par l'attaquant. Quelle attaque est en cause, et quelle mesure la rend détectable ?
 
-- A. Une attaque par dégradation forcée ; HSTS
-- B. Un usurpation de résolution de noms (DNS spoofing) ; DNSSEC, qui fait signer les réponses — sans chiffrer la requête
-- C. Une interception MITM ; le mot de passe fort sur SSH
-- D. Une attaque par dégradation forcée ; DNSSEC
-
-- [ ] ✓ je savais
+- A. Une attaque par dégradation forcée du protocole ; HSTS, qui interdit ensuite tout repli en clair
+- B. Une usurpation de résolution de noms (DNS spoofing) ; DNSSEC, qui fait signer les réponses — sans chiffrer la requête
+- C. Une interception de type MITM sur le réseau ; un mot de passe fort côté SSH suffit à l'écarter
+- D. Une attaque par dégradation forcée du chiffrement ; DNSSEC, qui signe les réponses du résolveur
 
 **4.** Que garantit l'en-tête HSTS (Strict-Transport-Security) envoyé par un serveur ?
 
-- A. Que toutes les réponses sont compressées en HTTPS
-- B. Que le certificat est renouvelé automatiquement chaque année
+- A. Que toutes les réponses du serveur sont compressées avant d'être envoyées en HTTPS au navigateur
+- B. Que le certificat du domaine sera renouvelé automatiquement chaque année, sans intervention de l'administrateur
 - C. Que le navigateur doit refuser le repli en clair pour ce domaine : même si l'utilisateur tape `http://`, le navigateur refuse et chiffre
-- D. Que les mots de passe ne transitent jamais par le formulaire
-
-- [ ] ✓ je savais
+- D. Que les mots de passe ne transitent jamais en clair par le formulaire de connexion du site
 
 **5.** *Question ouverte (2-3 lignes).* Pour administrer un serveur SSH, pourquoi durcir avec l'authentification par clé plutôt que par mot de passe, et quels gestes de durcissement le chapitre applique-t-il ?
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -293,6 +463,8 @@ la journée.*
 
 **5.** Attendu : le mot de passe est devinable, réutilisable, interceptable — on le désactive purement ; avec la clé publique, la clé privée ne quitte jamais le poste. Durcissement : clés uniquement (`PasswordAuthentication no`), pas de root direct (`PermitRootLogin no`), comptes nommés (`AllowUsers …`), journalisation des connexions.
 **Pourquoi :** il reste alors à protéger la clé et à limiter les comptes autorisés — la surface se réduit à ce qui prouve son identité, plus à ce qui se devine.
+
+</details>
 
 ---
 

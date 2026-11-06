@@ -238,7 +238,7 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Un jeton de billetterie porte le rôle `guichet` avec le seul scope `places:lire`. Que peut faire l'application partenaire qui le détient ?
 
@@ -247,8 +247,6 @@ terminer la journée.*
 - C. Tout ce que fait un guichetier : le rôle décide seul
 - D. Rien : sans les deux scopes, le jeton ne vaut plus rien
 
-- [ ] ✓ je savais
-
 **2.** Une requête arrive avec un jeton valide, mais dont le scope ne couvre pas l'action demandée. Quel code de refus est le bon ?
 
 - A. `401 Unauthorized`, puisqu'il manque quelque chose
@@ -256,31 +254,27 @@ terminer la journée.*
 - C. `429 Too Many Requests` : l'action est hors périmètre
 - D. `404 Not Found` : l'action ne doit pas être visible
 
-- [ ] ✓ je savais
-
 **3.** Le rate limiting est compté en mémoire dans le service. Pourquoi est-ce insuffisant pour une API exposée ?
 
-- A. Parce que compter en mémoire est trop lent pour être utile
+- A. Parce que compter en mémoire serait trop lent pour tenir sous une charge réelle de plusieurs milliers d'appels
 - B. Parce que le compteur repart à zéro à chaque redémarrage et n'est pas partagé entre les instances du service
-- C. Parce qu'il faut toujours compter les adresses IP, jamais les comptes
-- D. Parce qu'un compteur en mémoire ne peut pas renvoyer de code `429`
-
-- [ ] ✓ je savais
+- C. Parce qu'il faut compter les adresses IP et jamais les comptes, qui changent de titulaire sur un poste partagé
+- D. Parce qu'un compteur tenu en mémoire ne serait plus capable de renvoyer le code `429` à l'appelant trop rapide
 
 **4.** L'API reçoit `places=-3` et le transforme en `places=1` pour que la requête passe. Quel principe est bafoué ?
 
-- A. Aucun : c'est de la validation de schéma bien comprise
-- B. La limitation de débit : l'appelant martèle l'API
+- A. Aucun : c'est exactement ce que fait une validation de schéma bien comprise, qui accepte et complète le corps reçu
+- B. La limitation de débit : l'appelant martèle l'API et finit par obtenir l'écriture de ce champ en trop
 - C. Le fail-closed de la validation de schéma : ce qui n'est pas explicitement accepté est refusé, jamais « réparé » en silence
-- D. L'autorisation : la réservation ne porte pas le bon `spectacle_id`
-
-- [ ] ✓ je savais
+- D. L'autorisation : la réservation ne porte pas le bon `spectacle_id` et devrait échouer au contrôle d'accès
 
 **5.** *Question ouverte (2-3 lignes).* « Valider le format ne suffit pas. » Expliquez pourquoi une réservation parfaitement valide au schéma peut quand même être une faille, et nommez le risque.
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -298,6 +292,8 @@ terminer la journée.*
 
 **5.** Attendu : le schéma vérifie la forme (type, bornes, longueur, format), pas le droit d'usage ; une réservation validée peut porter un `spectacle_id` qui n'appartient pas à l'appelant — c'est du BOLA (Broken Object Level Authorization), et la validation de schéma ne le voit pas.
 **Pourquoi :** la forme et le droit sont deux contrôles distincts : il faut aussi vérifier l'autorisation sur la donnée touchée.
+
+</details>
 
 ---
 

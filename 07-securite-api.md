@@ -108,6 +108,196 @@ garder trois ans les erreurs de `/v1`.
 
 ---
 
+### Exercice 1 — Auditer l'API d'un service de mobilité (25 min)
+
+#### Contexte
+
+La métropole de Montclair déploie un service de vélos en libre-service :
+380 stations et 12 000 abonnés. L'application mobile s'appuie sur une API
+interne que la ville s'apprête à **ouvrir à des partenaires** (une application
+de mobilité, le journal local). Avant cette ouverture, vous êtes missionné pour
+auditer l'API.
+
+La documentation interne décrit cinq endpoints (les deux verbes sont vus au
+chapitre) :
+
+| Endpoint | Ce qu'il renvoie ou fait | Jeton requis |
+| --- | --- | --- |
+| `GET /stations` | la liste des stations et des places disponibles | non |
+| `GET /comptes/{id}` | la fiche abonné : nom, courriel, téléphone, historique de trajets, moyen de paiement | oui |
+| `GET /factures/{id}` | la facture détaillée d'un abonné | oui |
+| `POST /locations` | démarre une location pour l'appelant | oui |
+| `POST /connexion` | vérifie les identifiants et renvoie un jeton | non |
+
+Le développeur qui vous reçoit résume la situation : « Tous les endpoints
+sensibles demandent un jeton, donc ils sont protégés. »
+
+---
+
+#### Consignes
+
+##### Partie 1 — Cartographier la surface d'attaque
+
+Pour chaque endpoint, notez les **paramètres** qu'il accepte, les **données**
+qu'il échange et ce qu'un attaquant pourrait y chercher. Classez les cinq du
+plus exposé au moins exposé ; une phrase pour justifier le premier.
+
+##### Partie 2 — Auditer l'autorisation
+
+Le jeton prouve **qui** appelle. Pour chacun des trois endpoints protégés,
+dites ce que l'API doit vérifier **en plus** du jeton pour que l'appelant
+n'accède qu'à ce qui lui appartient. Illustrez le risque par un scénario
+concret : qui appelle quel endpoint, sur quoi, et ce qu'il obtient à tort.
+
+##### Partie 3 — Auditer la limitation
+
+Parmi les cinq endpoints, lesquels doivent être soumis à une limitation de
+débit, et à quel rythme ? Pour chacun retenu, précisez **qui compte** (quelle
+clé de comptage) et **ce que l'API renvoie** quand le rythme est dépassé.
+
+##### Partie 4 — Hiérarchiser les recommandations
+
+Rédigez **trois recommandations** maximum, de la plus urgente à la moins
+urgente. Chacune tient en une phrase, suivie de la raison pour laquelle elle
+vient à cette place.
+
+---
+
+#### ✅ Auto-évaluation
+
+Avant de passer au corrigé, vérifiez que :
+
+- [ ] J'ai listé, pour chaque endpoint, ses **paramètres** et ses **données
+  échangées** — pas seulement son rôle.
+- [ ] J'ai distingué ce que **prouve le jeton** de ce que l'API doit **vérifier
+  en plus** (l'appartenance de l'objet).
+- [ ] Mon scénario de risque nomme **qui** appelle, **quel endpoint**, et **ce
+  qu'il obtient à tort**.
+- [ ] Pour chaque endpoint limité, j'ai donné un **rythme**, une **clé de
+  comptage** et un **comportement de refus**.
+- [ ] Mes trois recommandations sont **hiérarchisées** et chacune est
+  **justifiée**.
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif.* La ville veut aussi ouvrir `GET /comptes/{id}/trajets` (les
+trajets détaillés d'un abonné) à un partenaire de recherche sur la mobilité.
+Sans écrire une ligne de code, décrivez les trois conditions à remplir pour que
+cet endpoint soit ouvert sans exposer les abonnés.
+
+<details>
+<summary>Voir la correction</summary>
+
+> Comparez d'abord votre travail aux **étapes** ci-dessous : la méthode compte autant que le résultat.
+
+#### Partie 1 — Cartographier la surface d'attaque
+
+**Éléments attendus :**
+
+Les verbes en jeu : GET (consulter une ressource) et POST (agir).
+
+| Endpoint | Paramètres | Données échangées | Ce qu'on y cherche |
+| --- | --- | --- | --- |
+| `GET /stations` | aucun (ou un filtre de zone) | positions et disponibilités | un épuisement par appels répétés, une donnée de géolocalisation plus précise que prévu |
+| `GET /comptes/{id}` | `id` dans le chemin | identité, contacts, trajets, moyen de paiement | l'identifiant d'**un autre abonné** |
+| `GET /factures/{id}` | `id` dans le chemin | facture détaillée | la facture d'un autre abonné |
+| `POST /locations` | corps : identifiant de station, identifiant de vélo | confirmation de location | une location déclenchée pour quelqu'un d'autre |
+| `POST /connexion` | corps : identifiants | jeton | les identifiants, par essais répétés |
+
+**Classement attendu :** les endpoints qui portent un `id` dans le chemin
+(`/comptes/{id}`, `/factures/{id}`) sont les plus exposés, parce que la donnée
+demandée **n'appartient pas nécessairement à l'appelant**. `POST /connexion`
+vient ensuite : il ne renvoie pas de données, mais il est la porte d'entrée de
+tout le reste.
+
+**Ce qu'il faut retenir :** la surface d'attaque ne se lit pas dans la liste
+des endpoints, mais dans **ce que chaque endpoint accepte** — et un `id` dans
+le chemin est toujours une question à poser : « cet objet est-il à vous ? »
+
+---
+
+#### Partie 2 — Auditer l'autorisation
+
+**Éléments attendus :**
+
+| Endpoint | Ce que prouve le jeton | Ce qu'il faut vérifier en plus |
+| --- | --- | --- |
+| `GET /comptes/{id}` | l'identité de l'appelant | que le compte `{id}` **est** celui de l'appelant (ou que l'appelant a un rôle d'administration) |
+| `GET /factures/{id}` | l'identité de l'appelant | que la facture `{id}` appartient au compte de l'appelant |
+| `POST /locations` | l'identité de l'appelant | que la location est bien créée **au nom de** l'appelant, et pas pour un autre compte |
+
+**Scénario attendu — BOLA (Broken Object Level Authorization) :** un abonné se connecte et reçoit un jeton valide.
+Il appelle `GET /factures/{id}` en remplaçant `{id}` par l'identifiant de la
+facture d'un autre abonné — et l'API la renvoie, parce qu'elle vérifie que le
+jeton est valide mais pas que la facture appartient à son porteur. Le même scénario vaut sur `GET /comptes/{id}` : il
+suffit d'incrémenter l'identifiant pour parcourir les 12 000 abonnés de la
+métropole.
+
+**Sur l'autorisation :** le jeton répond à « qui ? », jamais à « quoi ? ». Un
+endpoint protégé par authentification **sans** contrôle d'appartenance est
+exactement le cas de la rétention de véhicules du chapitre : ouvert à tous les
+connectés.
+
+---
+
+#### Partie 3 — Auditer la limitation
+
+**Éléments attendus :**
+
+| Endpoint | Clé de comptage | Rythme raisonnable | Comportement au dépassement |
+| --- | --- | --- | --- |
+| `POST /connexion` | identifiant tenté **et** adresse IP | quelques tentatives par minute | refus `429` avec un délai d'attente annoncé (`Retry-After`) |
+| `GET /stations` | clé du partenaire appelant | large, mais borné | refus `429` |
+| `GET /comptes/{id}`, `GET /factures/{id}` | compte de l'appelant | modéré | refus `429` |
+| `POST /locations` | compte de l'appelant | serré (une location à la fois) | refus `429` |
+
+**Erreurs fréquentes :** limiter par adresse IP seule — une entreprise ou un
+campus partage une adresse, et tout le monde est puni pour les agissements
+d'un seul ; ou ne limiter que `/connexion` alors qu'un partenaire qui boucle
+sur `/stations` épuise la base tout aussi bien.
+
+**Sur la limitation :** la question n'est pas « faut-il limiter ? » mais « qui
+paie quand ça casse ? ». Ici, ce sont les 12 000 abonnés qui attendent devant
+une station — donc chaque endpoint public mérite un garde-fou.
+
+---
+
+#### Partie 4 — Hiérarchiser les recommandations
+
+**Éléments attendus** (un ordre différent est acceptable s'il est justifié) :
+
+1. **Ajouter le contrôle d'appartenance sur `/comptes/{id}` et `/factures/{id}`
+   avant toute ouverture** — c'est la faille la plus grave : elle expose
+   directement les données des abonnés, sans aucune manipulation exotique.
+2. **Limiter `/connexion` et les endpoints publics** — une fois les données
+   protégées, il reste à protéger la disponibilité : les essais de mots de passe
+   et les appels en boucle s'arrêtent là.
+3. **Réduire les données renvoyées par `/comptes/{id}`** — le moyen de paiement
+   et l'historique complet n'ont rien à faire dans une fiche consultée par une
+   application partenaire (c'est le sujet du bloc *Données sensibles*).
+
+**Sur la hiérarchie :** on range d'abord ce qui **fuit**, ensuite ce qui
+**tombe**, enfin ce qui **encombre**. Une recommandation urgente qui demande
+plus de travail n'est pas pour autant différée.
+
+---
+
+#### Points à retenir
+
+- Cartographier, c'est lister pour chaque endpoint ses **paramètres** et ses
+  **données échangées** — la surface d'attaque se lit là.
+- Un `id` dans le chemin pose toujours la question : « **cet objet est-il à
+  vous ?** » — c'est le cœur du BOLA.
+- Le jeton prouve l'identité, pas l'appartenance ; la limitation protège la
+  **disponibilité** autant que les données.
+- On priorise par dommage : ce qui **fuit** d'abord, ce qui **tombe** ensuite.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour
@@ -131,7 +321,7 @@ terminer la journée.*
 >
 > **Cartographier une API par ce qu'elle documente**
 >
-> Le geste est repris dans l'atelier ci-dessous et, en grand, dans l'exercice [Auditer l'API d'un service de mobilité](tp/07-auditer-api.md).
+> Le geste est repris dans l'atelier ci-dessous et, en grand, dans l'exercice 1 de ce chapitre, plus haut.
 >
 > Pour cartographier une API, commencez par ce qu'elle documente elle-même :
 > une page `/docs`, un fichier `/openapi.json`, ou le code du routeur. La
@@ -139,7 +329,7 @@ terminer la journée.*
 
 > 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
 >
-> Atelier d'appropriation : le même travail est conduit de bout en bout dans l'exercice [Auditer l'API d'un service de mobilité](tp/07-auditer-api.md), qui ne suppose pas celui-ci fait.
+> Atelier d'appropriation : le même travail est conduit de bout en bout dans l'exercice 1 de ce chapitre, plus haut ; il ne suppose pas celui-ci fait.
 >
 > 🧪 **Atelier rapide (8 min)**
 >
@@ -224,7 +414,7 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Sur l'API d'une rétention de véhicules, `GET /users/4251` répond à un client connecté — puis `GET /users/4252` aussi. Quel risque de l'OWASP API Security Top 10 est illustré ?
 
@@ -233,40 +423,34 @@ terminer la journée.*
 - C. La consommation de ressources sans restriction : le débit n'est pas limité
 - D. La mauvaise gestion de l'inventaire : une vieille version de l'API tourne encore
 
-- [ ] ✓ je savais
-
 **2.** Un formulaire d'inscription ne montre pas de champ `role`, mais l'API accepte `{"role": "admin"}` dans le corps de la requête et l'écrit dans l'objet métier. Comment nomme-t-on ce risque ?
 
-- A. Le BOLA, puisque le rôle d'un autre est touché
+- A. Le BOLA, puisque la requête touche le rôle d'un autre utilisateur que celui qui l'a envoyée
 - B. L'injection de masse (mass assignment) : le corps est recopié tel quel, la propriété existe donc elle est écrite
-- C. La confusion authentification/autorisation : le 403 manque
-- D. Le versioning mal géré : le formulaire a vieilli
-
-- [ ] ✓ je savais
+- C. La confusion entre authentification et autorisation : la réponse ne renvoie jamais de 403
+- D. Le versioning mal géré : le formulaire de la fiche n'a pas suivi les versions successives de l'API
 
 **3.** L'équipe garde `/v1` en production « pour ne pas casser les clients », en plus de `/v2`. Quel est le problème ?
 
-- A. Aucun : deux versions coexistent sans risque si le code est propre
-- B. `/v1` ralentit `/v2` en partageant la base de données
+- A. Aucun : deux versions coexistent sans risque tant que le code est propre et que les tests passent au vert
+- B. Un ralentissement : `/v1` et `/v2` partagent la même base et se disputent les mêmes index
 - C. Une vieille version garde vieilles les failles qu'elle contenait : chaque version maintenue est une surface d'attaque maintenue
-- D. Les clients ne savent pas quelle version choisir sans document OpenAPI
-
-- [ ] ✓ je savais
+- D. Rien du côté sécurité : seuls les clients sont perdus, sans document OpenAPI pour choisir leur version
 
 **4.** Qu'est-ce qui rend une API différente d'une page web face à un attaquant ?
 
-- A. Une API échange du JSON, illisible pour un attaquant
+- A. Une API échange du JSON, un format que seul un client légitime sait lire et exploiter
 - B. Une API est faite pour être scriptée : l'attaquant ne navigue pas, il programme, et peut tester des milliers de valeurs
-- C. Une API est toujours derrière un pare-feu, contrairement aux pages
-- D. Une API n'affiche rien, donc rien ne peut fuiter
-
-- [ ] ✓ je savais
+- C. Une API est toujours derrière un pare-feu, contrairement aux pages web exposées au public
+- D. Une API n'affiche rien à l'écran, donc rien de ce qu'elle renvoie ne peut être lu par quelqu'un
 
 **5.** *Question ouverte (2-3 lignes).* Qu'est-ce que la surface d'attaque d'une API ? Donnez la définition du chapitre et au moins trois exemples d'entrées à auditer sur l'API de la fromagerie.
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -284,6 +468,8 @@ terminer la journée.*
 
 **5.** Attendu : tout ce que l'API accepte du monde extérieur, plus ce qu'elle renvoie — par exemple le chemin (`/products/search`, un endpoint oublié), les paramètres (`?q=Comté`, une valeur qui déborde), le corps de la requête (un champ de trop accepté sans vérification), les en-têtes (un jeton volé ou deviné), et les données renvoyées (un champ sensible qui sort sans qu'on le demande).
 **Pourquoi :** chaque entrée est un point où une valeur peut déborder du cadre prévu, et chaque champ renvoyé est un champ à protéger.
+
+</details>
 
 ---
 

@@ -85,6 +85,229 @@ confondre avec l'anonymisation.
 
 ---
 
+### Exercice 1 — Sécuriser un endpoint qui en dit trop (30 min)
+
+#### Contexte
+
+Un fournisseur d'énergie met à jour son portail client. L'écran « Échéancier de
+paiement » affiche trois informations : le nom du client, ses prochaines
+échéances et les montants dus. L'endpoint qui alimente cet écran a été écrit
+pendant la refonte, « en reprenant la fiche client complète, comme ça on aura
+tout ce qu'il faut ».
+
+Voici ce que renvoie actuellement l'endpoint `/compte/{id}` :
+
+```json
+{
+  "id": 4021,
+  "numero_client": "CL-4021",
+  "nom": "Camille Durand",
+  "courriel": "c.durand@example.fr",
+  "telephone": "0612345678",
+  "adresse": "12 rue des Lilas, 34000 Montpellier",
+  "rib": "FR7630006000011234567890189",
+  "contrat": {
+    "offre": "Tarif Vert",
+    "puissance_souscrite": 9
+  },
+  "releves": [
+    {"horodatage": "2026-04-13T00:00", "kwh": 1.2},
+    {"horodatage": "2026-04-13T00:30", "kwh": 0.9}
+  ],
+  "historique_factures": [
+    {"date": "2026-03-05", "montant": 84.10, "statut": "payée"},
+    {"date": "2026-02-05", "montant": 91.30, "statut": "payée"}
+  ]
+}
+```
+
+Le fournisseur relève la consommation **toutes les 30 minutes** : la série
+`releves` est donc longue, et elle décrit la vie quotidienne du logement
+(quand la personne se lève, quand elle est absente). L'endpoint est appelé par
+le portail web, mais aussi par une application partenaire d'aide à la gestion
+de l'énergie.
+
+---
+
+#### Consignes
+
+##### Partie 1 — Classifier les champs
+
+Classez chaque champ de la réponse dans les quatre niveaux du chapitre.
+Justifiez en une phrase les deux classements les plus élevés.
+
+##### Partie 2 — Minimiser la réponse
+
+Réécrivez la réponse de `GET /compte/{id}` pour qu'elle porte **exactement** ce
+dont l'écran d'échéancier a besoin. Listez ensuite les champs retirés et, pour
+chacun, l'usage qui justifierait — le cas échéant — un endpoint dédié.
+
+##### Partie 3 — Masquer et pseudonymiser
+
+L'application partenaire a besoin d'afficher « le RIB du prélèvement »
+sans le montrer en entier, et d'analyser la consommation par profil sans que l'identité des clients
+apparaisse. Décrivez le masquage du RIB et la pseudonymisation des
+relevés : que devient chaque donnée, et que garde-t-on derrière ?
+
+##### Partie 4 — Justifier au regard du RGPD
+
+Pour la série `releves`, répondez aux trois questions : quelle est la
+**finalité** de sa collecte, quelle **base légale** la justifie, et que
+devient-elle quand le contrat est résilié ? Une réponse par question, une à
+deux phrases chacune.
+
+---
+
+#### ✅ Auto-évaluation
+
+Avant de passer au corrigé, vérifiez que :
+
+- [ ] Chaque champ de la réponse originale est **classé**, sans exception.
+- [ ] Ma réponse minimisée ne contient **que** ce dont l'écran a besoin — j'ai
+  vérifié champ par champ.
+- [ ] Pour chaque champ retiré, j'ai dit **où il devrait vivre** (endpoint
+  dédié, jamais nulle part).
+- [ ] Mon masquage du RIB laisse **impossible** la lecture du numéro complet
+  depuis la réponse.
+- [ ] Ma partie RGPD nomme une **finalité**, une **base légale** et un **sort**
+  de la donnée — pas seulement « c'est sensible ».
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif.* Le fournisseur veut proposer un service de « comparaison avec les
+foyers similaires » à partir des relevés. Sans écrire de code, décrivez comment
+produire ce service **sans** que les données individuelles de consommation
+quittent le système.
+
+<details>
+<summary>Voir la correction</summary>
+
+> Comparez d'abord votre travail aux **étapes** ci-dessous : la méthode compte autant que le résultat.
+
+#### Partie 1 — Classifier les champs
+
+**Éléments attendus :**
+
+| Champ | Niveau | Pourquoi |
+| --- | --- | --- |
+| `id`, `numero_client` | interne | des identifiants opérationnels, sans danger immédiat, mais inutiles à diffuser |
+| `nom` | confidentielle | une donnée personnelle, utile à l'écran, à ne pas exposer ailleurs |
+| `courriel`, `telephone`, `adresse` | confidentielle | des coordonnées directes : leur fuite ouvre la voie au démarchage et à l'hameçonnage |
+| `rib` | strictement confidentielle | un moyen de paiement : sa divulgation permet un prélèvement frauduleux |
+| `contrat` | interne | des informations commerciales, gênantes si diffusées, sans gravité immédiate |
+| `releves` | confidentielle | la consommation à 30 minutes près décrit les habitudes de vie du logement |
+| `historique_factures` | confidentielle | des données financières personnelles |
+
+**Les deux classements les plus élevés, justifiés :** le `rib` est strictement
+confidentiel parce que sa divulgation cause un dommage **financier direct** et
+immédiat ; les `releves` sont confidentiels parce qu'une série toutes les 30
+minutes renseigne sur la présence et les habitudes du foyer — une fuite de ce
+type a déjà servi à déterminer quand un logement est vide.
+
+**Ce qu'il faut retenir :** le niveau ne se déduit pas du type technique
+(chaîne, nombre) mais du **dommage** causé par la divulgation. Une série de
+nombres anodins peut être plus sensible qu'un nom.
+
+---
+
+#### Partie 2 — Minimiser la réponse
+
+**Éléments attendus :**
+
+```json
+{
+  "nom": "Camille Durand",
+  "echeances": [
+    {"date": "…", "montant": …}
+  ]
+}
+```
+
+Les valeurs des échéances viennent de la facturation ; la forme de la réponse,
+elle, ne porte plus rien d'autre que l'écran n'affiche.
+
+| Champ retiré | Où il devrait vivre |
+| --- | --- |
+| `id`, `numero_client` | nulle part dans une réponse client ; un endpoint interne de gestion, si besoin |
+| `courriel`, `telephone`, `adresse` | un endpoint « mes coordonnées », appelé par l'écran qui les affiche |
+| `rib` | un endpoint « mes moyens de paiement », avec masquage systématique |
+| `contrat` | un endpoint « mon contrat » |
+| `releves` | un endpoint « ma consommation », paginé, réservé à l'écran qui les trace |
+| `historique_factures` | un endpoint « mes factures » |
+
+**Erreurs fréquentes :** garder `id` et `numero_client` « au cas où » — ils ne
+servent à l'écran que s'il les affiche ; ou vider la réponse de ses champs
+sensibles mais garder `releves` complet, ce qui laisse la série la plus
+bavarde dans la réponse.
+
+**Sur la minimisation :** la question n'est pas « ce champ est-il dangereux ? »
+mais « **cet écran en a-t-il besoin ?** ». Un endpoint par usage donne des
+réponses minimales **et** des surfaces d'attaque séparées.
+
+---
+
+#### Partie 3 — Masquer et pseudonymiser
+
+**Éléments attendus :**
+
+| Donnée | Traitement | Ce qui reste visible | Ce qui reste derrière |
+| --- | --- | --- | --- |
+| `rib` | masquage | `**** **** **** 0189` (les derniers caractères seulement) | le RIB (relevé d'identité bancaire) complet en base, accessible au seul
+module de prélèvement |
+| `releves` | pseudonymisation | FOYER (code interne du foyer), comme `FOYER-4021`, à la place du nom et du
+numéro client | la table de correspondance `FOYER-4021` → client, dans un espace restreint |
+
+**Points de vigilance :** masquer le RIB côté **réponse** ne suffit pas si le
+module qui construit la réponse lit le RIB complet — le masquage se fait au
+plus près de la source. Et la table de correspondance de la pseudonymisation
+est elle-même une donnée personnelle : si l'application partenaire l'obtient,
+la pseudonymisation ne protège plus rien.
+
+**Sur les deux techniques :** masquer protège **l'affichage**, pseudonymiser
+protège **l'analyse**. Les deux laissent la donnée exister — c'est le
+compromis assumé quand l'usage exige de revenir à la personne.
+
+---
+
+#### Partie 4 — Justifier au regard du RGPD
+
+**Éléments attendus :**
+
+| Question | Réponse attendue |
+| --- | --- |
+| **Finalité** | facturer la consommation réelle et permettre au client de suivre son usage — pas « améliorer nos services » en général |
+| **Base légale** | l'exécution du contrat de fourniture d'énergie (la donnée sert à établir la facture) |
+| **Sort après résiliation** | effacement ou archivage restreint selon l'obligation légale de conservation des factures ; la série détaillée des relevés, elle, n'a plus de finalité et disparaît |
+
+**Erreurs fréquentes :** invoquer le consentement pour une donnée nécessaire à
+la facturation — le consentement serait révocable, et la facturation ne l'est
+pas ; ou répondre « on la garde 10 ans » sans distinguer la **facture** (retenue
+par une obligation comptable) du **relevé détaillé** (sans objet une fois le
+contrat clos).
+
+**Sur la base légale :** elle se choisit **avant** de collecter, et elle
+décide de la suite — notamment de ce qui se passe quand la personne part. Une
+finalité floue produit toujours la même réponse : « on garde, au cas où ».
+
+---
+
+#### Points à retenir
+
+- Classifier, c'est juger le **dommage** de la divulgation — une série de
+  mesures peut être plus sensible qu'un nom.
+- Minimiser, c'est répondre à « **cet écran en a-t-il besoin ?** » — et donner
+  un endpoint dédié à chaque usage qui, lui, en a besoin.
+- Masquer protège l'affichage, pseudonymiser protège l'analyse — et la table de
+  correspondance reste une donnée personnelle.
+- La base légale se choisit avant la collecte : elle décide du **sort** de la
+  donnée quand le contrat s'arrête.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour
@@ -103,7 +326,7 @@ terminer la journée.*
 
 > 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
 >
-> Classer ces colonnes est exactement la Partie 1 de l'exercice [Sécuriser un endpoint qui en dit trop](tp/09-securiser-endpoint-data.md), sur un autre jeu de données.
+> Classer ces colonnes est exactement la Partie 1 de l'exercice 1 de ce chapitre, plus haut, sur un autre jeu de données.
 >
 > 🧪 **Atelier rapide (8 min)**
 >
@@ -137,7 +360,7 @@ terminer la journée.*
 >
 > **Le même endpoint, avant et après minimisation**
 >
-> L'exercice [Sécuriser un endpoint qui en dit trop](tp/09-securiser-endpoint-data.md) fait parcourir ce chemin, sur une réponse tout aussi bavarde.
+> L'exercice 1 de ce chapitre, plus haut, fait parcourir ce chemin, sur une réponse tout aussi bavarde.
 >
 > La minimisation consiste à ne **renvoyer que les champs utiles** à la fonction
 > exacte de l'endpoint. Le contraste se lit dans deux réponses du même endpoint GET (lecture d'une
@@ -205,7 +428,7 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Sur quoi se base la classification d'une donnée en quatre niveaux de sensibilité ?
 
@@ -214,40 +437,34 @@ terminer la journée.*
 - C. Sur la taille du colonne qui la stocke
 - D. Sur le chiffre d'affaires du service qui la détient
 
-- [ ] ✓ je savais
-
 **2.** La fiche d'un salarié renvoie son numéro de sécurité sociale et son RIB dans une réponse destinée à un simple affichage de planning. À quel niveau appartiennent ces champs, et quelle est la règle par défaut ?
 
-- A. Interne : restreindre au périmètre de l'entreprise
-- B. Confidentielle : accès nominatif, journalisé
+- A. Interne : accès restreint au périmètre de l'entreprise, sans précaution supplémentaire
+- B. Confidentielle : accès nominatif et journalisé, comme on le fait pour les fiches de paie
 - C. Strictement confidentielle : accès exceptionnel, chiffrement, jamais exposée par une API
-- D. Publique : ces valeurs circulent déjà entre services
-
-- [ ] ✓ je savais
+- D. Publique : ces valeurs circulent déjà entre les services, elles ne méritent donc aucun verrou
 
 **3.** La minimisation de la réponse d'un endpoint se décide à trois endroits. Lesquels ?
 
 - A. La requête (nommer les colonnes), le modèle de réponse (schéma de sortie explicite), le code mort (supprimer les anciens endpoints généreux)
-- B. Le pare-feu, le chiffrement des flux, la sauvegarde chiffrée
-- C. Les en-têtes de réponse, la pagination, la compression
-- D. La politique de mots de passe, la double authentification, la durée de session
-
-- [ ] ✓ je savais
+- B. Le pare-feu applicatif, le chiffrement des flux entre services, la sauvegarde chiffrée côté exploitation
+- C. Les en-têtes de réponse HTTP, la pagination des collections, la compression des corps envoyés au client
+- D. La politique de mots de passe, la double authentification des comptes, la durée de vie des sessions ouvertes
 
 **4.** Un export « pseudonymisé » (des codes comme `EMP-0042` au lieu des noms) est croisé avec l'annuaire interne. Que se passe-t-il ?
 
-- A. Rien : la pseudonymisation rend la donnée définitivement non personnelle
+- A. Rien : une fois pseudonymisée, la donnée ne se rattache plus à une personne et devient libre d'usage
 - B. Le croisement rétablit l'identité : le pseudonyme reste une donnée personnelle, à traiter avec les mêmes contrôles d'accès
-- C. La donnée devient publique, n'étant plus rattachée à un nom
-- D. Le croisement ne concerne que les données en base, jamais les exports
-
-- [ ] ✓ je savais
+- C. La donnée devient publique, puisqu'elle n'est plus rattachée à un nom directement lisible
+- D. Le croisement ne concerne que les données restées en base, jamais les exports partis chez un destinataire
 
 **5.** *Question ouverte (2-3 lignes).* Masquer, pseudonymiser, anonymiser : donnez pour chacune technique un usage qui la désigne, et expliquez pourquoi l'anonymisation est le choix irréversible.
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -265,6 +482,8 @@ terminer la journée.*
 
 **5.** Attendu : le masquage cache une partie de la valeur quand l'usage exige la forme (un écran de paie affiche `**** **** **** 4821`) ; la pseudonymisation remplace l'identité par un identifiant stable quand la donnée doit revenir à une personne identifiable (support, paie) ; l'anonymisation convient quand la donnée ne sert qu'à des statistiques.
 **Pourquoi :** l'anonymisation supprime la possibilité de ré-identification — elle est définitive, donc irréversible pour les usages individuels.
+
+</details>
 
 ---
 

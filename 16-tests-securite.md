@@ -211,16 +211,14 @@ la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Qu'est-ce qu'un smoke test de sécurité ?
 
-- A. Un test rapide qui vérifie que la page d'accueil s'affiche bien
+- A. Un test rapide qui vérifie que la page d'accueil s'affiche bien après chaque déploiement du service
 - B. Un test qui rejoue le payload qui marchait avant la correction, et vérifie qu'il échoue toujours
-- C. Une analyse statique du code qui devine les risques avant l'exécution
-- D. Un test de charge qui mesure le temps de réponse de l'API
-
-- [ ] ✓ je savais
+- C. Une analyse statique du code qui devine les risques avant toute exécution, en lisant les sources du module
+- D. Un test de charge qui mesure le temps de réponse de l'API sous un trafic représentatif de la journée
 
 **2.** Quels trois détails font la qualité du test de sécurité du chapitre ?
 
@@ -229,31 +227,27 @@ la journée.*
 - C. Il utilise un payload générique, accepte tout code 4xx, et s'appuie sur les données du test précédent
 - D. Il teste plusieurs failles à la fois, boucle sur tous les endpoints, et journalise ses résultats
 
-- [ ] ✓ je savais
-
 **3.** Le test de fuzzing du chapitre s'arrête sur `assert reponse.status_code != 500`. Que prouve-t-il quand il passe ?
 
-- A. L'absence de faille dans l'API
-- B. L'absence de plantage : une erreur serveur trahit un traitement non maîtrisé de l'entrée — c'est déjà beaucoup, et il le refait à chaque exécution
-- C. Que toutes les entrées ont été testées
-- D. Que l'API rejette bien les entrées invalides par un code 400
-
-- [ ] ✓ je savais
+- A. L'absence de toute faille dans l'API, ce que le fuzzer établirait en cherchant dans toutes les directions
+- B. L'absence de plantage : une erreur serveur trahit un traitement non maîtrisé de l'entrée — et le test le refait à chaque exécution
+- C. Que toutes les entrées de l'API ont été exercées au moins une fois, dans tous leurs formats possibles
+- D. Que l'API rejette bien toutes les entrées invalides par un code 400, et jamais par un code 500
 
 **4.** Un collègue propose de lancer le fuzzing « pour vérifier » sur le service de production du partenaire. Que dit le chapitre ?
 
-- A. C'est acceptable si le fuzzing est borné en durée
-- B. C'est acceptable la nuit, quand le service est peu chargé
-- C. C'est exclu : le fuzzing s'exerce uniquement sur son lab local ou un environnement de test dont on est responsable — sur un service de production, c'est une charge réelle et une atteinte à ce qui ne vous appartient pas
-- D. C'est exclu uniquement si le service est public ; un service de partenaire privé est un terrain de test
-
-- [ ] ✓ je savais
+- A. C'est acceptable si le fuzzing est borné en durée et lancé la nuit, hors des heures d'affluence du service visé
+- B. C'est acceptable la nuit, quand le service est peu chargé et que l'équipe d'astreinte a été prévenue de l'essai
+- C. C'est exclu : on ne fuzz que son lab ou un environnement de test dont on est responsable — sur une production, c'est une charge réelle et une atteinte à un système d'autrui
+- D. C'est exclu uniquement si le service est public ; un service de partenaire privé, connu de l'équipe, reste un bon terrain de test
 
 **5.** *Question ouverte (2-3 lignes).* « Chaque faille corrigée devient un test. » Pourquoi ce réflexe est-il plus important en sécurité qu'en fonctionnel, et donnez un exemple de test de non-régression pris dans le chapitre.
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -271,6 +265,8 @@ la journée.*
 
 **5.** Attendu : une régression de sécurité ne se voit pas dans les résultats de l'application — elle se voit dans les journaux d'un attaquant ; l'enjeu est donc plus grave que pour un bug fonctionnel. Exemple (un parmi) : injection corrigée dans la recherche → rejouer le payload, attendre un refus ; script injecté → attendre un affichage échappé ; endpoint d'administration → appeler sans jeton, attendre un refus ; champ sensible retiré → vérifier son absence dans la réponse.
 **Pourquoi :** ces tests rejoignent le pipeline d'intégration continue et gardent la correction effective à chaque livraison.
+
+</details>
 
 ---
 

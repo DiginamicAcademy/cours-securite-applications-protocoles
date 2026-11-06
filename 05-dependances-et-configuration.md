@@ -133,6 +133,204 @@ qu'une configuration qui devine.
 
 ---
 
+### Exercice 1 — Traiter une CVE sur son propre projet (25 min, facultatif)
+
+#### Contexte
+
+Votre équipe maintient un petit service d'export de rapports, utilisé par le
+service marketing pour produire des fichiers de suivi. Le lundi matin, l'analyse
+automatique des dépendances signale une vulnérabilité, décrite dans un avis
+GHSA (GitHub Security Advisory) et référencée par un identifiant CVE (Common
+Vulnerabilities and Exposures). Le fichier de figeage du
+projet contient ceci :
+
+```text
+Flask==3.0.0
+Jinja2==3.1.2
+MarkupSafe==2.1.5
+```
+
+L'avis de sécurité, publié par l'éditeur, dit ceci :
+
+| Champ | Contenu |
+| --- | --- |
+| **Identifiant** | CVE-2024-22195 — avis GHSA-h5c8-rqwp-cp95 |
+| **Composant** | Jinja2, le moteur de gabarit |
+| **Versions affectées** | antérieures à 3.1.3 |
+| **Mécanisme** | le filtre `xmlattr` accepte des clés d'attribut contenant des espaces |
+| **Impact** | injection de balise dans la page produite |
+
+Le service utilise ce filtre pour assembler les attributs d'une liste de
+résultats, à partir d'un dictionnaire dont une clé est fournie par la requête.
+
+---
+
+#### Consignes
+
+##### Partie 1 — Lire l'avis
+
+Reprenez les cinq champs de l'avis et dites, pour chacun, ce qu'il permet de
+décider. Identifiez ce que l'avis **ne** dit pas et que vous devez établir
+vous-même.
+
+##### Partie 2 — Situer l'exposition
+
+Cherchez dans le code du service si le filtre concerné est utilisé, et si les
+clés du dictionnaire qu'il reçoit peuvent venir de l'extérieur. Concluez, en
+deux phrases, sur l'exposition réelle du service — la présence de la
+dépendance ne suffit pas à la trancher.
+
+##### Partie 3 — Corriger
+
+Appliquez le correctif : montez le composant vers la version corrigée, et
+validez les clés côté applicatif pour que le mécanisme ne puisse pas se
+reproduire sur une version ultérieure. Reconstruisez le service, puis vérifiez
+que le cas décrit dans l'avis ne fonctionne plus.
+
+##### Partie 4 — Rédiger l'avis d'exposition
+
+Rédigez un court avis interne, à destination de l'équipe et de la direction des
+systèmes d'information : la situation, l'exposition établie, la correction
+appliquée, la vérification effectuée. Une dizaine de lignes suffit.
+
+---
+
+#### ✅ Auto-évaluation
+
+- [ ] Je sais dire ce que chaque champ de l'avis apporte à la décision.
+- [ ] J'ai identifié ce que l'avis ne dit pas et que le projet doit établir.
+- [ ] J'ai vérifié si le filtre concerné est réellement utilisé par le service.
+- [ ] Le composant est monté vers la version corrigée.
+- [ ] Les clés sont validées côté applicatif, indépendamment de la version.
+- [ ] J'ai vérifié que le cas de l'avis ne fonctionne plus après correction.
+- [ ] Mon avis d'exposition tient en une dizaine de lignes et se passe de moi
+      pour être compris.
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif — ne bloque pas la suite du parcours.*
+
+La mise à jour complète n'était pas possible immédiatement : le service dépend
+d'une bibliothèque qui exige une version antérieure. Décrivez la marche à suivre
+pour rétro-patcher le composant concerné, ce que cela engage pour la
+maintenance, et la date à laquelle ce choix devra être revu.
+
+<details>
+<summary>Voir la correction</summary>
+
+> Comparez d'abord votre travail aux **étapes** ci-dessous : la méthode compte autant que le résultat.
+
+#### Partie 1 — Lire l'avis
+
+| Champ | Ce qu'il permet de décider |
+| --- | --- |
+| **Identifiant** | retrouver l'avis dans les bases, le citer dans vos propres documents |
+| **Composant** | savoir quelle partie du projet est concernée |
+| **Versions affectées** | dire si votre figeage est concerné, sans rien installer |
+| **Mécanisme** | comprendre ce qui permet l'exploitation, et donc si vous l'exposez |
+| **Impact** | estimer ce qui devient possible si personne ne corrige |
+
+L'identifiant CVE (Common Vulnerabilities and Exposures) sert de référence
+commune entre les bases ; l'avis GHSA (GitHub Security Advisory) est la
+publication de l'éditeur, avec le détail du correctif.
+
+Ce que l'avis **ne** dit pas, et que le projet doit établir lui-même :
+
+- si la fonctionnalité concernée est réellement utilisée par votre code ;
+- si les entrées qui déclenchent la faille sont atteignables depuis
+  l'extérieur ;
+- quel est l'impact métier, compte tenu des données traitées.
+
+C'est la différence entre l'avis de sécurité et l'avis d'exposition : le premier
+décrit une bibliothèque, le second décrit votre situation.
+
+---
+
+#### Partie 2 — Situer l'exposition
+
+Le code du service utilise le filtre concerné pour assembler les attributs d'une
+liste de résultats, et une des clés du dictionnaire vient de la requête. Le
+mécanisme de l'avis est donc atteignable : la clé n'est pas validée, et le filtre
+l'insère telle quelle dans la balise.
+
+Conclusion en deux phrases : le service est exposé, et l'exposition est
+directement déclenchable depuis la page de recherche. La simple présence de la
+dépendance ne l'aurait pas établi — c'est l'usage du filtre, avec une clé venue
+de l'extérieur, qui tranche.
+
+---
+
+#### Partie 3 — Corriger
+
+Deux volets, indissociables :
+
+```text
+Jinja2==3.1.3
+```
+
+Le composant est monté vers la version corrigée. Et la validation des clés est
+ajoutée côté applicatif :
+
+```python
+CLES_AUTORISEES = {"data-nom", "class"}
+
+
+def valider_attributs(attributs):
+    for cle in attributs:
+        if cle not in CLES_AUTORISEES:
+            raise ValueError("cle d'attribut non autorisee")
+    return attributs
+```
+
+Le premier volet ferme la faille connue ; le second empêche qu'un mécanisme
+voisin ne se reproduise sur une version ultérieure. S'en tenir à la mise à jour
+aurait laissé la porte ouverte à la faille suivante du même type.
+
+La vérification porte sur les deux points : les tests existants passent
+toujours, et le cas décrit dans l'avis — une clé contenant des espaces — ne
+produit plus d'attribut parasite dans la page.
+
+---
+
+#### Partie 4 — Rédiger l'avis d'exposition
+
+Un avis interne tient en quelques lignes :
+
+> **Objet** — vulnérabilité sur une dépendance du service d'export.
+>
+> **Situation** — le composant de mise en page est affecté par l'avis
+> CVE-2024-22195, dans la version figée par le projet.
+>
+> **Exposition** — la fonctionnalité concernée est utilisée, avec une clé
+> fournie par la requête : le service est exposé.
+>
+> **Correction** — montée du composant vers la version corrigée, et validation
+> des clés côté applicatif.
+>
+> **Vérification** — les tests passent, le cas de l'avis ne fonctionne plus.
+
+Cet avis se passe de son auteur : quelqu'un qui reprend le sujet comprend la
+situation sans avoir à interroger l'équipe.
+
+---
+
+#### Points à retenir
+
+- La réponse suit quatre temps : **lire, situer, corriger, vérifier** —
+  corriger avant de lire conduit à des mises à jour qui cassent le service.
+- L'avis de sécurité décrit la bibliothèque ; l'avis d'exposition décrit
+  **votre** projet, et c'est lui qui décide de l'urgence.
+- La mise à jour ferme la faille connue ; la validation des entrées ferme la
+  suivante.
+- La vérification a deux volets : les tests passent, et le cas de l'avis ne
+  passe plus.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour
@@ -231,7 +429,7 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Le scanner signale une vulnérabilité dans une bibliothèque. L'équipe corrige immédiatement, sans lire l'avis de sécurité. Quel risque prend-elle ?
 
@@ -240,8 +438,6 @@ terminer la journée.*
 - C. De laisser la dépendance abandonnée dans le projet
 - D. D'oublier de prévenir les utilisateurs de la faille
 
-- [ ] ✓ je savais
-
 **2.** Une dépendance est signalée vulnérable, mais la fonction concernée n'est jamais appelée par le service. Que dit le chapitre ?
 
 - A. La présence de la dépendance n'est pas l'exposition : c'est l'appel réel du code concerné qui décide de l'urgence
@@ -249,16 +445,12 @@ terminer la journée.*
 - C. Il faut supprimer la bibliothèque immédiatement, appelée ou non
 - D. Il faut ignorer le signal : une dépendance non appelée est inoffensive par nature
 
-- [ ] ✓ je savais
-
 **3.** La mise à jour vers la version corrigée est impossible (compatibilité cassée). Que fait un rétro-patch ?
 
-- A. Il remplace la bibliothèque par une autre, plus légère
-- B. Il applique le correctif de sécurité sur la version en place, sans prendre le reste des changements — temporairement et en le datant
-- C. Il désactive la bibliothèque le temps que l'éditeur publie un correctif
-- D. Il fige la version actuelle et attend la prochaine version majeure
-
-- [ ] ✓ je savais
+- A. Il remplace la bibliothèque par une autre, plus légère et sans cette faille, en réécrivant les appels qui en dépendent
+- B. Il applique le correctif de sécurité sur la version en place, sans les autres changements, temporairement et en le datant
+- C. Il désactive la bibliothèque concernée le temps que l'éditeur publie un correctif, quitte à perdre la fonctionnalité
+- D. Il fige la version actuelle dans le fichier de verrouillage et attend la prochaine version majeure de la bibliothèque
 
 **4.** On veut empêcher que la page soit intégrée dans une page étrangère. Quel en-tête de réponse le permet ?
 
@@ -267,13 +459,13 @@ terminer la journée.*
 - C. Content-Security-Policy
 - D. X-Frame-Options
 
-- [ ] ✓ je savais
-
 **5.** *Question ouverte (2-3 lignes).* « Une configuration qui refuse de démarrer quand elle est incomplète est plus sûre qu'une configuration qui devine. » Expliquez avec l'exemple du secret de secours écrit « pour faire tourner en local ».
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -291,6 +483,8 @@ terminer la journée.*
 
 **5.** Attendu : un secret de secours écrit dans le code pour le confort du développement finit par tourner en production — les valeurs par défaut sont des valeurs. Le comportement sûr : lire le secret depuis l'environnement d'exécution ou un gestionnaire de secrets, et laisser la configuration refuser de démarrer plutôt que deviner.
 **Pourquoi :** un mot de passe écrit dans le dépôt est copié dans chaque clone, chaque sauvegarde, chaque historique ; le code ne doit contenir que le nom de la variable.
+
+</details>
 
 ---
 

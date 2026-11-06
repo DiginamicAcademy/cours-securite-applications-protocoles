@@ -114,6 +114,160 @@ un système qui en a déjà beaucoup.
 
 ---
 
+### Exercice bonus — Construire sa feuille de route de sécurité (non chronométré, facultatif)
+
+#### Contexte
+
+Ce défi porte sur **votre** projet : le dépôt de données sur lequel vous
+travaillez, l'application de votre équipe, ou un projet personnel que vous
+maintenez. Les éléments du chapitre — la grille de maturité, les trois horizons de
+la feuille de route, la veille — s'appliquent tels quels. Ce qui ne s'applique
+pas, vous l'écartez en le justifiant.
+
+Personne ne peut faire cet exercice à votre place : les faits sont chez vous.
+
+---
+
+#### Consignes
+
+##### Partie 1 — S'auto-évaluer
+
+Notez les **5 domaines** du chapitre (code, dépendances, accès, réseau, réponse à
+incident) de **1 à 5**, avec une phrase de justification chacun. La note ne compte
+que si la justification cite un fait observable — pas une intention.
+
+##### Partie 2 — Identifier les écarts les plus coûteux
+
+Parmi vos cinq notes, retenez **3 écarts** qui coûtent le plus cher à laisser
+ouverts. Pour chacun, décrivez le chemin le plus court entre un attaquant et ce
+que votre projet a de plus précieux, puis le geste qui coupe ce chemin.
+
+##### Partie 3 — Construire la feuille de route
+
+Organisez vos actions sur **3 mois**, selon les trois horizons du chapitre
+(immédiat, court terme, structurel). Chaque action porte un responsable et une
+échéance. Une action sans responsable est un vœu, pas une feuille de route.
+
+##### Partie 4 — Définir les preuves de progression
+
+Dites comment vous saurez, dans 3 mois, que les choses ont réellement bougé : la
+preuve observable pour chaque horizon (un contrôle qui tourne, un inventaire à
+jour, une simulation faite…).
+
+---
+
+#### ✅ Auto-évaluation
+
+Avant de considérer le défi terminé, vérifiez que :
+
+- [ ] Mes **5 notes** sont justifiées par des faits observables, pas par des
+  intentions.
+- [ ] Mes **3 écarts** décrivent un chemin d'attaque concret et le geste qui le
+  coupe.
+- [ ] Chaque action de ma feuille de route a **un responsable et une échéance**
+  dans les 3 mois.
+- [ ] Mes preuves de progression sont **observables** : on peut les montrer à
+  quelqu'un, elles ne se décrivent pas.
+- [ ] J'ai écarté ce qui ne s'appliquait pas à mon projet, **en le justifiant**.
+
+<details>
+<summary>Voir la correction</summary>
+
+> Ce défi porte sur **votre** projet : le corrigé ne peut donc pas donner « la » réponse. Il donne la **forme d'une bonne réponse**, puis un exemple complet sur un projet fictif — le dépôt `analyse-ventes` d'une équipe data (scripts Python, notebooks partagés, un fichier `requirements.txt`, une API de restitution, des sauvegardes hebdomadaires).
+
+#### Partie 1 — S'auto-évaluer
+
+**Ce qui fait une bonne justification :** un fait observable, que quelqu'un d'autre
+peut vérifier en regardant. « On fait attention aux dépendances » n'est pas un
+fait. « `requirements.txt` ne fige aucune version, et personne ne sait dire quelles
+composants sont embarqués » en est un.
+
+**Exemple rempli :**
+
+| Domaine | Note | Justification (fait observable) |
+| --- | --- | --- |
+| Code | 2 | les scripts sont relus entre pairs, mais aucun contrôle automatique ne tourne à la livraison |
+| Dépendances | 1 | `requirements.txt` ne fige aucune version, et aucun inventaire des composants n'existe |
+| Accès | 3 | les comptes sont nominatifs, mais un compte de service partagé subsiste pour l'extraction |
+| Réseau | 2 | l'API de restitution est exposée, et la base est joignable depuis tout le réseau interne |
+| Réponse à incident | 1 | aucun document écrit, personne n'est nommée pour décider |
+
+**Erreurs fréquentes :** mettre la même note partout (l'évaluation n'a pas été
+faite), ou justifier par une intention (« on prévoit de… ») au lieu d'un fait.
+
+---
+
+#### Partie 2 — Identifier les écarts les plus coûteux
+
+**Ce qui fait un bon écart :** un chemin d'attaque décrit en une phrase, et un
+geste qui le **coupe** — pas une liste de bonnes intentions.
+
+**Exemple, sur les trois écarts retenus :**
+
+| Écart | Le chemin le plus court | Le geste qui le coupe |
+| --- | --- | --- |
+| Dépendances (note 1) | une faille publiée sur un composant de `requirements.txt` est exploitable sans que personne ne le sache | figer les versions, produire le SBOM (Software Bill of Materials, l'inventaire
+  des composants) à chaque livraison, et recevoir l'alerte quand une version est
+  affectée |
+| Réseau (note 2) | un poste interne compromis donne accès direct à la base de données | n'autoriser que l'API de restitution à joindre la base, et refuser le reste |
+| Réponse à incident (note 1) | le jour où ça casse, personne ne sait qui décide quoi, et les gestes de première urgence détruisent les traces | écrire le mini-plan de réponse, nommer les rôles, le tester par une simulation |
+
+**Erreurs fréquentes :** retenir les écarts « les plus simples à corriger » plutôt
+que les plus coûteux, ou décrire un remède général (« sensibiliser l'équipe ») qui
+ne coupe aucun chemin.
+
+---
+
+#### Partie 3 — Construire la feuille de route
+
+**Exemple sur 3 mois :**
+
+| Horizon | Action | Responsable | Échéance |
+| --- | --- | --- | --- |
+| **Immédiat** | fermer l'accès direct à la base depuis le réseau interne | l'administratrice de la base | la première semaine |
+| **Immédiat** | révoquer le compte de service partagé, créer un compte nominatif par usage | le responsable de l'équipe data | la première semaine |
+| **Court terme** | figer les versions de `requirements.txt` et produire l'inventaire des composants à chaque livraison | la personne qui maintient la chaîne de livraison | le premier mois |
+| **Court terme** | ajouter les contrôles automatisés du chapitre sur la chaîne de livraison | la même personne | le deuxième mois |
+| **Structurel** | écrire le mini-plan de réponse à incident et nommer les rôles | le responsable de l'équipe data | le deuxième mois |
+| **Structurel** | faire une simulation de crise, puis mettre le plan à jour | toute l'équipe | le troisième mois |
+
+**Ce qui fait une bonne feuille de route :** au moins une action visible dans les
+premières semaines (sinon l'élan retombe), un responsable et une échéance pour
+chaque ligne, et un mélange des trois horizons.
+
+---
+
+#### Partie 4 — Définir les preuves de progression
+
+**Ce qui fait une bonne preuve :** quelque chose qu'on **montre**, pas quelque
+chose qu'on décrit.
+
+**Exemple :**
+
+| Horizon | Preuve observable |
+| --- | --- |
+| **Immédiat** | une tentative de connexion à la base depuis un poste quelconque échoue, et le refus apparaît dans les journaux |
+| **Court terme** | l'inventaire des composants de la dernière livraison existe, daté, et une alerte est bien remontée sur une dépendance volontairement laissée ancienne pour le test |
+| **Structurel** | le compte rendu de la simulation de crise existe, avec les changements décidés et leur mise en œuvre |
+
+**Erreurs fréquentes :** une preuve qui consiste à dire « c'est fait », ou une
+preuve qui demande une enquête pour être constatée. Si la preuve ne se voit pas en
+quelques minutes, elle ne servira pas à la revue de trois mois.
+
+---
+
+#### Points à retenir
+
+- Une note ne vaut que par **le fait observable** qui la justifie.
+- Un écart se décrit comme **un chemin d'attaque et le geste qui le coupe**.
+- La feuille de route tient en trois horizons, avec **un responsable et une
+  échéance** pour chaque action.
+- La progression se prouve par **ce qu'on montre**, pas par ce qu'on affirme.
+
+</details>
+
+---
+
 ## V. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour terminer
@@ -209,7 +363,7 @@ la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Dans la grille de maturité du chapitre, que signifie une note de 4 dans un domaine ?
 
@@ -218,8 +372,6 @@ la journée.*
 - C. Appliqué : c'est en place, et ça se vérifie
 - D. Tenu dans le temps : amélioré par les retours
 
-- [ ] ✓ je savais
-
 **2.** Quelle question le chapitre substitue-t-il à « Sommes-nous en sécurité ? » ?
 
 - A. « Quel budget de sécurité demander cette année ? »
@@ -227,31 +379,27 @@ la journée.*
 - C. « Quel outil de sécurité acheter en premier ? »
 - D. « Quelle certification visons-nous ? »
 
-- [ ] ✓ je savais
-
 **3.** Sur quoi se décide la priorité d'un geste dans la feuille de route ?
 
-- A. Sur la taille de l'équipe et le budget disponible
-- B. Sur la règle de proportionnalité : la protection est proportionnée à la valeur de ce qu'elle protège — le plus précieux, le chemin le plus court de l'attaquant vers lui, le geste qui coupe ce chemin
-- C. Sur l'ordre d'arrivée des alertes dans la messagerie
-- D. Sur ce que font les concurrents
-
-- [ ] ✓ je savais
+- A. Sur la taille de l'équipe et le budget disponible, qui fixent ce qu'il est raisonnable de tenter
+- B. Sur la proportionnalité : protéger selon la valeur de ce qui est protégé — le plus précieux, le chemin le plus court vers lui, le geste qui le coupe
+- C. Sur l'ordre d'arrivée des alertes dans la messagerie de l'équipe, la plus récente passant devant les autres
+- D. Sur ce que font les concurrents du même secteur, dont on copie les choix une fois qu'ils sont validés
 
 **4.** À quoi mesure-t-on une veille continue efficace ?
 
-- A. Au nombre d'alertes et de newsletters lues chaque semaine
-- B. Au temps entre la publication d'une faille et le moment où l'organisation sait si elle est concernée — grâce à un inventaire tenu à jour, des alertes automatiques et une personne nommée
-- C. À la rapidité avec laquelle les alertes sont archivées
-- D. Au nombre de sources suivies et de flux auxquels l'équipe est abonnée
-
-- [ ] ✓ je savais
+- A. Au nombre d'alertes et de newsletters lues chaque semaine par les membres les plus actifs de l'équipe
+- B. Au temps entre la publication d'une faille et le moment où l'on sait si l'organisation est concernée — inventaire à jour, alertes, une personne nommée
+- C. À la rapidité avec laquelle les alertes reçues sont lues, qualifiées puis archivées par l'équipe
+- D. Au nombre de sources suivies et de flux auxquels l'équipe est abonnée, qui mesure sa couverture de la veille
 
 **5.** *Question ouverte (2-3 lignes).* « La feuille de route la plus dangereuse est celle qui ne contient que des chantiers structurels. » Pourquoi, et que faut-il y mettre en plus ?
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -269,6 +417,8 @@ la journée.*
 
 **5.** Attendu : une feuille de route uniquement structurelle ne change rien avant longtemps, et l'intérêt de l'équipe retombe ; il faut y joindre un geste immédiat — ce qui coupe un chemin d'attaque connu en quelques jours (fermer une exposition inutile, révoquer une clé commitée).
 **Pourquoi :** un chantier visible dans les deux premières semaines maintient l'équipe en mouvement, pendant que le court terme installe les protections durables et que le structurel change les habitudes.
+
+</details>
 
 ---
 

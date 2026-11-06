@@ -118,6 +118,226 @@ entièrement, on vérifie ce qu'elle charrie.
 
 ---
 
+### Exercice 1 — Durcir un endpoint de réservation (30 min)
+
+#### Contexte
+
+Un grand groupe mutualise ses salles de réunion via un petit service interne de
+réservation. L'équipe qui l'a livré est partie ; il tourne, personne n'y touche.
+La direction des systèmes d'information vous demande une passe de durcissement
+avant de l'ouvrir à un nouveau site.
+
+Voici les deux routes principales :
+
+```python
+import logging
+import traceback
+
+journal = logging.getLogger("reservations")
+
+
+@app.get("/reservations")
+def lister_reservations(email: str = ""):
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM reservations WHERE email = %s", (email,))
+        rows = cursor.fetchall()
+        conn.close()
+        return {"reservations": rows}
+    except Exception as exc:
+        return {"erreur": str(exc), "trace": traceback.format_exc()}
+
+
+@app.post("/reservations")
+def creer_reservation(email: str = Form(...), salle: str = Form(...),
+                      mot_de_passe: str = Form(...)):
+    journal.info("creation pour %s (mdp %s)", email, mot_de_passe)
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO reservations (email, salle) VALUES (%s, %s)",
+        (email, salle),
+    )
+    conn.commit()
+    conn.close()
+    return {"message": "réservation enregistrée"}
+```
+
+Le contrat attendu par la direction est le suivant : une personne ne voit que
+ses propres réservations ; une erreur interne renvoie le code **500** avec un
+message générique et un numéro de suivi ; un accès refusé renvoie le code
+**403** ; aucun mot de passe ne se retrouve dans les journaux.
+
+---
+
+#### Consignes
+
+##### Partie 1 — Repérer ce qui sort du service
+
+Listez tout ce qui quitte le service : ce qui est renvoyé au client, ce qui est
+écrit dans les journaux. Pour chacun, dites s'il renseigne la personne qui
+utilise le service, ou surtout quelqu'un qui chercherait à comprendre le
+système.
+
+##### Partie 2 — Durcir les erreurs
+
+Modifiez la route de lecture pour que l'erreur interne renvoie le message
+générique et le numéro de suivi prévus au contrat, et que le détail aille dans
+les journaux. Le comportement normal de la route ne doit pas changer.
+
+##### Partie 3 — Nettoyer les journaux
+
+Reprenez l'écriture du journal de création : l'événement doit rester traçable —
+qui a réservé quoi, quand — sans jamais contenir le mot de passe. Justifiez en
+une phrase ce que vous mettez à la place.
+
+##### Partie 4 — Contrôle d'accès et en-têtes
+
+Ajoutez le contrôle qui empêche une personne de lister les réservations d'une
+autre, avec le code **403** prévu au contrat. Ajoutez ensuite les en-têtes de
+sécurité de réponse, au niveau du service plutôt que route par route.
+
+---
+
+#### ✅ Auto-évaluation
+
+- [ ] J'ai listé ce qui sort du service, côté client et côté journal.
+- [ ] L'erreur interne renvoie le code 500, un message générique et un numéro de
+      suivi.
+- [ ] Le détail de l'erreur est journalisé côté serveur, jamais renvoyé.
+- [ ] Aucun mot de passe n'apparaît dans les journaux.
+- [ ] Le contrôle d'accès empêche de lire les réservations d'autrui, avec le
+      code 403.
+- [ ] Les en-têtes de sécurité sont posés au niveau du service.
+- [ ] Le fonctionnement normal des deux routes est inchangé.
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif — ne bloque pas la suite du parcours.*
+
+Le service expose aussi une route de santé, utilisée par la supervision.
+Proposez ce qu'elle doit renvoyer pour être utile à l'exploitation sans
+renseigner quiconque la consulterait depuis l'extérieur.
+
+<details>
+<summary>Voir la correction</summary>
+
+> Comparez d'abord votre travail aux **étapes** ci-dessous : la méthode compte autant que le résultat.
+
+#### Partie 1 — Repérer ce qui sort du service
+
+| Ce qui sort | Où | Ce que cela renseigne |
+| --- | --- | --- |
+| **Le message d'erreur** | réponse client | le type d'échec, parfois la structure de la base |
+| **La trace complète** | réponse client | les chemins de fichiers, les versions, la ligne fautive |
+| **La ligne de journal** | journal serveur | l'événement, et le mot de passe en clair |
+| **La liste des réservations** | réponse client | les données d'une autre personne |
+
+Le constat est le même pour les deux premières lignes : ce qui aide le
+développeur à corriger est exactement ce qui aide quiconque à cartographier le
+service. La trace complète n'a rien à faire dans une réponse client.
+
+La troisième ligne est plus discrète et plus grave : un journal est lu par plus
+de monde que la base de données, et il contient une copie des identifiants.
+
+---
+
+#### Partie 2 — Durcir les erreurs
+
+La route renvoie le contrat attendu, et laisse le détail au journal :
+
+```python
+@app.get("/reservations")
+def lister_reservations(email: str = ""):
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM reservations WHERE email = %s", (email,))
+        rows = cursor.fetchall()
+        conn.close()
+        return {"reservations": rows}
+    except Exception:
+        reference = nouvelle_reference()
+        journal.exception("echec de la lecture des reservations")
+        return JSONResponse(
+            status_code=500,
+            content={"erreur": "la demande n'a pas pu être traitée",
+                     "reference": reference},
+        )
+```
+
+Le numéro de suivi est le joint entre les deux mondes : la personne signale un
+numéro, l'équipe retrouve la trace complète dans les journaux. Le message
+générique ne dit rien de la structure du système, et reste suffisant pour que la
+personne sache que sa demande a été prise en compte.
+
+---
+
+#### Partie 3 — Nettoyer les journaux
+
+L'événement reste traçable, sans le secret :
+
+```python
+journal.info("creation de reservation",
+             extra={"email": email, "salle": salle})
+```
+
+Ce qui est conservé — qui a réservé quoi — suffit à reconstituer l'historique.
+Ce qui disparaît — le mot de passe — n'a rien à faire là : il ne sert à rien
+pour comprendre un incident de réservation, et il se retrouverait dans chaque
+copie du journal.
+
+Si le paiement doit être tracé, on journalise le **fait** et un identifiant
+technique de la transaction, jamais la donnée d'authentification.
+
+---
+
+#### Partie 4 — Contrôle d'accès et en-têtes
+
+Le contrôle d'accès empêche de lire les réservations d'autrui :
+
+```python
+@app.get("/reservations")
+def lister_reservations(email: str = "", utilisateur=Depends(get_current_user)):
+    if utilisateur["email"] != email:
+        raise HTTPException(status_code=403,
+                            detail="accès réservé à vos propres réservations")
+    ...
+```
+
+Puis les en-têtes se posent une fois, pour tout le service :
+
+```python
+@app.middleware("http")
+async def en_tetes_securite(request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Content-Security-Policy"] = "default-src 'self'"
+    return response
+```
+
+Posés au niveau du service, ils couvrent aussi les routes ajoutées plus tard —
+c'est l'avantage de ne pas les répéter route par route.
+
+---
+
+#### Points à retenir
+
+- Ce qui aide le développeur — la trace, le détail — part dans les journaux ; la
+  réponse client garde un message générique et un numéro de suivi.
+- Un journal décrit **ce qui s'est passé**, pas ce que contenaient les données :
+  aucun secret n'y figure.
+- Le contrôle d'accès se pose sur la donnée demandée, pas seulement sur la route.
+- Les en-têtes de sécurité se posent **une fois**, au niveau du service.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour
@@ -149,7 +369,7 @@ terminer la journée.*
 > 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien
 > d'obligatoire n'en dépend
 >
-> La partie 1 de l'exercice [Durcir un endpoint de réservation](tp/04-durcir-un-endpoint.md)
+> La partie 1 de l'exercice 1 de ce chapitre, plus haut,
 > est cette manipulation même, conduite sur un service complet.
 >
 > 🧪 **Atelier rapide (5 min)**
@@ -178,7 +398,7 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** En pleine ouverture des ventes, la billetterie plante en production. Que doit recevoir la personne qui utilisait le service ?
 
@@ -187,16 +407,12 @@ terminer la journée.*
 - C. Un message générique et un identifiant de suivi ; le détail part dans les journaux
 - D. Rien : une page blanche, pour ne rien divulguer du tout
 
-- [ ] ✓ je savais
-
 **2.** À la connexion, l'application renvoie « Le compte n'existe pas » quand l'identifiant est inconnu. Pourquoi est-ce une fuite ?
 
 - A. Parce que le message est trop poli et n'inquiète personne
 - B. Parce qu'il confirme à quelqu'un qui énumère des comptes ce qui existe
 - C. Parce qu'il révèle la version du moteur de base de données
 - D. Parce qu'il devrait mentionner le nombre de tentatives restantes
-
-- [ ] ✓ je savais
 
 **3.** Un journal utile répond à quatre questions. Lesquelles ?
 
@@ -205,22 +421,20 @@ terminer la journée.*
 - C. Qui, pourquoi, quel budget, quel délai
 - D. Quelle version, quel correctif, quel test, quel déploiement
 
-- [ ] ✓ je savais
-
 **4.** Pour comprendre un problème de connexion, faut-il journaliser la requête de connexion complète ?
 
-- A. Oui : sans la requête entière, on ne peut rien reconstituer
-- B. Oui, mais seulement si le journal est chiffré
+- A. Oui : sans la requête entière dans le journal, on ne peut rien reconstituer quand l'enquête arrive des semaines plus tard
+- B. Oui, à condition que le journal soit chiffré et réservé à l'équipe sécurité, ce qui rendrait la valeur inutilisable ailleurs
 - C. Non : on journalise le fait que l'authentification a échoué, jamais le mot de passe ni le jeton
-- D. Non : une tentative de connexion ne mérite jamais d'être journalisée
-
-- [ ] ✓ je savais
+- D. Non : une tentative de connexion n'est pas un incident, elle n'a donc pas sa place dans un journal d'application
 
 **5.** *Question ouverte (2-3 lignes).* « Un journal n'est pas une copie de la base. » Expliquez la formule, et pourquoi une copie des identifiants dans un journal est pire que dans la base elle-même.
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -238,6 +452,8 @@ terminer la journée.*
 
 **5.** Attendu : le journal trace les événements (tentative, refus, accès, résultat), il ne duplique pas le contenu des données — à la place d'un mot de passe ou d'une donnée personnelle complète, un fait et un identifiant technique.
 **Pourquoi :** le journal est conçu pour être lu par plus de monde que la base ; y recopier les identifiants, c'est en multiplier la copie et les lecteurs.
+
+</details>
 
 ---
 

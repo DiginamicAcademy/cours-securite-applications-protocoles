@@ -112,7 +112,7 @@ terminer la journée.*
 
 > 🔁 **Pour aller plus loin (facultatif)** — à lire si le créneau le permet, rien d'obligatoire n'en dépend
 >
-> Même question, autre jeu de données : la Partie 4 de l'exercice [Sécuriser un endpoint qui en dit trop](tp/09-securiser-endpoint-data.md) demande finalité, base légale et sort de la donnée.
+> Même question, autre jeu de données : la Partie 4 de [l'exercice 1 du chapitre Données sensibles](09-donnees-sensibles.md) demande finalité, base légale et sort de la donnée.
 >
 > 🧪 **Atelier rapide (5 min)**
 >
@@ -162,7 +162,7 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Une boutique en ligne conserve l'adresse de livraison de ses commandes. Sur quelle base légale repose ce traitement ?
 
@@ -171,16 +171,12 @@ terminer la journée.*
 - C. L'obligation légale : la loi impose de connaître l'acheteur
 - D. L'intérêt légitime : c'est utile pour la logistique
 
-- [ ] ✓ je savais
-
 **2.** L'inscription à la newsletter est activée par une case pré-cochée dans les conditions générales. Le traitement repose-t-il sur le consentement ?
 
-- A. Oui : la personne n'a pas dit non, elle pouvait décocher
-- B. Oui : les conditions générales suffisent à informer la personne
-- C. Non : un consentement pré-coché ou glissé dans les conditions ne vaut pas consentement — il faut une case spécifique par usage, un usage expliqué et une révocation qui fonctionne
-- D. Non, mais l'intérêt légitime couvre automatiquement les newsletters
-
-- [ ] ✓ je savais
+- A. Oui : la personne n'a pas dit non, et elle pouvait décocher la case si elle ne voulait rien recevoir
+- B. Oui : les conditions générales ont été acceptées, et elles suffisent à informer la personne de tous les usages
+- C. Non : pré-coché ou noyé dans les conditions, ce n'est pas un consentement — il faut une case par usage, un usage expliqué, une révocation qui fonctionne
+- D. Non, mais l'intérêt légitime suffirait ici : il couvre automatiquement les envois de newsletters commerciales
 
 **3.** Cinq ans après la fin d'une relation client, les factures doivent encore être conservées pour la comptabilité. Quel sort leur appliquer ?
 
@@ -189,22 +185,20 @@ terminer la journée.*
 - C. Anonymisation : elles ne concernent plus personne
 - D. Rien : les laisser dans les applications actives, elles y ont toujours été
 
-- [ ] ✓ je savais
-
 **4.** Un client exerce son droit à l'effacement : la ligne disparaît de la table `clients`. L'audit relève que la donnée vit encore dans les sauvegardes, les journaux et le tableur du service marketing. Qu'en dit le chapitre ?
 
-- A. C'est conforme : la base de production est la référence
-- B. C'est conforme si la personne a été informée par courriel
-- C. C'est un effacement partiel : l'effacement doit couvrir tous les endroits où la donnée vit, ou documenter pourquoi certains la retiennent temporairement
-- D. C'est un problème de sauvegarde, sans lien avec le droit des personnes
-
-- [ ] ✓ je savais
+- A. C'est conforme : la base de production est la référence, tout le reste n'est qu'une copie technique
+- B. C'est conforme si la personne a été informée par courriel que les sauvegardes gardent une trace un moment
+- C. C'est un effacement partiel : il doit couvrir tous les endroits où la donnée vit, ou dire pourquoi certains la retiennent un temps
+- D. C'est un problème de sauvegarde, qui relève de l'exploitation et non du droit des personnes concernées
 
 **5.** *Question ouverte (2-3 lignes).* « Chaque droit se traduit par une fonctionnalité concrète — pas par une adresse courriel à laquelle on répondra peut-être. » Donnez deux exemples de traduction technique pris dans le chapitre, et précisez le délai qui s'attache à ces demandes.
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -222,6 +216,8 @@ terminer la journée.*
 
 **5.** Attendu (deux parmi) : accès → export JSON ou CSV du profil et de l'historique ; rectification → endpoint de mise à jour sur les champs concernés ; opposition → mécanisme de désinscription qui agit vraiment ; portabilité → export structuré lisible par machine ; effacement → suppression, sauf obligation légale (les factures restent). Délai : un mois, prolongeable une fois, pas plus.
 **Pourquoi :** le droit qui existe sur le papier, sans outil derrière, est l'un des deux écueils les plus relevés en audit.
+
+</details>
 
 ---
 

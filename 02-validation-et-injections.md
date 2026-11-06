@@ -137,6 +137,207 @@ fichiers : ce qui structure reste du code, ce qui remplit reste de la donnée.
 
 ---
 
+### Exercice 1 — Corriger une injection dans une recherche (20 min)
+
+#### Contexte
+
+Le complexe sportif municipal de votre commune met à disposition un portail de
+réservation de créneaux. La recherche de séances est arrivée dans une version
+expresse, écrite pour la démonstration du conseil d'administration. Elle
+fonctionne — et, en jouant avec le champ de recherche, un agent de la piscine a
+obtenu la liste complète des séances, y compris celles qui ne sont pas ouvertes
+au public.
+
+Voici la route concernée :
+
+```python
+@app.get("/seances/search")
+def search_seances(q: str = ""):
+    conn = get_db()
+    cursor = conn.cursor()
+    query = f"SELECT * FROM seances WHERE titre LIKE '%{q}%'"
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    conn.close()
+    return {"query": q, "results": rows}
+```
+
+Le service doit rester simple : une recherche par titre, une réponse au format
+JSON (JavaScript Object Notation). La règle fixée par la commune est la
+suivante : une saisie invalide est **refusée**, jamais réparée en silence, et le
+refus est explicite.
+
+---
+
+#### Consignes
+
+##### Partie 1 — Distinguer les instructions des données
+
+Reprenez la chaîne de la requête et délimitez, à la main, ce qui appartient au
+langage de requête et ce qui appartient à la saisie. Expliquez, en deux phrases,
+pourquoi une valeur de recherche peut modifier le **sens** de la requête plutôt
+que de seulement remplir un emplacement.
+
+##### Partie 2 — Réécrire la requête
+
+Réécrivez la route avec une requête paramétrée. La recherche doit rester
+identique pour une saisie normale : même résultat sur un titre existant, aucun
+changement de comportement visible.
+
+##### Partie 3 — Contrôler la saisie
+
+Ajoutez le contrôle d'entrée en amont de la requête :
+
+- la valeur est une chaîne, et sa longueur maximale est de **64** caractères ;
+- elle ne contient que des lettres, des chiffres, des espaces, des apostrophes ou
+  des tirets ;
+- toute valeur hors de ces critères est refusée avec le code **400**, et un
+  message qui dit ce qui n'allait pas.
+
+##### Partie 4 — Vérifier le comportement
+
+Rejouez la recherche avec la valeur `' OR '1'='1`, puis avec une chaîne de
+plusieurs centaines de caractères, puis avec une valeur normale. Notez, pour
+chacune, ce que renvoie le service.
+
+---
+
+#### ✅ Auto-évaluation
+
+- [ ] Je sais nommer, dans une requête, ce qui relève de l'instruction et ce qui
+      relève de la donnée.
+- [ ] Ma route utilise une requête paramétrée, sans concaténation de la saisie.
+- [ ] La longueur maximale de 64 caractères est contrôlée avant la requête.
+- [ ] Le format de la saisie est vérifié sur toute la valeur, pas seulement sur
+      son début.
+- [ ] Une saisie invalide renvoie le code 400 avec un message explicite.
+- [ ] J'ai vérifié les trois cas de la partie 4 et noté les résultats.
+
+---
+
+#### Pour aller plus loin
+
+*Facultatif — ne bloque pas la suite du parcours.*
+
+Le champ de recherche accepte aussi un paramètre de tri, qui choisit la colonne
+de classement. Proposez une façon de l'implémenter sans qu'une saisie puisse
+choisir le nom de la colonne, et justifiez votre choix en une phrase.
+
+<details>
+<summary>Voir la correction</summary>
+
+> Comparez d'abord votre travail aux **étapes** ci-dessous : la méthode compte autant que le résultat.
+
+#### Partie 1 — Distinguer les instructions des données
+
+La chaîne de la requête contient trois zones de nature différente :
+
+| Zone | Exemple | Nature |
+| --- | --- | --- |
+| **Le vocabulaire de la requête** | les mots de sélection et de filtrage | instruction, écrite par le développeur |
+| **La structure de la condition** | le motif de recherche, avec ses signes | instruction |
+| **La valeur recherchée** | ce que la personne a tapé | donnée |
+
+Le problème vient de la troisième zone : collée dans la chaîne, elle est relue
+par le moteur comme faisant partie de la première. Une valeur qui contient un
+signe de fin de condition termine la condition prématurément, et ce qui suit est
+exécuté comme instruction. La saisie ne remplit plus un emplacement : elle
+modifie le sens de la requête.
+
+---
+
+#### Partie 2 — Réécrire la requête
+
+La réécriture remplace la concaténation par un emplacement, et passe la valeur
+à part :
+
+```python
+@app.get("/seances/search")
+def search_seances(q: str = ""):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT * FROM seances WHERE titre LIKE %s",
+        (f"%{q}%",),
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    return {"query": q, "results": rows}
+```
+
+Le résultat est identique pour une saisie normale : le moteur reçoit la même
+structure, et la valeur ne peut plus en faire partie. Le signe générique du
+motif reste dans la valeur, où il a sa place — c'est un caractère de recherche,
+pas un morceau de requête.
+
+---
+
+#### Partie 3 — Contrôler la saisie
+
+Le contrôle se pose en amont, avant la requête :
+
+```python
+import re
+
+MOTIF = re.compile(r"[\w\s\-']*")
+
+
+def valider_recherche(q):
+    if len(q) > 64:
+        return None
+    if not MOTIF.fullmatch(q or ""):
+        return None
+    return q
+```
+
+Puis la route refuse explicitement :
+
+```python
+@app.get("/seances/search")
+def search_seances(q: str = ""):
+    if valider_recherche(q) is None:
+        raise HTTPException(status_code=400,
+                            detail="recherche invalide : longueur ou "
+                                   "caractères non acceptés")
+    ...
+```
+
+Deux points méritent l'attention. Le `fullmatch` porte sur toute la valeur : un
+`match` simple accepterait un début valide suivi de n'importe quoi. Et le refus
+est explicite — la valeur n'est pas nettoyée puis acceptée, elle est refusée,
+avec un message qui dit ce qui n'allait pas.
+
+---
+
+#### Partie 4 — Vérifier le comportement
+
+| Saisie | Comportement attendu |
+| --- | --- |
+| **La valeur piégée** | elle est traitée comme une recherche littérale : aucun résultat, ou un résultat contenant réellement ces caractères |
+| **La chaîne très longue** | refusée avec le code 400, avant toute requête |
+| **Une valeur normale** | résultat inchangé par rapport à la version initiale |
+
+Le premier cas est le plus instructif : la valeur ne casse plus rien parce
+qu'elle n'est plus une instruction. Elle ne « passe pas » — elle ne veut plus
+rien dire pour le moteur.
+
+---
+
+#### Points à retenir
+
+- La séparation des données et des instructions se fait avec le pilote de base
+  de données, pas avec des remplacements de caractères.
+- Le contrôle d'entrée porte sur la longueur et le format, et **refuse** plutôt
+  que de réparer.
+- Le `fullmatch` vérifie toute la valeur ; un `match` simple ne vérifie que le
+  début.
+- Vérifier les trois cas — piégé, trop long, normal — montre que la correction
+  ne change rien au fonctionnement attendu.
+
+</details>
+
+---
+
 ## IV. Aller plus loin
 
 *Ces approfondissements sont facultatifs : ils ne sont jamais exigés pour
@@ -192,7 +393,7 @@ terminer la journée.*
 > d'obligatoire n'en dépend
 >
 > La même correction est conduite de bout en bout dans
-> l'exercice [Corriger une injection dans une recherche](tp/02-corriger-injection.md).
+> l'exercice 1 de ce chapitre, plus haut.
 >
 > 🧪 **Atelier rapide (10 min)**
 >
@@ -219,49 +420,43 @@ terminer la journée.*
 
 ## 🧠 Vérifiez vos acquis
 
-*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis dépliez « Vérifier ses réponses » : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
 
 **1.** Pourquoi une requête paramétrée empêche-t-elle une saisie de devenir une instruction ?
 
-- A. Parce qu'elle échappe les guillemets et les apostrophes de la saisie
+- A. Parce qu'elle échappe les guillemets et les apostrophes de la saisie, qui ne peut plus fermer la chaîne où elle s'insère
 - B. Parce que le pilote envoie la structure de la requête et les valeurs séparément, et le moteur ne les confond jamais
-- C. Parce qu'elle rejette les valeurs trop longues avant l'exécution
-- D. Parce qu'elle chiffre la saisie avant de la transmettre au moteur
-
-- [ ] ✓ je savais
+- C. Parce qu'elle contrôle la longueur et le format de la valeur avant l'exécution, et écarte tout ce qui sort du modèle attendu
+- D. Parce qu'elle chiffre la saisie avant de la transmettre au moteur, qui ne voit jamais le texte brut de la requête
 
 **2.** Un développeur double toutes les apostrophes de la saisie « à la main » au lieu d'utiliser une requête paramétrée. Quel est le problème ?
 
-- A. Aucun : c'est une façon plus légère de faire la même chose
-- B. C'est plus lent qu'une requête paramétrée
+- A. Aucun : échapper les caractères dangereux fait exactement ce que fait une requête paramétrée, en moins de code
+- B. C'est plus lent : la requête change de texte à chaque valeur, là où une requête paramétrée se prépare une fois
 - C. Il répare le symptôme : le jour où un cas n'a pas été prévu, la requête redevient injectable
-- D. Cela empêche le moteur de réutiliser le plan d'exécution de la requête
-
-- [ ] ✓ je savais
+- D. Cela empêche le moteur de réutiliser son plan d'exécution, ce qui coûte plus cher que l'injection elle-même
 
 **3.** Pour vérifier qu'un mot de recherche ne contient que des caractères autorisés, pourquoi utiliser `re.fullmatch` plutôt que `re.match` ?
 
-- A. Parce que `re.match` est plus lent sur les longues saisies
+- A. Parce que `re.match` est plus lent que `re.fullmatch` sur une longue saisie et ralentit toute la requête
 - B. Parce que `re.match` ne regarde que le commencement : la valeur pourrait se poursuivre par n'importe quoi
-- C. Parce que `re.fullmatch` échappe automatiquement les caractères dangereux
-- D. Parce que `re.match` refuse les valeurs vides
-
-- [ ] ✓ je savais
+- C. Parce que `re.fullmatch` échappe de lui-même les caractères dangereux, ce qui rendrait tout échappement inutile
+- D. Parce que `re.match` refuse les valeurs vides, ce qui bloque au passage les champs facultatifs laissés à blanc
 
 **4.** Une saisie doit choisir la colonne selon laquelle trier une liste. Que dit la règle du chapitre ?
 
-- A. On la passe en paramètre de la requête, comme toute valeur
-- B. On échappe les caractères spéciaux du nom de colonne
-- C. On la laisse voyager telle quelle : un nom de colonne est inoffensif
+- A. On la passe en paramètre de la requête, comme toute valeur venue de l'extérieur : le moteur ne la confondra pas avec du code
+- B. On échappe les caractères spéciaux du nom de colonne, comme on le ferait pour n'importe quelle chaîne envoyée au moteur
+- C. On la laisse voyager telle quelle : un nom de colonne ne contient que des lettres, il ne peut rien casser dans la requête
 - D. Elle influence la forme de la requête : on la remplace par un choix dans une liste fermée décidée par le code
-
-- [ ] ✓ je savais
 
 **5.** *Question ouverte (2-3 lignes).* « Valider n'est pas nettoyer. » Expliquez la différence, et pourquoi réparer une valeur hors format en silence est plus dangereux que la refuser.
 
-- [ ] ✓ je savais
-
 ---
+
+<details>
+
+<summary>Vérifier ses réponses</summary>
 
 ### Réponses
 
@@ -279,6 +474,8 @@ terminer la journée.*
 
 **5.** Attendu : valider, c'est vérifier le type, le format et la longueur, et refuser ce qui est hors format avec un message qui dit pourquoi ; nettoyer, c'est supprimer les caractères interdits et laisser passer le reste. Une valeur « réparée » devient une valeur que personne n'a jamais testée.
 **Pourquoi :** le refus est le fail-closed appliqué à la saisie — l'usage d'une valeur silencieusement modifiée est un fail-open dont personne ne sait qu'il a eu lieu.
+
+</details>
 
 ---
 

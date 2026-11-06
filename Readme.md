@@ -88,29 +88,29 @@ de l'organisme au titre du RGPD (Règlement général sur la protection des donn
 propose des approfondissements « Pour aller plus loin » : ils restent
 facultatifs et ne sont pas comptés dans ces durées.*
 
-**Travaux pratiques** — chaque énoncé se fait juste après le chapitre
-correspondant, puis se corrige soi-même :
+**Travaux pratiques** — les exercices sont intégrés aux chapitres, à la fin
+de la partie qui enseigne la notion ; leur correction se déplie sous les questions :
 
 | | Sujet | Durée |
 | --- | --- | --- |
-| 🟢 | [Appliquer les principes du secure coding](tp/01-appliquer-les-principes.md) · [corrigé](tp/corrige/01-appliquer-les-principes.md) | 25 min |
-| 🟢 | [Corriger une injection dans une recherche](tp/02-corriger-injection.md) · [corrigé](tp/corrige/02-corriger-injection.md) | 25 min |
-| 🟢 | [Échapper les sorties d'un livre d'or](tp/03-echapper-les-sorties.md) · [corrigé](tp/corrige/03-echapper-les-sorties.md) | 20 min |
-| 🟡 | [Durcir un endpoint de réservation](tp/04-durcir-un-endpoint.md) · [corrigé](tp/corrige/04-durcir-un-endpoint.md) | 50 min |
-| 🔵 | [Traiter une CVE sur son propre projet](tp/05-traiter-une-cve.md) — **facultatif** · [corrigé](tp/corrige/05-traiter-une-cve.md) | 40 min |
-| 🔵 | [Auditer un module de gestion des adhésions](tp/06-auditer-un-module.md) — **facultatif** · [corrigé](tp/corrige/06-auditer-un-module.md) | 55 min |
-| 🟢 | [Auditer l'API d'un service de mobilité](tp/07-auditer-api.md) · [corrigé](tp/corrige/07-auditer-api.md) | 25 min |
-| 🟡 | [Sécuriser un endpoint qui en dit trop](tp/09-securiser-endpoint-data.md) · [corrigé](tp/corrige/09-securiser-endpoint-data.md) | 50 min |
-| 🔵 | [Analyser les risques d'un pipeline de données](tp/11-analyser-pipeline.md) · [corrigé](tp/corrige/11-analyser-pipeline.md) | 55 min |
-| 🔴 | [Brouillon de registre des traitements](tp/12-defi-registre.md) · [corrigé](tp/corrige/12-defi-registre.md) | libre |
-| 🟢 | [Durcir le réseau d'une petite entreprise](tp/13-durcir-reseau.md) · [corrigé](tp/corrige/13-durcir-reseau.md) | 25 min |
-| 🟡 | [Intégrer la sécurité dans une intégration continue](tp/15-cicd-securise.md) · [corrigé](tp/corrige/15-cicd-securise.md) | 50 min |
-| 🔵 | [Rédiger un mini-plan de réponse à incident](tp/17-plan-incident.md) · [corrigé](tp/corrige/17-plan-incident.md) | 55 min |
-| 🔴 | [Construire sa feuille de route de sécurité](tp/18-defi-maturite.md) · [corrigé](tp/corrige/18-defi-maturite.md) | non chronométré |
+| 🟢 | Appliquer les principes du secure coding — dans le chapitre 01 | 25 min |
+| 🟢 | Corriger une injection dans une recherche — dans le chapitre 02 | 25 min |
+| 🟢 | Échapper les sorties d'un livre d'or — dans le chapitre 03 | 20 min |
+| 🟡 | Durcir un endpoint de réservation — dans le chapitre 04 | 50 min |
+| 🔵 | Traiter une CVE sur son propre projet — **facultatif**, dans le chapitre 05 | 40 min |
+| 🔵 | Auditer un module de gestion des adhésions — **facultatif**, dans le chapitre 06 | 55 min |
+| 🟢 | Auditer l'API d'un service de mobilité — dans le chapitre 07 | 25 min |
+| 🟡 | Sécuriser un endpoint qui en dit trop — dans le chapitre 09 | 50 min |
+| 🔵 | Analyser les risques d'un pipeline de données — dans le chapitre 11 | 55 min |
+| 🔴 | Brouillon de registre des traitements — dans le chapitre 12 | libre |
+| 🟢 | Durcir le réseau d'une petite entreprise — dans le chapitre 13 | 25 min |
+| 🟡 | Intégrer la sécurité dans une intégration continue — dans le chapitre 15 | 50 min |
+| 🔵 | Rédiger un mini-plan de réponse à incident — dans le chapitre 17 | 55 min |
+| 🔴 | Construire sa feuille de route de sécurité — dans le chapitre 18 | non chronométré |
 | 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](tp/TP-INTEGRATEUR.md) — **TP intégrateur, seul élément noté du cours** | 4 h |
 
-Les quatorze premiers énoncés sont formatifs : le corrigé reste public et sert à
-l'auto-évaluation. Le TP intégrateur, lui, est **noté** — il reprend l'ensemble du
+Les quatorze exercices intégrés aux chapitres sont formatifs : leur correction,
+dépliable dans le chapitre, reste publique et sert à l'auto-évaluation. Le TP intégrateur, lui, est **noté** — il reprend l'ensemble du
 cours (J7 à J9) et se rend en un dossier unique ; son corrigé est réservé à
 l'évaluation et n'est pas publié.
 
@@ -124,7 +124,7 @@ avancer, revenir au concept concerné, refaire l'exercice.
 ### Jour 7 — chapitres 01 à 06
 
 - [ ] J'ai lu les chapitres 01 à 06 et les points clés sont clairs.
-- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et vérifié mes réponses dans `tp/corrige/`. Les extensions « Pour aller plus loin » sont facultatives.
+- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et déplié leur correction dans le chapitre concerné. Les extensions « Pour aller plus loin » sont facultatives.
 - [ ] J'ai répondu au QCM formatif, lorsqu'il est disponible, et identifié mes notions à revoir.
 - [ ] Je sais expliquer, avec mes mots, les 2-3 idées principales de la journée.
 - [ ] Je peux appliquer ces idées à un cas simple (un extrait de code, une config, un flux).
@@ -132,7 +132,7 @@ avancer, revenir au concept concerné, refaire l'exercice.
 ### Jour 8 — chapitres 07 à 12
 
 - [ ] J'ai lu les chapitres 07 à 12 et les points clés sont clairs.
-- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et vérifié mes réponses dans `tp/corrige/`. Les extensions « Pour aller plus loin » sont facultatives.
+- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et déplié leur correction dans le chapitre concerné. Les extensions « Pour aller plus loin » sont facultatives.
 - [ ] J'ai répondu au QCM formatif, lorsqu'il est disponible, et identifié mes notions à revoir.
 - [ ] Je sais expliquer, avec mes mots, les 2-3 idées principales de la journée.
 - [ ] Je peux appliquer ces idées à un cas simple (un extrait de code, une config, un flux).
@@ -140,7 +140,7 @@ avancer, revenir au concept concerné, refaire l'exercice.
 ### Jour 9 — chapitres 13 à 18
 
 - [ ] J'ai lu les chapitres 13 à 18 et les points clés sont clairs.
-- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et vérifié mes réponses dans `tp/corrige/`. Les extensions « Pour aller plus loin » sont facultatives.
+- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et déplié leur correction dans le chapitre concerné. Les extensions « Pour aller plus loin » sont facultatives.
 - [ ] J'ai répondu au QCM formatif, lorsqu'il est disponible, et identifié mes notions à revoir.
 - [ ] Je sais expliquer, avec mes mots, les 2-3 idées principales de la journée.
 - [ ] Je peux appliquer ces idées à un cas simple (un extrait de code, une config, un flux).
