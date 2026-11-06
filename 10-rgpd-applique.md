@@ -20,7 +20,7 @@
 - **Définir** une durée de conservation et son mécanisme d'effacement.
 - **Mettre en œuvre** les droits des personnes dans une application (accès,
   rectification, effacement, portabilité).
-- **Documenter** un traitement dans un registre.
+- **Documenter** un traitement dans un registre — l'exposé du registre est en approfondissement.
 
 ---
 
