@@ -7,7 +7,7 @@
 
 # La sécurité des applications et des protocoles réseau par l'attaque
 
-> Cours d'**autoformation** · **RNCP40573** Expert en informatique et systèmes d'information · spécialisation **4B Big Data & IA**
+> Cours d'**autoformation** · **RNCP40573** Expert en informatique et systèmes d'information · **brique transversale de sécurité** adossée au bloc **BC03** (conception et développement applicatif)
 > 3 journées · supports **rédigés par IA**, relus et validés.
 
 ---
