@@ -230,7 +230,7 @@ Avant de passer au corrigé, vérifiez que :
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif.* Si vous ne pouviez ajouter qu'**une seule** règle de pare-feu à ce
 réseau, laquelle choisiriez-vous pour réduire le plus le risque, et pourquoi ?

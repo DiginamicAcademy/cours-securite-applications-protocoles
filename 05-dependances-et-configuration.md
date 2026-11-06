@@ -208,7 +208,7 @@ appliquée, la vérification effectuée. Une dizaine de lignes suffit.
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif — ne bloque pas la suite du parcours.*
 

@@ -216,7 +216,7 @@ Avant de passer au corrigé, vérifiez que :
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif.* Que faudrait-il avoir **préparé avant l'incident** pour que ce plan
 soit exécutable demain matin, sans discussion ? Listez les préparatifs, du plus

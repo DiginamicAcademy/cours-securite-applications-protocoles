@@ -224,7 +224,7 @@ Avant de passer au corrigé, vérifiez que :
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif.* Le dépôt existe depuis trois ans, et son historique contient
 peut-être des secrets commités bien avant l'arrivée de ces contrôles. Comment les

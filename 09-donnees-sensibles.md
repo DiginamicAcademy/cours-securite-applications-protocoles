@@ -174,7 +174,7 @@ Avant de passer au corrigé, vérifiez que :
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif.* Le fournisseur veut proposer un service de « comparaison avec les
 foyers similaires » à partir des relevés. Sans écrire de code, décrivez comment

@@ -184,7 +184,7 @@ Avant de passer au corrigé, vérifiez que :
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif.* Le service comptabilité reprend le fichier tôt le lendemain matin.
 Si vous deviez ajouter **une seule** mesure pour qu'il détecte qu'un export est

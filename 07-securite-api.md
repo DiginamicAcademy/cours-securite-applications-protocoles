@@ -180,7 +180,7 @@ Avant de passer au corrigé, vérifiez que :
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif.* La ville veut aussi ouvrir `GET /comptes/{id}/trajets` (les
 trajets détaillés d'un abonné) à un partenaire de recherche sur la mobilité.

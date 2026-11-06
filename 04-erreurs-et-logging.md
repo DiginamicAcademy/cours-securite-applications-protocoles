@@ -214,7 +214,7 @@ sécurité de réponse, au niveau du service plutôt que route par route.
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif — ne bloque pas la suite du parcours.*
 

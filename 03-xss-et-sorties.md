@@ -184,7 +184,7 @@ dans chaque cas.
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif — ne bloque pas la suite du parcours.*
 

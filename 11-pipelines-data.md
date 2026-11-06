@@ -182,7 +182,7 @@ Avant de passer au corrigé, vérifiez que :
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif.* Le prestataire d'e-mailing propose de déposer ses fichiers de
 réponses dans le même compartiment que les exports, « pour simplifier ».

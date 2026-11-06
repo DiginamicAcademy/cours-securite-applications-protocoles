@@ -166,7 +166,7 @@ Avant de confronter votre travail à la grille de vérification, vérifiez que 
 
 ---
 
-#### Pour aller plus loin
+#### Prolongement de l'exercice
 
 *Facultatif.* La fédération propose aussi de mutualiser les certificats médicaux
 dans son hébergement. Dites, en quelques lignes, ce que ce transfert change par
