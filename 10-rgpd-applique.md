@@ -160,4 +160,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Une boutique en ligne conserve l'adresse de livraison de ses commandes. Sur quelle base légale repose ce traitement ?
+
+- A. Le consentement : la personne a passé commande
+- B. L'exécution du contrat : la donnée sert à exécuter ce qui est convenu
+- C. L'obligation légale : la loi impose de connaître l'acheteur
+- D. L'intérêt légitime : c'est utile pour la logistique
+
+- [ ] ✓ je savais
+
+**2.** L'inscription à la newsletter est activée par une case pré-cochée dans les conditions générales. Le traitement repose-t-il sur le consentement ?
+
+- A. Oui : la personne n'a pas dit non, elle pouvait décocher
+- B. Oui : les conditions générales suffisent à informer la personne
+- C. Non : un consentement pré-coché ou glissé dans les conditions ne vaut pas consentement — il faut une case spécifique par usage, un usage expliqué et une révocation qui fonctionne
+- D. Non, mais l'intérêt légitime couvre automatiquement les newsletters
+
+- [ ] ✓ je savais
+
+**3.** Cinq ans après la fin d'une relation client, les factures doivent encore être conservées pour la comptabilité. Quel sort leur appliquer ?
+
+- A. Effacement : la durée de conservation principale est dépassée
+- B. Archivage intermédiaire : isolées, hors des applications actives, avec un accès restreint
+- C. Anonymisation : elles ne concernent plus personne
+- D. Rien : les laisser dans les applications actives, elles y ont toujours été
+
+- [ ] ✓ je savais
+
+**4.** Un client exerce son droit à l'effacement : la ligne disparaît de la table `clients`. L'audit relève que la donnée vit encore dans les sauvegardes, les journaux et le tableur du service marketing. Qu'en dit le chapitre ?
+
+- A. C'est conforme : la base de production est la référence
+- B. C'est conforme si la personne a été informée par courriel
+- C. C'est un effacement partiel : l'effacement doit couvrir tous les endroits où la donnée vit, ou documenter pourquoi certains la retiennent temporairement
+- D. C'est un problème de sauvegarde, sans lien avec le droit des personnes
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « Chaque droit se traduit par une fonctionnalité concrète — pas par une adresse courriel à laquelle on répondra peut-être. » Donnez deux exemples de traduction technique pris dans le chapitre, et précisez le délai qui s'attache à ces demandes.
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** L'adresse de livraison d'une commande en ligne est l'exemple même de l'exécution du contrat : la donnée sert à exécuter ce qui est convenu.
+**Pourquoi :** chaque traitement doit reposer sur une base légale choisie et documentée avant de collecter — ici ni consentement ni intérêt légitime ne sont nécessaires.
+
+**2. C.** « La personne n'a pas dit non » n'est pas une base légale : le consentement exige d'être spécifique (une case par usage), éclairé (on dit ce qu'on en fait) et révocable (un lien de désinscription qui fonctionne vraiment).
+**Pourquoi :** un consentement nul retourne le traitement vers une autre base à justifier — il n'y en a pas : il faut la choisir et l'écrire.
+
+**3. B.** Une obligation légale (facturation, garantie) retient la donnée : elle part en archivage intermédiaire — isolée, hors des applications actives, avec un accès restreint.
+**Pourquoi :** passé le délai de la finalité, trois gestes seulement : effacer, archiver, ou anonymiser ; ici l'obligation légale interdit l'effacement et l'anonymisation n'a pas de sens pour des factures nominatives.
+
+**4. C.** C'est l'écueil de l'effacement partiel, récurrent dans les audits : la donnée survit dans les sauvegardes, les journaux, le tableur du marketing.
+**Pourquoi :** l'effacement doit couvrir tous les endroits où la donnée vit, ou documenter pourquoi certains la retiennent temporairement — sinon le droit est un formulaire, pas une fonctionnalité.
+
+**5.** Attendu (deux parmi) : accès → export JSON ou CSV du profil et de l'historique ; rectification → endpoint de mise à jour sur les champs concernés ; opposition → mécanisme de désinscription qui agit vraiment ; portabilité → export structuré lisible par machine ; effacement → suppression, sauf obligation légale (les factures restent). Délai : un mois, prolongeable une fois, pas plus.
+**Pourquoi :** le droit qui existe sur le papier, sans outil derrière, est l'un des deux écueils les plus relevés en audit.
+
+---
+
 [← Chapitre précédent](09-donnees-sensibles.md) · [Sommaire](Readme.md) · [Chapitre suivant →](11-pipelines-data.md)

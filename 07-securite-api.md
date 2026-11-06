@@ -222,4 +222,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Sur l'API d'une rétention de véhicules, `GET /users/4251` répond à un client connecté — puis `GET /users/4252` aussi. Quel risque de l'OWASP API Security Top 10 est illustré ?
+
+- A. Le BOLA (Broken Object Level Authorization) : l'appelant est authentifié mais accède à l'objet d'un autre
+- B. L'injection de masse : le corps de la requête écrit des champs non prévus
+- C. La consommation de ressources sans restriction : le débit n'est pas limité
+- D. La mauvaise gestion de l'inventaire : une vieille version de l'API tourne encore
+
+- [ ] ✓ je savais
+
+**2.** Un formulaire d'inscription ne montre pas de champ `role`, mais l'API accepte `{"role": "admin"}` dans le corps de la requête et l'écrit dans l'objet métier. Comment nomme-t-on ce risque ?
+
+- A. Le BOLA, puisque le rôle d'un autre est touché
+- B. L'injection de masse (mass assignment) : le corps est recopié tel quel, la propriété existe donc elle est écrite
+- C. La confusion authentification/autorisation : le 403 manque
+- D. Le versioning mal géré : le formulaire a vieilli
+
+- [ ] ✓ je savais
+
+**3.** L'équipe garde `/v1` en production « pour ne pas casser les clients », en plus de `/v2`. Quel est le problème ?
+
+- A. Aucun : deux versions coexistent sans risque si le code est propre
+- B. `/v1` ralentit `/v2` en partageant la base de données
+- C. Une vieille version garde vieilles les failles qu'elle contenait : chaque version maintenue est une surface d'attaque maintenue
+- D. Les clients ne savent pas quelle version choisir sans document OpenAPI
+
+- [ ] ✓ je savais
+
+**4.** Qu'est-ce qui rend une API différente d'une page web face à un attaquant ?
+
+- A. Une API échange du JSON, illisible pour un attaquant
+- B. Une API est faite pour être scriptée : l'attaquant ne navigue pas, il programme, et peut tester des milliers de valeurs
+- C. Une API est toujours derrière un pare-feu, contrairement aux pages
+- D. Une API n'affiche rien, donc rien ne peut fuiter
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* Qu'est-ce que la surface d'attaque d'une API ? Donnez la définition du chapitre et au moins trois exemples d'entrées à auditer sur l'API de la fromagerie.
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. A.** C'est le risque n°1 des API : l'API vérifie que vous êtes connecté, pas que le client 4252 est le vôtre.
+**Pourquoi :** une API vérifie deux choses distinctes — qui appelle (authentification) et ce qu'il a le droit de toucher (autorisation) ; les confondre donne le BOLA.
+
+**2. B.** Quand le corps est recopié tel quel dans un objet métier, l'appelant peut écrire des champs qu'on ne lui a jamais montrés : `role: admin`, `credit: 500`.
+**Pourquoi :** la propriété existe dans le modèle, donc elle est écrite — sans jamais avoir été prévue dans le formulaire.
+
+**3. C.** Le réflexe « ajouter une version et garder l'ancienne » range le risque dans la mauvaise gestion de l'inventaire : garder `/v1` trois ans « au cas où », c'est garder trois ans les erreurs de `/v1`.
+**Pourquoi :** la démarche est versionner dans le chemin, annoncer une fin de vie, mesurer l'usage de chaque version, puis couper l'ancienne.
+
+**4. B.** Une page est faite pour un œil humain, une API pour être scriptée : un attaquant programme et peut tester des milliers de valeurs pendant qu'on lit cette phrase.
+**Pourquoi :** c'est ce qui rend l'audit préalable indispensable — le débit de test d'un script n'a rien à voir avec la navigation d'une personne.
+
+**5.** Attendu : tout ce que l'API accepte du monde extérieur, plus ce qu'elle renvoie — par exemple le chemin (`/products/search`, un endpoint oublié), les paramètres (`?q=Comté`, une valeur qui déborde), le corps de la requête (un champ de trop accepté sans vérification), les en-têtes (un jeton volé ou deviné), et les données renvoyées (un champ sensible qui sort sans qu'on le demande).
+**Pourquoi :** chaque entrée est un point où une valeur peut déborder du cadre prévu, et chaque champ renvoyé est un champ à protéger.
+
+---
+
 [← Chapitre précédent](06-revue-de-code-securite.md) · [Sommaire](Readme.md) · [Chapitre suivant →](08-auth-et-limitation-api.md)

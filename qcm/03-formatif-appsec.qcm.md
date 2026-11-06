@@ -26,7 +26,7 @@ qcm:
   ni dans les feedbacks, parce que Moodle mélange les propositions.
 -->
 
-# Journée 7 — Sécuriser l'application dans le code (chapitres 01 à 06)
+## Journée 7 — Sécuriser l'application dans le code (chapitres 01 à 06)
 
 ## Q1 {niveau: facile, tags: [ch01, principes]}
 
@@ -124,7 +124,7 @@ La revue de sécurité d'un diff se conduit en trois passes indépendantes, chac
 > **Réponse : C** — Qu'arrive-t-il de l'extérieur, qu'est-ce qui sort, que déclenche le code : chaque passe se fait sur tout le fichier avant de passer à la suivante.
 > **Chapitre à revoir : 06.**
 
-# Journée 8 — API, données et conformité (chapitres 07 à 12)
+## Journée 8 — API, données et conformité (chapitres 07 à 12)
 
 ## Q9 {niveau: facile, tags: [ch07, api]}
 
@@ -222,7 +222,7 @@ Un export « anonymisé » d'adhérents ne contient plus de nom ni de courriel
 > **Réponse : B** — L'anonymat se mesure à la ré-identification possible, pas aux colonnes supprimées : des quasi-identifiants recroisés peuvent suffire à retrouver une personne.
 > **Chapitre à revoir : 12.**
 
-# Journée 9 — Réseau, chaîne de livraison et service (chapitres 13 à 18)
+## Journée 9 — Réseau, chaîne de livraison et service (chapitres 13 à 18)
 
 ## Q17 {niveau: facile, tags: [ch13, tls]}
 

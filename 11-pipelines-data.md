@@ -196,4 +196,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Le script d'extraction d'un pipeline tourne avec un compte administrateur « pour ne pas être bloqué ». Quel est le risque principal ?
+
+- A. Aucun : un compte administrateur évite les incidents de production
+- B. Le job tourne plus lentement à cause des droits
+- C. Quiconque détourne le script dispose de la totalité du système d'information
+- D. La base source refuse les connexions administrateur la nuit
+
+- [ ] ✓ je savais
+
+**2.** Quelles sont les trois familles de tests de données du chapitre ?
+
+- A. Unitaires, intégration, bout en bout
+- B. Fraîcheur, complétude, validité
+- C. Charge, latence, disponibilité
+- D. Volume, coût, volumétrie
+
+- [ ] ✓ je savais
+
+**3.** Un test de données détecte des durées négatives, mais seulement en envoyant une alerte après le chargement. Que vaut cette protection ?
+
+- A. Elle est suffisante : l'équipe est prévenue le jour même
+- B. Elle ne protège que la prochaine fois : entre-temps, les données fausses sont déjà dans les rapports — le test doit bloquer le chargement avant l'entrepôt
+- C. Elle est équivalente au blocage, avec moins de faux positifs
+- D. Elle est supérieure : bloquer un job de nuit est plus coûteux qu'alerter
+
+- [ ] ✓ je savais
+
+**4.** Dans le cloisonnement d'un pipeline, quelle règle s'applique au stockage intermédiaire (MinIO, S3) ?
+
+- A. Lecture en écriture pour tous les services, afin de simplifier les échanges
+- B. Écriture à l'étape qui produit, lecture à l'étape qui consomme, rien d'autre
+- C. Accès libre en lecture pour les analystes, l'entrepôt étant déjà protégé
+- D. Suppression immédiate après lecture, sans exception
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « Un pipeline qui échoue en silence est plus dangereux qu'un pipeline en panne. » Expliquez, en vous appuyant sur l'accroche du chapitre (le fichier CSV malformé).
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. C.** Le compte de service est le point le plus négligé : un compte administrateur offre à quiconque détourne le script la totalité du système d'information.
+**Pourquoi :** le moindre privilège s'applique aux pipelines comme au code — un compte par job, un droit par ressource.
+
+**2. B.** Fraîcheur (le dernier chargement date de moins de 24 h), complétude (le nombre de lignes du jour est dans la plage attendue), validité (durées positives, identifiants non nuls, formats respectés).
+**Pourquoi :** un pipeline qui « marche » n'est pas un pipeline qui a raison ; les tests appliquent au flux la discipline des tests unitaires au code.
+
+**3. B.** Une alerte envoyée après chargement ne protège que la prochaine fois : entre-temps, les données fausses sont déjà dans les rapports.
+**Pourquoi :** le test doit bloquer le chargement au lieu d'alerter dans un coin — c'est le pipeline fail-closed, peu importe l'outil.
+
+**4. B.** Écriture à l'étape qui produit, lecture à l'étape qui consomme, rien d'autre ; l'entrepôt, lui, s'ouvre par vues restreintes par domaine, pas par accès direct aux tables brutes.
+**Pourquoi :** le cloisonnement se décrit en une phrase par acteur — « qui peut faire quoi, sur quelle ressource, combien de temps » ; sinon le pipeline n'a pas de cloison, il a un couloir.
+
+**5.** Attendu : un pipeline en panne se voit et stoppe la chaîne ; un pipeline qui échoue en silence livre des données manquantes ou fausses qui ont l'air vraies — dans l'accroche, un CSV malformé fait planter le job et les données manquantes partent en production sans alerte, donc les tableaux de bord mentent.
+**Pourquoi :** le danger n'est pas l'absence de données mais la fausse donnée crue : personne ne soupçonne les rapports, et l'erreur se décide avec eux.
+
+---
+
 [← Chapitre précédent](10-rgpd-applique.md) · [Sommaire](Readme.md) · [Chapitre suivant →](12-partage-et-tiers.md)

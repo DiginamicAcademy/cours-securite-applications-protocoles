@@ -231,4 +231,69 @@ la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Un site de phishing arbore le cadenas du navigateur. Que peut-on en conclure ?
+
+- A. Le site est sûr : le cadenas l'atteste
+- B. L'échange est chiffré et le serveur prouve être le propriétaire du nom de domaine — rien de plus : un site de phishing parfaitement chiffré reste un site de phishing
+- C. Les données saisies seront bien stockées côté serveur
+- D. Le nom de domaine est forcément celui que la personne voulait joindre
+
+- [ ] ✓ je savais
+
+**2.** « Notre messagerie est chiffrée, on utilise STARTTLS. » Pourquoi cette affirmation ne suffit-elle pas ?
+
+- A. Parce que STARTTLS est un protocole cassé, à bannir
+- B. Parce que STARTTLS ne s'emploie qu'avec DNS
+- C. Parce que si le repli en clair est accepté, un attaquant sur le chemin annule la montée en chiffrement et récupère la version en clair : un chiffrement optionnel est un chiffrement contournable
+- D. Parce que le chiffrement d'une messagerie ne protège jamais les identifiants
+
+- [ ] ✓ je savais
+
+**3.** Une victime tape le bon nom de domaine mais aboutit sur une machine contrôlée par l'attaquant. Quelle attaque est en cause, et quelle mesure la rend détectable ?
+
+- A. Une attaque par dégradation forcée ; HSTS
+- B. Un usurpation de résolution de noms (DNS spoofing) ; DNSSEC, qui fait signer les réponses — sans chiffrer la requête
+- C. Une interception MITM ; le mot de passe fort sur SSH
+- D. Une attaque par dégradation forcée ; DNSSEC
+
+- [ ] ✓ je savais
+
+**4.** Que garantit l'en-tête HSTS (Strict-Transport-Security) envoyé par un serveur ?
+
+- A. Que toutes les réponses sont compressées en HTTPS
+- B. Que le certificat est renouvelé automatiquement chaque année
+- C. Que le navigateur doit refuser le repli en clair pour ce domaine : même si l'utilisateur tape `http://`, le navigateur refuse et chiffre
+- D. Que les mots de passe ne transitent jamais par le formulaire
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* Pour administrer un serveur SSH, pourquoi durcir avec l'authentification par clé plutôt que par mot de passe, et quels gestes de durcissement le chapitre applique-t-il ?
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** Le cadenas dit « cet échange est chiffré et le serveur prouve être le propriétaire du nom de domaine ». TLS garantit confidentialité, intégrité et authentification du serveur — pas l'honnêteté du site, ni la qualité du stockage, ni que le nom tapé est celui voulu.
+**Pourquoi :** la nuance change tout quand on évalue un risque : le chiffrement protège le transport, pas la personne qui saisit ses identifiants sur une page mensongère.
+
+**2. C.** STARTTLS négocie le chiffrement en cours de connexion ; un attaquant peut laisser passer la commande, l'annuler, et faire continuer les deux extrémités en clair.
+**Pourquoi :** « si le repli en clair est accepté, un attaquant sur le chemin obtient exactement ce qu'il veut » — c'est la famille des dégradations forcées : un chiffrement optionnel est un chiffrement contournable.
+
+**3. B.** Le DNS d'origine répond sans preuve : quiconque répond plus vite que le serveur légitime — ou corrompt un cache — redirige vers sa machine tout en affichant le bon nom.
+**Pourquoi :** DNSSEC fait signer les réponses par le détenteur de la zone : le client vérifie et refuse une réponse falsifiée. Ce n'est pas du chiffrement — la requête reste lisible — mais l'usurpation devient détectable.
+
+**4. C.** HSTS dit au navigateur : « pour ce domaine, le HTTPS est obligatoire, et ce pendant un an » — même si l'utilisateur tape `http://`, même si un lien propose le clair.
+**Pourquoi :** c'est le principe du durcissement : imposer le chiffrement au lieu de le proposer ; la réponse à chaque faille des protocoles anciens est de ne plus laisser le choix à l'attaquant.
+
+**5.** Attendu : le mot de passe est devinable, réutilisable, interceptable — on le désactive purement ; avec la clé publique, la clé privée ne quitte jamais le poste. Durcissement : clés uniquement (`PasswordAuthentication no`), pas de root direct (`PermitRootLogin no`), comptes nommés (`AllowUsers …`), journalisation des connexions.
+**Pourquoi :** il reste alors à protéger la clé et à limiter les comptes autorisés — la surface se réduit à ce qui prouve son identité, plus à ce qui se devine.
+
+---
+
 [← Chapitre précédent](12-partage-et-tiers.md) · [Sommaire](Readme.md) · [Chapitre suivant →](14-architecture-reseau.md)

@@ -166,4 +166,69 @@ la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** « Chaque composant ne reçoit que le strict nécessaire, ni plus. » Quel principe énonce cette règle ?
+
+- A. KISS (Keep It Simple, Stupid) : écrire simple
+- B. Le moindre privilège : donner le moins possible
+- C. La defense in depth : superposer les barrières
+- D. Le fail-closed : refuser plutôt qu'accepter
+
+- [ ] ✓ je savais
+
+**2.** Un script de service tourne avec le compte de l'administrateur de la machine. Laquelle des trois questions du moindre privilège est bafouée ?
+
+- A. Quelles données ?
+- B. Quels droits ?
+- C. Quel compte ?
+- D. Aucune : un droit en trop est un détail de confort
+
+- [ ] ✓ je savais
+
+**3.** Dans la defense in depth appliquée au code, pourquoi un journal trop bavard annule-t-il le bénéfice des deux autres couches ?
+
+- A. Parce qu'il ralentit le programme au moment de l'incident
+- B. Parce qu'il redonne à tout le monde ce que les deux premières couches protégeaient
+- C. Parce qu'il remplace la validation d'entrée
+- D. Parce qu'il fait passer une donnée pour une instruction
+
+- [ ] ✓ je savais
+
+**4.** Le script d'export de la fromagerie échoue en silence et livre à la comptabilité un fichier vide, parfaitement semblable à une journée sans commande. Comment nomme-t-on ce comportement ?
+
+- A. Fail-closed : le programme s'arrête et signale
+- B. Fail-open : le programme continue et accepte par défaut
+- C. Defense in depth : une barrière a cédé
+- D. KISS : le programme faisait trop de choses
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* Un programme fail-open livre à la comptabilité un fichier vide qui a l'air normal ; un programme fail-closed bloque la journée. Pourquoi le second reste-t-il le comportement sûr ?
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** « Donner le moins possible » est la définition du moindre privilège, le deuxième des trois réflexes du secure coding.
+**Pourquoi :** KISS porte sur la simplicité du code, la defense in depth sur la superposition des barrières ; le strict nécessaire, c'est le privilège.
+
+**2. C.** La question « quel compte ? » porte sur l'identité sous laquelle le code s'exécute : un script de service n'a pas besoin des droits de l'administrateur.
+**Pourquoi :** un droit en trop n'est pas un détail de confort, c'est une porte qu'on laisse ouverte le jour où le code est détourné.
+
+**3. B.** Les journaux doivent tracer ce qui s'est passé sans y mettre les données ni les secrets : trop bavards, ils redistribuent à tout le monde ce qui avait été protégé.
+**Pourquoi :** aucune couche ne remplace les autres, et une couche défaillante peut annuler le bénéfice des deux premières.
+
+**4. B.** Fail-open : le programme rencontre une erreur, continue et renvoie un résultat qui a l'air normal.
+**Pourquoi :** la personne qui récupère le fichier croit que tout va bien ; en fail-closed, l'échec laisse un signe visible et la comptabilité sait qu'elle ne doit pas reprendre le fichier.
+
+**5.** Attendu : le fail-open masque le problème — un résultat faux passe pour un résultat normal et on découvre l'erreur trop tard ; le fail-closed s'arrête, refuse et signale, donc on sait immédiatement qu'il faut vérifier.
+**Pourquoi :** un échec visible coûte une journée perdue, un succès mensonger coûte des décisions prises sur des données fausses.
+
+---
+
 [Sommaire](Readme.md) · [Chapitre suivant →](02-validation-et-injections.md)

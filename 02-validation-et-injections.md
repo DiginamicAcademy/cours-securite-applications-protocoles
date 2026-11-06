@@ -217,4 +217,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Pourquoi une requête paramétrée empêche-t-elle une saisie de devenir une instruction ?
+
+- A. Parce qu'elle échappe les guillemets et les apostrophes de la saisie
+- B. Parce que le pilote envoie la structure de la requête et les valeurs séparément, et le moteur ne les confond jamais
+- C. Parce qu'elle rejette les valeurs trop longues avant l'exécution
+- D. Parce qu'elle chiffre la saisie avant de la transmettre au moteur
+
+- [ ] ✓ je savais
+
+**2.** Un développeur double toutes les apostrophes de la saisie « à la main » au lieu d'utiliser une requête paramétrée. Quel est le problème ?
+
+- A. Aucun : c'est une façon plus légère de faire la même chose
+- B. C'est plus lent qu'une requête paramétrée
+- C. Il répare le symptôme : le jour où un cas n'a pas été prévu, la requête redevient injectable
+- D. Cela empêche le moteur de réutiliser le plan d'exécution de la requête
+
+- [ ] ✓ je savais
+
+**3.** Pour vérifier qu'un mot de recherche ne contient que des caractères autorisés, pourquoi utiliser `re.fullmatch` plutôt que `re.match` ?
+
+- A. Parce que `re.match` est plus lent sur les longues saisies
+- B. Parce que `re.match` ne regarde que le commencement : la valeur pourrait se poursuivre par n'importe quoi
+- C. Parce que `re.fullmatch` échappe automatiquement les caractères dangereux
+- D. Parce que `re.match` refuse les valeurs vides
+
+- [ ] ✓ je savais
+
+**4.** Une saisie doit choisir la colonne selon laquelle trier une liste. Que dit la règle du chapitre ?
+
+- A. On la passe en paramètre de la requête, comme toute valeur
+- B. On échappe les caractères spéciaux du nom de colonne
+- C. On la laisse voyager telle quelle : un nom de colonne est inoffensif
+- D. Elle influence la forme de la requête : on la remplace par un choix dans une liste fermée décidée par le code
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « Valider n'est pas nettoyer. » Expliquez la différence, et pourquoi réparer une valeur hors format en silence est plus dangereux que la refuser.
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** Le moteur reçoit la structure d'un côté, les valeurs de l'autre : une valeur ne peut donc pas devenir une instruction, même si elle en a exactement l'apparence.
+**Pourquoi :** c'est le moteur qui fait la distinction données/instructions ; échapper ou filtrer laisse cette distinction à la charge du code, donc à l'erreur.
+
+**2. C.** Échapper à la main répare le symptôme : le traitement ne couvre que les cas prévus, et un cas non prévu rend la requête injectable.
+**Pourquoi :** la séparation se fait avec le pilote, pas avec des remplacements de caractères — c'est l'encadré « Piège » du chapitre.
+
+**3. B.** `re.match` ne vérifie que le début de la valeur : `bonjour` suivi de n'importe quoi passerait. `re.fullmatch` exige que le motif couvre toute la valeur.
+**Pourquoi :** le contrôle de format ne vaut que s'il porte sur la totalité de ce qui sera utilisé.
+
+**4. D.** Un nom de colonne n'est pas une valeur : dès qu'une saisie influence la forme de la requête — table, colonne, opérateur — elle ne peut pas voyager en valeur, on la remplace par un choix dans une liste fermée.
+**Pourquoi :** ce qui structure reste du code, ce qui remplit reste de la donnée — le même réflexe que pour les en-têtes de réponse ou les chemins de fichiers.
+
+**5.** Attendu : valider, c'est vérifier le type, le format et la longueur, et refuser ce qui est hors format avec un message qui dit pourquoi ; nettoyer, c'est supprimer les caractères interdits et laisser passer le reste. Une valeur « réparée » devient une valeur que personne n'a jamais testée.
+**Pourquoi :** le refus est le fail-closed appliqué à la saisie — l'usage d'une valeur silencieusement modifiée est un fail-open dont personne ne sait qu'il a eu lieu.
+
+---
+
 [← Chapitre précédent](01-principes-secure-coding.md) · [Sommaire](Readme.md) · [Chapitre suivant →](03-xss-et-sorties.md)

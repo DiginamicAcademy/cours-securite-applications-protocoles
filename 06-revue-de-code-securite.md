@@ -187,4 +187,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Pourquoi la revue de sécurité se fait-elle en trois passes (entrées, sorties, appels système) plutôt qu'en relisant le fichier ligne à ligne ?
+
+- A. Parce que relire ligne à ligne est interdit en revue officielle
+- B. Parce que chaque passe porte une seule question sur tout le fichier : c'est plus rapide et plus fiable, le cerveau ne saute pas d'une préoccupation à l'autre
+- C. Parce que les trois passes couvrent les bugs en plus des failles
+- D. Parce qu'une seule passe suffit dès que le fichier est court
+
+- [ ] ✓ je savais
+
+**2.** Dans un diff, le code ajouté est irréprochable. Que doit quand même regarder le relecteur ?
+
+- A. Rien : si les lignes ajoutées sont sûres, le changement est sûr
+- B. Seulement la taille du changement, pour estimer le temps de correction
+- C. Ce que le diff retire : un contrôle supprimé peut être la seule vérification qui protégeait la route
+- D. Uniquement le nom de la personne qui a écrit le changement
+
+- [ ] ✓ je savais
+
+**3.** Le même défaut existe sur deux routes : l'une est ouverte à tous, l'autre réservée à l'administration interne. Comment le rapport de revue priorise-t-il ?
+
+- A. À gravité égale, les deux corrections ont la même priorité
+- B. La route interne d'abord, parce que le correctif y est plus simple
+- C. Selon l'élégance du correctif disponible pour chacune
+- D. La route ouverte à tous d'abord : la priorisation suit l'exposition, pas l'élégance du correctif
+
+- [ ] ✓ je savais
+
+**4.** Dans un diff, cette ligne attire l'attention : `os.system("chmod 666 " + nom_du_fichier)`. Quel est le problème ?
+
+- A. Le mode 666 est trop restrictif pour un fichier d'export
+- B. `os.system` est plus lent que `os.chmod`
+- C. La saisie choisit l'argument de la commande : une donnée extérieure peut modifier la forme de l'appel système
+- D. Rien : la commande est fixe, donc l'appel est sûr
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « Une revue qui ne produit rien de transmissible est une opinion. » Que doit contenir le rapport de revue, et pourquoi la mention « pourquoi c'est grave » est-elle indispensable ?
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** La revue de sécurité lit ce que le code accepte, affiche et exécute : trois passes indépendantes, chacune avec sa question, chacune sur tout le fichier.
+**Pourquoi :** c'est plus rapide qu'une relecture attentive ligne à ligne et surtout plus fiable — et la méthode se transmet à toute une équipe sans expertise du langage.
+
+**2. C.** Un diff propre n'est pas un diff sûr : le code ajouté peut être irréprochable et supprimer, en passant, la seule vérification qui protégeait la route.
+**Pourquoi :** un contrôle retiré est un changement de surface d'attaque — « la revue regarde aussi ce qui disparaît ».
+
+**3. D.** Un problème sur une route ouverte à tous pèse plus lourd que le même problème sur une route réservée à l'administration interne, même si le correctif est identique.
+**Pourquoi :** la priorisation suit l'exposition ; le rapport s'adresse à la personne qui va corriger et doit dire « pourquoi maintenant », sinon il finit dans la pile des choses qu'on fera plus tard.
+
+**4. C.** C'est le quatrième signal du diff : une saisie peut choisir le fichier, le programme, l'argument. La forme de la commande devient pilotable depuis l'extérieur.
+**Pourquoi :** la version sûre garde la commande fixe et passe la donnée comme paramètre (`os.chmod(nom_du_fichier, 0o666)`) — un appel système se traite comme une requête.
+
+**5.** Attendu : le rapport donne la localisation (fichier, ligne), le problème (le pattern reconnu), la gravité (ce qui devient possible si personne ne corrige) et la proposition (correctif ou piste).
+**Pourquoi :** « pourquoi c'est grave » fournit le contexte de décision et la priorisation ; un rapport qui dit « à corriger » sans le dire reste dans les cartons.
+
+---
+
 [← Chapitre précédent](05-dependances-et-configuration.md) · [Sommaire](Readme.md) · [Chapitre suivant →](07-securite-api.md)

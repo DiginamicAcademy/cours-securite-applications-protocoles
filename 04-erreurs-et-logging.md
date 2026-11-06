@@ -176,4 +176,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** En pleine ouverture des ventes, la billetterie plante en production. Que doit recevoir la personne qui utilisait le service ?
+
+- A. La trace complète de l'échec, pour qu'elle puisse la transmettre au support
+- B. La version du moteur de base de données et la requête fautive
+- C. Un message générique et un identifiant de suivi ; le détail part dans les journaux
+- D. Rien : une page blanche, pour ne rien divulguer du tout
+
+- [ ] ✓ je savais
+
+**2.** À la connexion, l'application renvoie « Le compte n'existe pas » quand l'identifiant est inconnu. Pourquoi est-ce une fuite ?
+
+- A. Parce que le message est trop poli et n'inquiète personne
+- B. Parce qu'il confirme à quelqu'un qui énumère des comptes ce qui existe
+- C. Parce qu'il révèle la version du moteur de base de données
+- D. Parce qu'il devrait mentionner le nombre de tentatives restantes
+
+- [ ] ✓ je savais
+
+**3.** Un journal utile répond à quatre questions. Lesquelles ?
+
+- A. Qui, quand, quoi, avec quel résultat
+- B. Pourquoi, combien, comment, où
+- C. Qui, pourquoi, quel budget, quel délai
+- D. Quelle version, quel correctif, quel test, quel déploiement
+
+- [ ] ✓ je savais
+
+**4.** Pour comprendre un problème de connexion, faut-il journaliser la requête de connexion complète ?
+
+- A. Oui : sans la requête entière, on ne peut rien reconstituer
+- B. Oui, mais seulement si le journal est chiffré
+- C. Non : on journalise le fait que l'authentification a échoué, jamais le mot de passe ni le jeton
+- D. Non : une tentative de connexion ne mérite jamais d'être journalisée
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « Un journal n'est pas une copie de la base. » Expliquez la formule, et pourquoi une copie des identifiants dans un journal est pire que dans la base elle-même.
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. C.** Le détail aide le développeur, le général rassure l'utilisateur : en production, un message générique avec un identifiant de suivi ; la trace complète reste côté serveur.
+**Pourquoi :** l'identifiant de suivi est le joint entre les deux mondes — la personne signale un numéro, l'équipe retrouve la trace dans les journaux.
+
+**2. B.** « Le compte n'existe pas » et « mot de passe incorrect » ne disent pas la même chose à quelqu'un qui énumère des comptes : le premier confirme ce qui existe, le second ne dit rien.
+**Pourquoi :** un message d'erreur trop précis reste une fuite même sans trace technique — c'est le fail-closed appliqué à l'affichage.
+
+**3. A.** Qui, quand, quoi, avec quel résultat. Tout le reste est du bruit qui finit par masquer l'essentiel.
+**Pourquoi :** le journal se conçoit pour reconstituer un incident ; s'y ajoutent trois décisions prises en même temps : où il est stocké, combien de temps on le garde, qui peut le lire.
+
+**4. C.** Le journal décrit ce qui s'est passé, pas ce que contenaient les données : on note la tentative et son résultat, avec l'identifiant technique — jamais la valeur du secret.
+**Pourquoi :** une exception ou une requête transporte parfois le contenu qui l'a provoquée ; avant de journaliser entièrement, on vérifie ce qu'elle charrie.
+
+**5.** Attendu : le journal trace les événements (tentative, refus, accès, résultat), il ne duplique pas le contenu des données — à la place d'un mot de passe ou d'une donnée personnelle complète, un fait et un identifiant technique.
+**Pourquoi :** le journal est conçu pour être lu par plus de monde que la base ; y recopier les identifiants, c'est en multiplier la copie et les lecteurs.
+
+---
+
 [← Chapitre précédent](03-xss-et-sorties.md) · [Sommaire](Readme.md) · [Chapitre suivant →](05-dependances-et-configuration.md)

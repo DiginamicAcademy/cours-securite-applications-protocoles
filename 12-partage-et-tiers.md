@@ -162,4 +162,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Une mutuelle confie l'envoi de ses courriers à un prestataire. Qu'est-ce qui protège réellement les données transmises ?
+
+- A. La réputation du prestataire : « le prestataire est sérieux »
+- B. Le contrat, le périmètre minimal et la preuve de suppression — vérifiés, pas supposés
+- C. Le chiffrement du fichier au moment de l'envoi, et rien d'autre
+- D. Rien ne protège : dès qu'une donnée sort, elle est perdue de vue
+
+- [ ] ✓ je savais
+
+**2.** Dans le langage du RGPD, comment nomme-t-on un prestataire qui traite des données pour le compte du responsable de traitement, sur ses instructions documentées ?
+
+- A. Le responsable de traitement conjoint
+- B. Le destinataire occasionnel
+- C. Le sous-traitant
+- D. Le co-responsable solidaire
+
+- [ ] ✓ je savais
+
+**3.** Un jeu « anonymisé » d'adhérents ne contient plus de nom ni de courriel, mais garde code postal, date de naissance et sexe. À quoi mesure-t-on l'anonymat réel du jeu ?
+
+- A. Au nombre de colonnes supprimées
+- B. À l'absence du mot « anonymisé » dans le nom du fichier
+- C. À la ré-identification possible : un croisement avec une autre source peut-il retrouver une personne (quasi-identifiants)
+- D. À la taille du fichier : un petit fichier est forcément anonyme
+
+- [ ] ✓ je savais
+
+**4.** Comment l'éco-conception et la sécurité des données convergent-elles ?
+
+- A. Elles n'ont aucun rapport : l'une est écologique, l'autre réglementaire
+- B. Moins de données détenues, c'est moins de risque : ne collecter que l'utile, purger, agréger avant de partager, alléger les exports
+- C. L'éco-conception impose de tout conserver longtemps pour éviter les recalculs
+- D. La sécurité impose de tout dupliquer, l'éco-conception de tout supprimer
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* Pseudonymiser et anonymiser sont « deux promesses très différentes ». Lesquelles, et dans quel cas un jeu pseudonymisé transmis à un tiers reste-t-il une donnée personnelle ?
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** Ce qui protège, c'est ce qui a été écrit avant : contractualiser (droits d'usage et obligation d'effacement), limiter le périmètre, tracer les envois, encadrer la fin — la suppression effective au terme du contrat.
+**Pourquoi :** « le prestataire est sérieux » n'est pas une mesure de sécurité ; sans trace des envois, impossible de répondre « qu'a fui exactement ? » le jour d'un incident.
+
+**2. C.** Le prestataire est un sous-traitant : il traite les données pour le compte du responsable de traitement, sur ses instructions documentées.
+**Pourquoi :** la même discipline s'applique entre deux responsables de traitement distincts — chacun reste responsable de ce qu'il détient.
+
+**3. C.** L'anonymat se mesure à la ré-identification possible, pas aux colonnes supprimées : code postal, date de naissance et sexe sont des quasi-identifiants — sans effet pris isolément, ils deviennent des identifiants ensemble.
+**Pourquoi :** la question utile est : peut-on recroiser ce jeu avec une autre source pour retrouver une personne ?
+
+**4. B.** Les deux démarches se rejoignent sur un point concret : moins de données, moins de risque — et moins de coût.
+**Pourquoi :** ne collecter que l'utile réduit ce qu'il y a à protéger ; purger réduit ce qu'il y a à ficher en cas d'incident ; agréger avant de partager limite les données détaillées hors du système.
+
+**5.** Attendu : la pseudonymisation remplace l'identité par un identifiant stable (ex. `ADH-00482`) et reste réversible avec la table de correspondance ; l'anonymisation rend la ré-identification non raisonnablement possible, définitivement. Le jeu pseudonymisé transmis à un tiers reste une donnée personnelle si le tiers détient — ou peut obtenir — la table de correspondance.
+**Pourquoi :** dans ce cas il faut le traiter avec les mêmes contrôles d'accès qu'une donnée nominative.
+
+---
+
 [← Chapitre précédent](11-pipelines-data.md) · [Sommaire](Readme.md) · [Chapitre suivant →](13-protocoles-reseau.md)

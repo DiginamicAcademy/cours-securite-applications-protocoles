@@ -236,4 +236,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Un jeton de billetterie porte le rôle `guichet` avec le seul scope `places:lire`. Que peut faire l'application partenaire qui le détient ?
+
+- A. Réserver des places, mais pas les rembourser
+- B. Consulter les places, sans jamais pouvoir en réserver ni en rembourser
+- C. Tout ce que fait un guichetier : le rôle décide seul
+- D. Rien : sans les deux scopes, le jeton ne vaut plus rien
+
+- [ ] ✓ je savais
+
+**2.** Une requête arrive avec un jeton valide, mais dont le scope ne couvre pas l'action demandée. Quel code de refus est le bon ?
+
+- A. `401 Unauthorized`, puisqu'il manque quelque chose
+- B. `403 Forbidden` : l'appelant est identifié, mais n'a pas ce droit
+- C. `429 Too Many Requests` : l'action est hors périmètre
+- D. `404 Not Found` : l'action ne doit pas être visible
+
+- [ ] ✓ je savais
+
+**3.** Le rate limiting est compté en mémoire dans le service. Pourquoi est-ce insuffisant pour une API exposée ?
+
+- A. Parce que compter en mémoire est trop lent pour être utile
+- B. Parce que le compteur repart à zéro à chaque redémarrage et n'est pas partagé entre les instances du service
+- C. Parce qu'il faut toujours compter les adresses IP, jamais les comptes
+- D. Parce qu'un compteur en mémoire ne peut pas renvoyer de code `429`
+
+- [ ] ✓ je savais
+
+**4.** L'API reçoit `places=-3` et le transforme en `places=1` pour que la requête passe. Quel principe est bafoué ?
+
+- A. Aucun : c'est de la validation de schéma bien comprise
+- B. La limitation de débit : l'appelant martèle l'API
+- C. Le fail-closed de la validation de schéma : ce qui n'est pas explicitement accepté est refusé, jamais « réparé » en silence
+- D. L'autorisation : la réservation ne porte pas le bon `spectacle_id`
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « Valider le format ne suffit pas. » Expliquez pourquoi une réservation parfaitement valide au schéma peut quand même être une faille, et nommez le risque.
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** Le rôle décrit le profil de l'appelant ; le scope borne le périmètre exact de cet appel : avec `places:lire` seul, l'application voit les places, sans pouvoir réserver ni rembourser.
+**Pourquoi :** le rôle est large et stable, le scope est fin et révocable — c'est lui qui décide au moment de l'appel.
+
+**2. B.** `401` dit « je ne sais pas qui vous êtes » (ou votre jeton ne vaut plus rien) ; `403` dit « je sais qui vous êtes, et vous n'avez pas ce droit ».
+**Pourquoi :** un `403` renvoyé à la place d'un `401` — ou l'inverse — est le premier indice d'une autorisation mal branchée.
+
+**3. B.** Un compteur en mémoire repart à zéro à chaque redémarrage et n'est pas partagé entre plusieurs instances : parfait comme premier garde-fou, insuffisant pour une API exposée.
+**Pourquoi :** le comptage se déplace alors vers un stockage partagé (Redis, base de données) ou vers la passerelle d'API ; on décide aussi qui compte (une IP partagée ne doit pas être punie pour tous ses utilisateurs) et quel rythme (un login se limite serré, une lecture de catalogue large).
+
+**4. C.** Une API qui transforme `places=-3` en `places=1` cache un bug du côté de l'appelant — et lui apprend à ne jamais le corriger.
+**Pourquoi :** la validation de schéma tranche à l'avance types, bornes, longueurs et formats, et refuse par défaut : le refus est la correction honnête.
+
+**5.** Attendu : le schéma vérifie la forme (type, bornes, longueur, format), pas le droit d'usage ; une réservation validée peut porter un `spectacle_id` qui n'appartient pas à l'appelant — c'est du BOLA (Broken Object Level Authorization), et la validation de schéma ne le voit pas.
+**Pourquoi :** la forme et le droit sont deux contrôles distincts : il faut aussi vérifier l'autorisation sur la donnée touchée.
+
+---
+
 [← Chapitre précédent](07-securite-api.md) · [Sommaire](Readme.md) · [Chapitre suivant →](09-donnees-sensibles.md)

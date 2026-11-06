@@ -182,4 +182,69 @@ la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** L'équipe veut aller vite : elle restaure la sauvegarde avant d'avoir supprimé la cause de l'intrusion. Quel temps de la réponse a été sauté, et quel risque prend-elle ?
+
+- A. Détecter : elle traite une panne alors qu'il s'agit d'une intrusion
+- B. Contenir : elle détruit les traces de l'incident
+- C. Éradiquer : elle repart d'une sauvegarde contaminée ou garde la porte d'entrée ouverte, et l'incident recommence
+- D. Capitaliser : elle ne rédige pas le retour d'expérience
+
+- [ ] ✓ je savais
+
+**2.** Parmi ces actions, laquelle relève d'une containment correcte ?
+
+- A. Formater le disque de la machine compromise pour repartir propre
+- B. Effacer les journaux pour que personne ne les lise
+- C. Réinstaller la machine sans rien relever, tout de suite
+- D. Désactiver le compte détourné et isoler le segment concerné
+
+- [ ] ✓ je savais
+
+**3.** Un incident a exposé des données personnelles. Que impose le RGPD ?
+
+- A. Informer les clients dans les 30 jours, par courriel groupé
+- B. Notifier l'autorité de contrôle — en France la CNIL — dans les 72 h après en avoir pris conscience, sauf incident peu susceptible d'engendrer un risque ; informer les personnes concernées quand le risque est élevé
+- C. Attendre la fin de l'analyse technique avant toute notification
+- D. Rien d'automatique : seule une plainte déclenche l'obligation
+
+- [ ] ✓ je savais
+
+**4.** L'incident dure ; faut-il continuer à servir les clients ou tout arrêter ? Qui arbitre cette décision ?
+
+- A. Le pilote de l'incident, qui coordonne et tient le fil du temps
+- B. L'équipe technique, qui observe et restaure
+- C. La communication, qui informe l'interne et les clients
+- D. Le décideur, qui engage les moyens
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « On cherche ce qui a permis l'incident, pas qui l'a laissé faire. » Pourquoi cette règle d'or du post-mortem, et que doit contenir le document ?
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. C.** Les cinq temps sont ordonnés : détecter, contenir, éradiquer, restaurer, capitaliser — l'ordre compte plus que la vitesse. Restaurer avant d'avoir éradiqué, c'est repartir trop vite, avec la même faille qu'avant.
+**Pourquoi :** le piège classique d'éradiquer est de restaurer une sauvegarde contaminée ou de corriger le symptôme seul : la porte d'entrée doit être fermée avant la remise en service.
+
+**2. D.** Contenir n'est pas détruire : couper un accès, isoler un segment, désactiver un compte — oui. Formater un disque, effacer des journaux, réinstaller sans rien relever — non.
+**Pourquoi :** les traces servent à comprendre ce qui s'est passé, à savoir quoi restaurer, et parfois à constituer un dossier.
+
+**3. B.** Ces délais se préparent : savoir qui notifie, avec quelles informations, et comment on contacte les personnes ne s'improvise pas le jour de l'incident.
+**Pourquoi :** côté message, on dit ce qui est établi et depuis quand, on nomme un interlocuteur unique, on annonce la prochaine communication avec sa date — sans spéculer sur l'ampleur ni promettre une résolution qu'on ne maîtrise pas.
+
+**4. D.** Le décideur engage les moyens et arbitre entre continuer à servir et tout arrêter. Le pilote coordonne et tranche les priorités, l'équipe technique observe, contient, restaure, la communication informe.
+**Pourquoi :** les rôles sont nommés dans le plan, avant l'incident, pas pendant ; dans une petite équipe une personne cumule plusieurs rôles, mais les rôles restent nommés pour que personne ne se demande qui tranche.
+
+**5.** Attendu : un retour d'expérience qui finit en recherche de responsables ne produit plus jamais de récit honnête — la prochaine fois, personne ne dira « j'avais vu le signal et je n'ai rien fait ». Le document tient en quatre parties : la chronologie heure par heure avec les sources, les causes (porte d'entrée, extension, détection tardive), ce qui a aidé, et les changements à apporter.
+**Pourquoi :** chaque changement doit avoir un responsable et une échéance, sinon le post-mortem reste une liste d'intentions.
+
+---
+
 [← Chapitre précédent](16-tests-securite.md) · [Sommaire](Readme.md) · [Chapitre suivant →](18-maturite-et-perspectives.md)

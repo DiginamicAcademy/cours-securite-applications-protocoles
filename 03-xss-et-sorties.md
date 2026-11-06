@@ -201,4 +201,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** D'où naît une faille XSS (Cross-Site Scripting) ?
+
+- A. D'une base de données mal indexée qui renvoie trop de lignes
+- B. De la confusion entre le texte que la personne voit et le code que le navigateur exécute
+- C. D'un mot de passe trop court deviné par un tiers
+- D. D'une page qui charge des images trop lourdes
+
+- [ ] ✓ je savais
+
+**2.** Que fait exactement `html.escape` sur une saisie contenant `<script>alert(1)</script>` ?
+
+- A. Il supprime la balise de la valeur avant de l'afficher
+- B. Il refuse la saisie et renvoie un message d'erreur
+- C. Il réécrit les caractères qui ont un sens particulier : la balise s'affiche comme du texte au lieu d'être exécutée
+- D. Il chiffre la valeur pour que le navigateur ne puisse pas la lire
+
+- [ ] ✓ je savais
+
+**3.** Pourquoi la CSP (Content Security Policy) se pose-t-elle en en-tête de réponse HTTP, côté serveur, plutôt que dans une balise de la page ?
+
+- A. Parce que les en-têtes sont plus rapides à analyser que les balises
+- B. Parce qu'une balise dans la page pourrait être retirée par une injection
+- C. Parce que les navigateurs ignorent les balises de politique de contenu
+- D. Parce que l'en-tête chiffre aussi les échanges avec le navigateur
+
+- [ ] ✓ je savais
+
+**4.** Le moteur de gabarit échappe les valeurs par défaut. Quelles habitudes annulent cette protection ?
+
+- A. Nommer les variables en minuscules et éviter les accents
+- B. Utiliser des gabarits en fichier plutôt qu'en chaîne, et limiter leur taille
+- C. Marquer une valeur comme sûre, et assembler le gabarit depuis une chaîne
+- D. Journaliser les valeurs affichées et limiter la longueur des champs
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « Une valeur correctement échappée pour du texte le devient beaucoup moins dans un bloc de script ou dans une adresse. » Expliquez pourquoi le contexte d'insertion décide du traitement, avec un exemple du chapitre.
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** Le XSS naît quand une donnée qui devait rester du texte se retrouve du code : la page mélange texte et code, et le navigateur exécute.
+**Pourquoi :** c'est la confusion entre ce que la personne voit et ce que le navigateur exécute — rien de plus, rien de moins.
+
+**2. C.** Rien n'est supprimé, rien n'est censuré : les chevrons sont encodés, la balise s'affiche comme du texte. La donnée est rendue inoffensive pour son contexte.
+**Pourquoi :** supprimer ou refuser serait traiter le symptôme ; l'échappement est la ponctuation qui sépare le texte du code.
+
+**3. B.** Une politique posée dans la page est une donnée comme une autre : une injection peut la retirer. L'en-tête de réponse, lui, est posé par le serveur.
+**Pourquoi :** la CSP est la seconde barrière — « la ceinture et les bretelles » : elle encaisse le jour où l'échappement a été oublié, à condition d'être hors d'atteinte de l'injection.
+
+**4. C.** Marquer une valeur comme sûre empêche le moteur de l'échapper alors qu'elle vient de l'extérieur ; assembler le gabarit depuis une chaîne transforme le texte en code interprété.
+**Pourquoi :** un moteur de gabarit sûr ne protège que ce qu'il voit — la sécurité s'arrête là où le code reprend la main.
+
+**5.** Attendu : chaque contexte a son langage — entre deux balises un échappement HTML suffit ; dans un attribut il faut aussi les guillemets toujours posés ; dans un bloc de script l'échappement HTML ne sert à rien, il faut une sérialisation dédiée ; pour une adresse c'est le schéma qu'on valide.
+**Pourquoi :** c'est le traitement du contexte qui compte, pas une fonction appliquée partout à l'aveugle : la même valeur ne signifie pas la même chose selon l'endroit où elle s'insère.
+
+---
+
 [← Chapitre précédent](02-validation-et-injections.md) · [Sommaire](Readme.md) · [Chapitre suivant →](04-erreurs-et-logging.md)

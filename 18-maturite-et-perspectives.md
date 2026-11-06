@@ -207,4 +207,69 @@ la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Dans la grille de maturité du chapitre, que signifie une note de 4 dans un domaine ?
+
+- A. Ignoré : personne ne s'en occupe, ou on ne sait pas
+- B. Planifié : une décision existe, elle n'est pas appliquée partout
+- C. Appliqué : c'est en place, et ça se vérifie
+- D. Tenu dans le temps : amélioré par les retours
+
+- [ ] ✓ je savais
+
+**2.** Quelle question le chapitre substitue-t-il à « Sommes-nous en sécurité ? » ?
+
+- A. « Quel budget de sécurité demander cette année ? »
+- B. « Où en sommes-nous, et quelle est la prochaine étape ? »
+- C. « Quel outil de sécurité acheter en premier ? »
+- D. « Quelle certification visons-nous ? »
+
+- [ ] ✓ je savais
+
+**3.** Sur quoi se décide la priorité d'un geste dans la feuille de route ?
+
+- A. Sur la taille de l'équipe et le budget disponible
+- B. Sur la règle de proportionnalité : la protection est proportionnée à la valeur de ce qu'elle protège — le plus précieux, le chemin le plus court de l'attaquant vers lui, le geste qui coupe ce chemin
+- C. Sur l'ordre d'arrivée des alertes dans la messagerie
+- D. Sur ce que font les concurrents
+
+- [ ] ✓ je savais
+
+**4.** À quoi mesure-t-on une veille continue efficace ?
+
+- A. Au nombre d'alertes et de newsletters lues chaque semaine
+- B. Au temps entre la publication d'une faille et le moment où l'organisation sait si elle est concernée — grâce à un inventaire tenu à jour, des alertes automatiques et une personne nommée
+- C. À la rapidité avec laquelle les alertes sont archivées
+- D. Au nombre de sources suivies et de flux auxquels l'équipe est abonnée
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « La feuille de route la plus dangereuse est celle qui ne contient que des chantiers structurels. » Pourquoi, et que faut-il y mettre en plus ?
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. C.** L'échelle va de 1 à 5 : ignoré, conscient, planifié, appliqué, tenu dans le temps — la note 4 signifie « en place, et ça se vérifie ».
+**Pourquoi :** l'auto-évaluation sert à décider, pas à se noter ; les cinq domaines sont ceux du parcours (code, dépendances, accès, réseau, réponse à incident), et mettre la même note partout signale que l'évaluation n'a pas été faite.
+
+**2. B.** « Sommes-nous en sécurité ? » est une question à laquelle personne ne peut répondre honnêtement — on finit par recevoir une réponse rassurante et fausse.
+**Pourquoi :** la sécurité n'est pas un état qu'on atteint, c'est une trajectoire qu'on suit ; la grille de maturité, remplie honnêtement en une page, sert à situer et à ordonner la prochaine étape.
+
+**3. B.** Une feuille de route qui liste tout ne priorise rien ; trois questions suffisent à ordonner : qu'est-ce qui est le plus précieux (données, service, réputation), quel est le chemin le plus court pour y arriver, quel geste coupe ce chemin pour le moins d'effort.
+**Pourquoi :** c'est la règle de proportionnalité rencontrée dès la première journée du parcours, appliquée intégralement à la planification.
+
+**4. B.** Ce qui compte n'est pas le nombre d'alertes lues mais le délai de réaction : ce temps se réduit avec un inventaire des composants tenu à jour (le SBOM), des alertes automatiques sur les dépendances, et une personne nommée pour traiter ce qui arrive.
+**Pourquoi :** sans inventaire ni personne désignée, la question « sommes-nous concernés ? » reste sans réponse quand la faille est déjà exploitée.
+
+**5.** Attendu : une feuille de route uniquement structurelle ne change rien avant longtemps, et l'intérêt de l'équipe retombe ; il faut y joindre un geste immédiat — ce qui coupe un chemin d'attaque connu en quelques jours (fermer une exposition inutile, révoquer une clé commitée).
+**Pourquoi :** un chantier visible dans les deux premières semaines maintient l'équipe en mouvement, pendant que le court terme installe les protections durables et que le structurel change les habitudes.
+
+---
+
 [← Chapitre précédent](17-reponse-incident.md) · [Sommaire](Readme.md) · [Chapitre suivant →](A-Glossaire-et-ressources.md)

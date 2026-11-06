@@ -203,4 +203,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Sur quoi se base la classification d'une donnée en quatre niveaux de sensibilité ?
+
+- A. Sur la « valeur » commerciale de la donnée
+- B. Sur le dommage causé par sa divulgation
+- C. Sur la taille du colonne qui la stocke
+- D. Sur le chiffre d'affaires du service qui la détient
+
+- [ ] ✓ je savais
+
+**2.** La fiche d'un salarié renvoie son numéro de sécurité sociale et son RIB dans une réponse destinée à un simple affichage de planning. À quel niveau appartiennent ces champs, et quelle est la règle par défaut ?
+
+- A. Interne : restreindre au périmètre de l'entreprise
+- B. Confidentielle : accès nominatif, journalisé
+- C. Strictement confidentielle : accès exceptionnel, chiffrement, jamais exposée par une API
+- D. Publique : ces valeurs circulent déjà entre services
+
+- [ ] ✓ je savais
+
+**3.** La minimisation de la réponse d'un endpoint se décide à trois endroits. Lesquels ?
+
+- A. La requête (nommer les colonnes), le modèle de réponse (schéma de sortie explicite), le code mort (supprimer les anciens endpoints généreux)
+- B. Le pare-feu, le chiffrement des flux, la sauvegarde chiffrée
+- C. Les en-têtes de réponse, la pagination, la compression
+- D. La politique de mots de passe, la double authentification, la durée de session
+
+- [ ] ✓ je savais
+
+**4.** Un export « pseudonymisé » (des codes comme `EMP-0042` au lieu des noms) est croisé avec l'annuaire interne. Que se passe-t-il ?
+
+- A. Rien : la pseudonymisation rend la donnée définitivement non personnelle
+- B. Le croisement rétablit l'identité : le pseudonyme reste une donnée personnelle, à traiter avec les mêmes contrôles d'accès
+- C. La donnée devient publique, n'étant plus rattachée à un nom
+- D. Le croisement ne concerne que les données en base, jamais les exports
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* Masquer, pseudonymiser, anonymiser : donnez pour chacune technique un usage qui la désigne, et expliquez pourquoi l'anonymisation est le choix irréversible.
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** Le critère n'est pas la « valeur » de la donnée mais le dommage causé par sa divulgation — la réglementation vient ensuite renforcer ce classement pour les données personnelles.
+**Pourquoi :** classer avant de protéger répond à « ce que l'on détient » ; la question utile est : si cette valeur apparaissait dans un journal lu par toute l'équipe, que se passerait-il ?
+
+**2. C.** Mot de passe, RIB, numéro de sécurité sociale, données de santé : fuite = dommage grave ou irréversible, donc accès exceptionnel, chiffrement, jamais exposée par une API.
+**Pourquoi :** ici la base ne fuit pas — c'est l'endpoint qui donne trop ; le meilleur moyen de protéger une donnée est souvent de ne pas la renvoyer.
+
+**3. A.** Nommer les colonnes dans la requête, déclarer un schéma de sortie explicite, supprimer les anciens endpoints généreux.
+**Pourquoi :** chaque geste retire une catégorie de champs surnuméraires — ceux qui n'ont rien à faire là, ceux ajoutés « au cas où », et les vieilles portes qu'on croyait fermées.
+
+**4. B.** Un pseudonyme n'est pas un anonymat : le croisement avec une table de correspondance (l'annuaire) rétablit tout.
+**Pourquoi :** la pseudonymisation est un compromis pratique — reconnue comme mesure de protection, mais sans être confondue avec l'anonymisation ; l'export pseudonymisé se traite comme une donnée personnelle.
+
+**5.** Attendu : le masquage cache une partie de la valeur quand l'usage exige la forme (un écran de paie affiche `**** **** **** 4821`) ; la pseudonymisation remplace l'identité par un identifiant stable quand la donnée doit revenir à une personne identifiable (support, paie) ; l'anonymisation convient quand la donnée ne sert qu'à des statistiques.
+**Pourquoi :** l'anonymisation supprime la possibilité de ré-identification — elle est définitive, donc irréversible pour les usages individuels.
+
+---
+
 [← Chapitre précédent](08-auth-et-limitation-api.md) · [Sommaire](Readme.md) · [Chapitre suivant →](10-rgpd-applique.md)

@@ -229,4 +229,69 @@ terminer la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Le scanner signale une vulnérabilité dans une bibliothèque. L'équipe corrige immédiatement, sans lire l'avis de sécurité. Quel risque prend-elle ?
+
+- A. Aucun : corriger vite est toujours la bonne réponse
+- B. De monter une version majeure qui casse le service
+- C. De laisser la dépendance abandonnée dans le projet
+- D. D'oublier de prévenir les utilisateurs de la faille
+
+- [ ] ✓ je savais
+
+**2.** Une dépendance est signalée vulnérable, mais la fonction concernée n'est jamais appelée par le service. Que dit le chapitre ?
+
+- A. La présence de la dépendance n'est pas l'exposition : c'est l'appel réel du code concerné qui décide de l'urgence
+- B. Il faut traiter en priorité absolue : toute dépendance présente est une faille ouverte
+- C. Il faut supprimer la bibliothèque immédiatement, appelée ou non
+- D. Il faut ignorer le signal : une dépendance non appelée est inoffensive par nature
+
+- [ ] ✓ je savais
+
+**3.** La mise à jour vers la version corrigée est impossible (compatibilité cassée). Que fait un rétro-patch ?
+
+- A. Il remplace la bibliothèque par une autre, plus légère
+- B. Il applique le correctif de sécurité sur la version en place, sans prendre le reste des changements — temporairement et en le datant
+- C. Il désactive la bibliothèque le temps que l'éditeur publie un correctif
+- D. Il fige la version actuelle et attend la prochaine version majeure
+
+- [ ] ✓ je savais
+
+**4.** On veut empêcher que la page soit intégrée dans une page étrangère. Quel en-tête de réponse le permet ?
+
+- A. X-Content-Type-Options
+- B. Strict-Transport-Security
+- C. Content-Security-Policy
+- D. X-Frame-Options
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « Une configuration qui refuse de démarrer quand elle est incomplète est plus sûre qu'une configuration qui devine. » Expliquez avec l'exemple du secret de secours écrit « pour faire tourner en local ».
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** L'ordre compte : lire, situer, corriger, vérifier. Corriger sans lire, c'est monter une version majeure qui casse le service.
+**Pourquoi :** lire l'avis dit quelles versions sont concernées et quel est le plus petit changement qui ferme la faille.
+
+**2. A.** La présence n'est pas l'exposition : lire sans situer conduit à traiter en urgence une dépendance qui n'est jamais exécutée.
+**Pourquoi :** l'avis de sécurité décrit une faille de bibliothèque ; l'avis d'exposition décrit votre situation, et c'est le second qui décide de l'urgence.
+
+**3. B.** Rétro-patcher = appliquer le correctif de sécurité sur la version en place, sans prendre le reste des changements.
+**Pourquoi :** c'est plus lourd à maintenir, donc temporaire et daté — le temps de rendre la montée de version possible.
+
+**4. D.** X-Frame-Options empêche l'intégration de la page dans une page étrangère.
+**Pourquoi :** chaque en-tête annonce au navigateur une règle — Strict-Transport-Security borne le retour en clair, X-Content-Type-Options bloque l'interprétation d'un fichier selon un type qu'il n'a pas ; et la politique se vérifie depuis le client, sur la réponse réelle.
+
+**5.** Attendu : un secret de secours écrit dans le code pour le confort du développement finit par tourner en production — les valeurs par défaut sont des valeurs. Le comportement sûr : lire le secret depuis l'environnement d'exécution ou un gestionnaire de secrets, et laisser la configuration refuser de démarrer plutôt que deviner.
+**Pourquoi :** un mot de passe écrit dans le dépôt est copié dans chaque clone, chaque sauvegarde, chaque historique ; le code ne doit contenir que le nom de la variable.
+
+---
+
 [← Chapitre précédent](04-erreurs-et-logging.md) · [Sommaire](Readme.md) · [Chapitre suivant →](06-revue-de-code-securite.md)

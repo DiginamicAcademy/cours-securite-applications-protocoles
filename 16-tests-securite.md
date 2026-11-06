@@ -209,4 +209,69 @@ la journée.*
 
 ---
 
+## 🧠 Vérifiez vos acquis
+
+*Formatif, jamais noté. Répondez sans relire le chapitre, puis cochez. Les réponses sont juste après le séparateur : ce qui compte est de repérer où vous vacillez, pas de faire 5 sur 5.*
+
+**1.** Qu'est-ce qu'un smoke test de sécurité ?
+
+- A. Un test rapide qui vérifie que la page d'accueil s'affiche bien
+- B. Un test qui rejoue le payload qui marchait avant la correction, et vérifie qu'il échoue toujours
+- C. Une analyse statique du code qui devine les risques avant l'exécution
+- D. Un test de charge qui mesure le temps de réponse de l'API
+
+- [ ] ✓ je savais
+
+**2.** Quels trois détails font la qualité du test de sécurité du chapitre ?
+
+- A. Il est court, il passe vite, il est bien documenté
+- B. Il nomme le payload exact, attend un code de réponse précis, et reste indépendant des autres tests
+- C. Il utilise un payload générique, accepte tout code 4xx, et s'appuie sur les données du test précédent
+- D. Il teste plusieurs failles à la fois, boucle sur tous les endpoints, et journalise ses résultats
+
+- [ ] ✓ je savais
+
+**3.** Le test de fuzzing du chapitre s'arrête sur `assert reponse.status_code != 500`. Que prouve-t-il quand il passe ?
+
+- A. L'absence de faille dans l'API
+- B. L'absence de plantage : une erreur serveur trahit un traitement non maîtrisé de l'entrée — c'est déjà beaucoup, et il le refait à chaque exécution
+- C. Que toutes les entrées ont été testées
+- D. Que l'API rejette bien les entrées invalides par un code 400
+
+- [ ] ✓ je savais
+
+**4.** Un collègue propose de lancer le fuzzing « pour vérifier » sur le service de production du partenaire. Que dit le chapitre ?
+
+- A. C'est acceptable si le fuzzing est borné en durée
+- B. C'est acceptable la nuit, quand le service est peu chargé
+- C. C'est exclu : le fuzzing s'exerce uniquement sur son lab local ou un environnement de test dont on est responsable — sur un service de production, c'est une charge réelle et une atteinte à ce qui ne vous appartient pas
+- D. C'est exclu uniquement si le service est public ; un service de partenaire privé est un terrain de test
+
+- [ ] ✓ je savais
+
+**5.** *Question ouverte (2-3 lignes).* « Chaque faille corrigée devient un test. » Pourquoi ce réflexe est-il plus important en sécurité qu'en fonctionnel, et donnez un exemple de test de non-régression pris dans le chapitre.
+
+- [ ] ✓ je savais
+
+---
+
+### Réponses
+
+**1. B.** Le payload (`' OR '1'='1` pour une injection SQL, `<script>alert(1)</script>` pour un XSS) cesse de fonctionner le jour où la faille est corrigée ; le smoke test le rejoue à chaque exécution pour vérifier qu'il échoue toujours.
+**Pourquoi :** dans l'accroche, une réécriture de septembre réintroduit l'injection corrigée en mars : la faille était corrigée, elle n'était pas gardée corrigée.
+
+**2. B.** Le payload exact — pas une vague catégorie ; un code de réponse précis (ici 400, la requête est refusée) — pas seulement « ça ne plante pas » ; et l'indépendance — aucune donnée laissée par un autre test.
+**Pourquoi :** pointé sur le service `vulnerable` du lab, le test doit échouer — c'est ce qui le distingue d'un simple test de bon fonctionnement.
+
+**3. B.** Ce test ne prouve pas l'absence de faille : il prouve l'absence de plantage.
+**Pourquoi :** le fuzzing explore ce qui n'a pas été prévu (chaînes vides, entrées très longues, encodages bizarres) pour découvrir les endroits où une valeur inattendue provoque une erreur non gérée, souvent le signe d'un traitement dangereux juste derrière.
+
+**4. C.** Lancer un fuzzing sur un service de production, même « pour vérifier », est une charge réelle pour ce service et une atteinte à ce qui ne vous appartient pas.
+**Pourquoi :** le fuzzing léger se pratique sur son lab ou un environnement de test dont on est responsable ; et là, on le borne — nombre d'itérations, durée maximale, graine enregistrée pour rejouer la séquence : un test qu'on ne peut pas rejouer ne sert à rien.
+
+**5.** Attendu : une régression de sécurité ne se voit pas dans les résultats de l'application — elle se voit dans les journaux d'un attaquant ; l'enjeu est donc plus grave que pour un bug fonctionnel. Exemple (un parmi) : injection corrigée dans la recherche → rejouer le payload, attendre un refus ; script injecté → attendre un affichage échappé ; endpoint d'administration → appeler sans jeton, attendre un refus ; champ sensible retiré → vérifier son absence dans la réponse.
+**Pourquoi :** ces tests rejoignent le pipeline d'intégration continue et gardent la correction effective à chaque livraison.
+
+---
+
 [← Chapitre précédent](15-devsecops.md) · [Sommaire](Readme.md) · [Chapitre suivant →](17-reponse-incident.md)
