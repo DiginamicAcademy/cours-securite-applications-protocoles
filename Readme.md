@@ -8,7 +8,7 @@
 # La sécurité des applications et des protocoles réseau par l'attaque
 
 > Cours d'**autoformation** · **RNCP40573** Expert en informatique et systèmes d'information · spécialisation **4B Big Data & IA**
-> 3 journée(s) · supports **rédigés par IA**, relus et validés.
+> 3 journées · supports **rédigés par IA**, relus et validés.
 
 ---
 
@@ -24,9 +24,12 @@ la sécurité des applications et des protocoles réseau **par l'attaque** : ch
 mécanisme défensif est introduit par la menace qu'il contrarie, puis appliqué au
 code, à la configuration et aux flux de données. Vous y travaillez le secure
 coding, la sécurité des API et des données, puis les protocoles réseau et le cycle
-de vie sécurisé, en suivant un fil rouge concret : la boutique en ligne
-DIGICHEESE (la fromagerie du fil rouge) et les données personnelles de ses
-clients. Les enjeux y sont autant
+de vie sécurisé, en suivant un fil rouge concret : la place de marché
+**Marché des Cévennes** et les données personnelles de ses clients — c'est elle
+qui sert de cadre au TP intégrateur noté, seul élément évalué du cours. Les
+chapitres et les exercices s'appuient, eux, sur le lab Docker de la fromagerie
+**DIGICHEESE** (la fromagerie du fil rouge), partagé entre les cours du
+parcours. Les enjeux y sont autant
 techniques que réglementaires : exposer de telles données engage la responsabilité
 de l'organisme au titre du RGPD (Règlement général sur la protection des données).
 
@@ -79,6 +82,7 @@ de l'organisme au titre du RGPD (Règlement général sur la protection des donn
 | 16 | [Tests de sécurité — empêcher la faille corrigée de revenir](16-tests-securite.md) | 55 min |
 | 17 | [Réponse à incident — le jour où ça casse](17-reponse-incident.md) | 50 min |
 | 18 | [Maturité et perspectives — la sécurité est une trajectoire](18-maturite-et-perspectives.md) | 55 min |
+| A | [Glossaire et ressources](A-Glossaire-et-ressources.md) | — |
 
 **Travaux pratiques** — chaque énoncé se fait juste après le chapitre
 correspondant, puis se corrige soi-même :
@@ -101,22 +105,22 @@ correspondant, puis se corrige soi-même :
 | 🔴 | [Construire sa feuille de route de sécurité](tp/18-defi-maturite.md) · [corrigé](tp/corrige/18-defi-maturite.md) | non chronométré |
 | 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](tp/TP-INTEGRATEUR.md) — **TP intégrateur, seul élément noté du cours** | 4 h |
 
-Les quatorze premiers énoncés sont formatifs : le corrigé reste public et sert à
+Les quatorze premiers énoncés sont formatifs : le corrigé reste public et sert à
 l'auto-évaluation. Le TP intégrateur, lui, est **noté** — il reprend l'ensemble du
-cours (J7 à J9) et se rend en un dossier unique ; son corrigé est réservé à
+cours (J7 à J9) et se rend en un dossier unique ; son corrigé est réservé à
 l'évaluation et n'est pas publié.
 
 ---
 
 ## ✅ Checkpoints de fin de journée
 
-À cocher avant de passer à la journée suivante. En cas de doute : ne pas
+À cocher avant de passer à la journée suivante. En cas de doute : ne pas
 avancer, revenir au concept concerné, refaire l'exercice.
 
 ### Jour 7 — chapitres 01 à 06
 
 - [ ] J'ai lu les chapitres 01 à 06 et les points clés sont clairs.
-- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et vérifié mes réponses dans `tp/corrige/`. Les extensions « Pour aller plus loin » sont facultatives.
+- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et vérifié mes réponses dans `tp/corrige/`. Les extensions « Pour aller plus loin » sont facultatives.
 - [ ] J'ai répondu au QCM formatif, lorsqu'il est disponible, et identifié mes notions à revoir.
 - [ ] Je sais expliquer, avec mes mots, les 2-3 idées principales de la journée.
 - [ ] Je peux appliquer ces idées à un cas simple (un extrait de code, une config, un flux).
@@ -124,7 +128,7 @@ avancer, revenir au concept concerné, refaire l'exercice.
 ### Jour 8 — chapitres 07 à 12
 
 - [ ] J'ai lu les chapitres 07 à 12 et les points clés sont clairs.
-- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et vérifié mes réponses dans `tp/corrige/`. Les extensions « Pour aller plus loin » sont facultatives.
+- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et vérifié mes réponses dans `tp/corrige/`. Les extensions « Pour aller plus loin » sont facultatives.
 - [ ] J'ai répondu au QCM formatif, lorsqu'il est disponible, et identifié mes notions à revoir.
 - [ ] Je sais expliquer, avec mes mots, les 2-3 idées principales de la journée.
 - [ ] Je peux appliquer ces idées à un cas simple (un extrait de code, une config, un flux).
@@ -132,7 +136,7 @@ avancer, revenir au concept concerné, refaire l'exercice.
 ### Jour 9 — chapitres 13 à 18
 
 - [ ] J'ai lu les chapitres 13 à 18 et les points clés sont clairs.
-- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et vérifié mes réponses dans `tp/corrige/`. Les extensions « Pour aller plus loin » sont facultatives.
+- [ ] J'ai fait au moins les exercices 🟢 et 🟡 (partie principale), et vérifié mes réponses dans `tp/corrige/`. Les extensions « Pour aller plus loin » sont facultatives.
 - [ ] J'ai répondu au QCM formatif, lorsqu'il est disponible, et identifié mes notions à revoir.
 - [ ] Je sais expliquer, avec mes mots, les 2-3 idées principales de la journée.
 - [ ] Je peux appliquer ces idées à un cas simple (un extrait de code, une config, un flux).
