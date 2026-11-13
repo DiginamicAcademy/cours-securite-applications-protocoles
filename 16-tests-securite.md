@@ -72,7 +72,7 @@ Trois détails font la qualité de ce test :
 >
 > Écrivez le test pytest ci-dessus dans un fichier `test_securite.py`, puis
 > lancez-le avec `pytest test_securite.py -v` contre le service `secure` du lab
-> (démarré avec `docker compose up --build -d` dans `lab/`). Modifiez ensuite
+> (démarré avec `docker compose up --build -d` dans `lab-digicheese/`). Modifiez ensuite
 > l'adresse de base pour viser `vulnerable` : le test doit **échouer**. Vous venez
 > d'écrire un test qui distingue une API corrigée d'une API vulnérable.
 

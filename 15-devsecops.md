@@ -53,7 +53,7 @@ remplace les deux autres.
 > 🧪 **Atelier rapide (10 min)**
 >
 > Écrivez un workflow GitHub Actions minimal qui exécute `pip-audit` (composants)
-> et `bandit` (code) sur le dossier `lab/` du cours. Deux étapes suffisent :
+> et `bandit` (code) sur le dossier `lab-digicheese/` du cours. Deux étapes suffisent :
 
 
 ```yaml
@@ -67,7 +67,7 @@ jobs:
       - name: Composants
         run: pip install pip-audit && pip-audit
       - name: Code
-        run: pip install bandit && bandit -r lab/
+        run: pip install bandit && bandit -r lab-digicheese/
 ```
 
 > Lancez les deux commandes dans un terminal sur votre projet : lisez la sortie.

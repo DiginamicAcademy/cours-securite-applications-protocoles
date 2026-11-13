@@ -54,10 +54,10 @@ temporaire et daté.
 
 > 🧪 **Atelier rapide (10 min)**
 >
-> Dans le lab du cours, lancez un audit de dépendances sur le dossier `lab/` —
-> `pip-audit` pour Python, ou `trivy fs lab/` pour un regard plus large. Notez
+> Dans le lab du cours, lancez un audit de dépendances sur le dossier `lab-digicheese/` —
+> `pip-audit` pour Python, ou `trivy fs lab-digicheese/` pour un regard plus large. Notez
 > les dépendances signalées, leur version installée et la version corrigée.
-> Comparez avec le contenu de `lab/cve/requirements.txt`, qui fige
+> Comparez avec le contenu de `lab-digicheese/cve/requirements.txt`, qui fige
 > volontairement une version obsolète.
 
 > 💡 **À retenir** — L'avis de sécurité décrit une faille de bibliothèque ;

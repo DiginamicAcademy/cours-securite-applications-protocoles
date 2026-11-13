@@ -397,12 +397,12 @@ terminer la journée.*
 >
 > 🧪 **Atelier rapide (10 min)**
 >
-> Dans le lab du cours, ouvrez `lab/vulnerable/app.py` et repérez la route de
+> Dans le lab du cours, ouvrez `lab-digicheese/vulnerable/app.py` et repérez la route de
 > recherche de produits : la requête y est assemblée par une f-string.
 > Remplacez-la par une requête paramétrée, redémarrez le service, puis relancez
 > la même recherche avec la valeur `' OR '1'='1`. La liste complète ne revient
 > plus : seule la recherche littérale reste, et la comparaison avec
-> `lab/secure/app.py` montre le même résultat.
+> `lab-digicheese/secure/app.py` montre le même résultat.
 
 ---
 
