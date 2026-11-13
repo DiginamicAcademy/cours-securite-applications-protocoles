@@ -1,5 +1,16 @@
 # Marché des Cévennes — module de gestion des commandes.
-# Versions figées telles quelles : c'est à vous de les examiner.
-Flask==2.0.1
+#
+# Flask, Werkzeug et requests sont à des versions saines : elles ne sont pas
+# le sujet, le module doit démarrer sur un Python récent (3.11 à 3.13).
+# Werkzeug est épinglée à la main parce que Flask l'amène sans borne haute —
+# une dépendance que personne n'a choisie peut changer toute seule.
+#
+# Jinja2, elle, est laissée volontairement sur une version qui porte des avis
+# de sécurité. C'est la seule dépendance piégée du module, et c'est elle que
+# l'étape 3 attend de vous : ne la montez pas pour « faire propre », examinez-la,
+# dites si le service est réellement exposé tel quel, puis décidez quelle
+# version retenir et pourquoi.
+Flask==3.1.3
+Werkzeug==3.1.9
 Jinja2==3.1.2
-requests==2.19.1
+requests==2.32.4
