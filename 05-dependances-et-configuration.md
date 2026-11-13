@@ -52,6 +52,10 @@ dépendance qui n'est jamais exécutée.
 sans prendre le reste des changements : plus lourd à maintenir, donc
 temporaire et daté.
 
+Le schéma ci-dessous montre la même course vue des deux côtés — attaquant et défenseur — sur le calendrier de l'avis PHP repris en approfondissement de ce chapitre.
+
+![La course patch / exploit, deux chronologies en parallèle](assets/course-patch-exploit.svg)
+
 > 🧪 **Atelier rapide (10 min)**
 >
 > Dans le lab du cours, lancez un audit de dépendances sur le dossier `lab-securite/` —

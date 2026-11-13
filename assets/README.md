@@ -10,6 +10,7 @@ GitHub et le support PDF les affichent.
 |---|---|---|
 | `Logo-diginamic-color.svg` | clair | en-tête du Readme et du support PDF |
 | `Logo-diginamic-color-blk.png` | sombre | en-tête du Readme quand GitHub est en thème sombre |
+| `course-patch-exploit.svg` | clair | chapitre 05 — la course entre le correctif et l'exploit |
 
 Les deux logos sont des copies du dépôt
 [PublicAssets](https://github.com/DiginamicInternal/PublicAssets). Le texte de
@@ -19,6 +20,11 @@ selon le thème du lecteur ; pour le PDF, imprimé sur fond blanc, le workflow 
 garde que la version couleur.
 
 > Merci de ne pas modifier les logos 😉
+
+Les schémas en SVG de ce dossier, eux, sont des copies exactes de ceux du cours
+frère [Les vulnérabilités et les techniques d'attaque](https://github.com/DiginamicAcademy/cours-securite-vulnerabilites-attaques) :
+même mécanique illustrée, même charte, même tracé. Ce sont bien des copies — si
+l'original est corrigé là-bas, il faut rejouer le correctif ici.
 
 ## Y ranger ses images
 
