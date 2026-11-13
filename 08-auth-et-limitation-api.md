@@ -49,6 +49,20 @@ pas qui vous êtes » (ou votre jeton ne vaut plus rien) ; `403 Forbidden` dit
 à la place d'un `401` — ou l'inverse — est le premier indice d'une autorisation
 mal branchée.
 
+Le schéma ci-dessous ordonne les trois portes d'une requête d'API et attache un code de refus à chacune :
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#eef2f9','primaryBorderColor':'#3b5b8d','primaryTextColor':'#1f3f6b','lineColor':'#3b5b8d','secondaryColor':'#dbe6f5','tertiaryColor':'#fde8e8','fontFamily':'DejaVu Sans'}}}%%
+flowchart LR
+    R["Requête d'API"] --> J{"Authentification — jeton présent et valide ?"}
+    J -->|non| E1["401 — je ne sais pas qui vous êtes"]
+    J -->|oui| S{"Autorisation — le scope couvre l'action ?"}
+    S -->|non| E2["403 — vous n'avez pas ce droit"]
+    S -->|oui| O{"Autorisation — l'objet touché est-il à l'appelant ?"}
+    O -->|non| E3["403 — ce n'est pas votre objet"]
+    O -->|oui| X["Exécution"]
+```
+
 ---
 
 ## II. Rate limiting
