@@ -56,27 +56,27 @@ blanc. La zone tampon — la DMZ (demilitarized zone, la zone intermédiaire ent
 l'extérieur et l'intérieur) — reçoit ce qui doit être visible de l'extérieur,
 sans que rien de sensible n'y vive.
 
-```text
-                      Internet
-                         │
-            ┌────────────▼────────────┐
-            │   Pare-feu périmétrique │
-            │  ┌────────────────────┐ │
-            │  │ DMZ                │ │
-            │  │ portail web, API   │ │
-            │  │ publique           │ │
-            │  └─────────┬──────────┘ │
-            └────────────┼────────────┘
-                         │  flux explicites uniquement
-            ┌────────────▼────────────┐
-            │   Réseau interne        │
-            │   services métier,      │
-            │   postes de travail     │
-            │  ┌────────────────────┐ │
-            │  │ Zone de données    │ │
-            │  │ bases, sauvegardes │ │
-            │  └────────────────────┘ │
-            └─────────────────────────┘
+Le schéma ci-dessous montre les deux situations côte à côte : à gauche, un poste
+compromis dans un réseau plat joint tout le reste ; à droite, le même réseau
+découpé, où ne traverse que ce qui est écrit noir sur blanc, avec son port.
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#eef2f9','primaryBorderColor':'#3b5b8d','primaryTextColor':'#1f3f6b','lineColor':'#3b5b8d','secondaryColor':'#dbe6f5','tertiaryColor':'#fde8e8','fontFamily':'DejaVu Sans'}}}%%
+flowchart LR
+    subgraph PLAT["Réseau plat — un seul enclos"]
+        direction TB
+        X["Poste compromis"] --> W["Postes de travail"]
+        X --> DB["Bases et sauvegardes"]
+        X --> MS["Messagerie"]
+    end
+    subgraph ZON["Le même réseau découpé — seuls les flux listés passent"]
+        direction TB
+        IN["Internet"] -->|443| DMZ["DMZ — portail web, API publique"]
+        DMZ --> INT["Réseau interne — services métier, postes"]
+        INT -->|3306, la boutique vers la base| DAT["Zone de données — bases, sauvegardes"]
+        IN -.->|aucun flux direct| DAT
+    end
+    style X fill:#fde8e8,stroke:#b34040
 ```
 
 Trois zones suffisent le plus souvent. Ce qui compte n'est pas le nombre, c'est
