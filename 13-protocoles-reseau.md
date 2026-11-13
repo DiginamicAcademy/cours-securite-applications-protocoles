@@ -105,6 +105,23 @@ Deux attaques du même genre, très employées contre les protocoles qui chiffre
 | **Dégradation forcée** (downgrade) | fait croire au client que le serveur ne sait pas chiffrer, pour récupérer la version en clair | SMTP, les anciennes versions de TLS |
 | **Interception de la montée en chiffrement** | laisse passer la commande de chiffrement, l'annule, continue en clair | STARTTLS (la commande qui négocie le chiffrement en cours de connexion) |
 
+Le déroulé ci-dessous joue les deux messages dont parle le chapitre, et l'effacement qui se glisse entre eux :
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#eef2f9','primaryBorderColor':'#3b5b8d','primaryTextColor':'#1f3f6b','lineColor':'#3b5b8d','secondaryColor':'#dbe6f5','tertiaryColor':'#fde8e8','fontFamily':'DejaVu Sans'}}}%%
+sequenceDiagram
+    participant C as Client de messagerie
+    participant X as Attaquant sur le chemin
+    participant S as Serveur
+    C->>X: STARTTLS — je peux chiffrer
+    X--x S: la proposition est effacée en vol
+    S-->>X: rien n'a été demandé — le serveur ne propose rien
+    X-->>C: aucune réponse — ce serveur ne sait pas chiffrer
+    C->>X: AUTH — identifiant et mot de passe, en clair
+    X->>S: AUTH — identifiant et mot de passe, en clair
+    Note over X: chacun croit que l'autre ne sait pas chiffrer
+```
+
 > 🚨 **Piège à éviter** —
 > « Notre messagerie est chiffrée, on utilise STARTTLS » ne suffit pas. Si le
 > repli en clair est accepté, un attaquant sur le chemin obtient exactement ce
