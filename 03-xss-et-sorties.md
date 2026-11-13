@@ -52,6 +52,22 @@ Le navigateur affiche la balise au lieu de l'exécuter. C'est tout le mécanisme
 rien n'est supprimé, rien n'est censuré — la donnée est **rendue inoffensive**
 pour le contexte où elle s'insère.
 
+Le schéma ci-dessous suit le message depuis sa saisie jusqu'à son exécution : il montre qui dépose, qui affiche, et dans la session de qui le code part.
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#eef2f9','primaryBorderColor':'#3b5b8d','primaryTextColor':'#1f3f6b','lineColor':'#3b5b8d','secondaryColor':'#dbe6f5','tertiaryColor':'#fde8e8','fontFamily':'DejaVu Sans'}}}%%
+sequenceDiagram
+    participant A as Adhérent
+    participant S as Serveur du livre d'or
+    participant N as Navigateur du modérateur
+    A->>S: dépose un message portant une balise script
+    S->>S: le message est stocké tel quel
+    N->>S: ouvre la page de modération
+    S-->>N: la page reconstruite, balise comprise
+    N->>N: le script s'exécute avec la session du modérateur
+    Note over N: le point d'insertion est ici — dans la page reconstruite, jamais à la saisie
+```
+
 | Contexte d'insertion | Ce qui s'y insère | Traitement |
 | --- | --- | --- |
 | **Texte** entre deux balises | un commentaire, un nom | échappement HTML classique |
