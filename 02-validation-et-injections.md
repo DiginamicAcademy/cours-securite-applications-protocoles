@@ -57,6 +57,26 @@ données envoie la structure de la requête, puis les valeurs, et le moteur
 assemble les deux sans jamais les confondre. Une valeur ne peut donc pas
 devenir une instruction, même si elle en a exactement l'apparence.
 
+Le déroulé ci-dessous joue la même saisie deux fois : en haut la requête concaténée, en bas la requête paramétrée. Ce qui change n'est pas ce que l'écran affiche, c'est le nombre de canaux entre l'application et le moteur.
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#eef2f9','primaryBorderColor':'#3b5b8d','primaryTextColor':'#1f3f6b','lineColor':'#3b5b8d','secondaryColor':'#dbe6f5','tertiaryColor':'#fde8e8','fontFamily':'DejaVu Sans'}}}%%
+sequenceDiagram
+    participant U as Saisie du formulaire
+    participant A as Application
+    participant M as Moteur de base
+    alt Requête concaténée
+        U->>A: le texte saisi
+        A->>M: SELECT ... LIKE '% texte saisi %'
+        Note over M: une seule chaîne à exécuter — la saisie peut être relue comme une instruction
+    else Requête paramétrée
+        U->>A: le texte saisi
+        A->>M: la structure, avec un emplacement
+        A->>M: les valeurs, à part
+        Note over M: le moteur assemble sans jamais confondre — la saisie reste une donnée
+    end
+```
+
 | | Avant | Après |
 | --- | --- | --- |
 | **Ce que voit le moteur** | une seule chaîne à exécuter | une structure, puis des valeurs |
