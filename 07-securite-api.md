@@ -70,6 +70,22 @@ de véhicules en est l'image exacte — `GET /users/4251` répond, donc
 `GET /users/4252` répondra aussi. L'API vérifie que vous êtes connecté, pas que
 le client 4252 est le vôtre.
 
+Le déroulé ci-dessous joue la requête note à note : les deux contrôles ne sont pas au même endroit, et celui qui manque se situe entre les deux.
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#eef2f9','primaryBorderColor':'#3b5b8d','primaryTextColor':'#1f3f6b','lineColor':'#3b5b8d','secondaryColor':'#dbe6f5','tertiaryColor':'#fde8e8','fontFamily':'DejaVu Sans'}}}%%
+sequenceDiagram
+    participant P as Application partenaire
+    participant A as API de rétention
+    participant B as Base de données
+    P->>A: GET /users/4252 avec un jeton valide
+    A->>A: jeton valide — l'appelant est identifié
+    A->>B: SELECT ... WHERE id = 4252 — aucun contrôle d'appartenance
+    B-->>A: la fiche du client 4252
+    A-->>P: la fiche d'un autre
+    Note over A: le contrôle qui manque se place ici, après l'identification et avant la lecture
+```
+
 ### La limitation de ressources
 
 Le second risque est la **consommation de ressources sans restriction** : un appelant au
