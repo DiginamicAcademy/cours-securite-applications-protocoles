@@ -91,6 +91,20 @@ Un contrôle qui alerte sans rien bloquer finit ignoré. Un contrôle qui bloque
 tout finit désactivé. Entre les deux, une décision explicite : la **gate** (la
 barrière qui décide si la livraison continue).
 
+Le schéma ci-dessous remet ces contrôles à leur place, du commit à la livraison, et pose la gate là où elle tranche :
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#eef2f9','primaryBorderColor':'#3b5b8d','primaryTextColor':'#1f3f6b','lineColor':'#3b5b8d','secondaryColor':'#dbe6f5','tertiaryColor':'#fde8e8','fontFamily':'DejaVu Sans'}}}%%
+flowchart LR
+    C["Chaque commit"] --> S["Secrets — le code et l'historique"]
+    S --> K["SCA — les dépendances et leurs versions"]
+    K --> T["SAST — le code, sans l'exécuter"]
+    T --> G{"Gate"}
+    G -->|secret ou faille critique| B["Bloque"]
+    G -->|faille moyenne ou alerte de faible sévérité| A["Avertit et ouvre une tâche de suivi"]
+    G -->|rien de bloquant| L["Livraison"]
+```
+
 ### Le principe de décision
 
 La question n'est pas « cette alerte est-elle grave en théorie ? » mais « quel
@@ -129,6 +143,20 @@ Quand une faille est publiée, l'exploitation de l'inventaire tient en une
 question : « quelle application embarque la version affectée ? ». Réponse en
 minutes au lieu de jours, et surtout **la liste des applications à patcher est
 déjà faite**.
+
+Le schéma ci-dessous montre pourquoi l'inventaire répond en minutes là où la recherche manuelle prend des jours : la faille arrive par une chaîne de dépendances que personne n'a choisie à la main, mais l'inventaire, lui, est déjà écrit.
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#eef2f9','primaryBorderColor':'#3b5b8d','primaryTextColor':'#1f3f6b','lineColor':'#3b5b8d','secondaryColor':'#dbe6f5','tertiaryColor':'#fde8e8','fontFamily':'DejaVu Sans'}}}%%
+flowchart LR
+    A["Application livrée"] --> D["Dépendance directe"]
+    D --> T["Dépendance transitive — jamais choisie à la main"]
+    T --> F["Version touchée par une faille publiée"]
+    A --> B["SBOM — inventaire généré à chaque build"]
+    F --> X["Croisement — inventaire et versions affectées"]
+    B --> X
+    X --> L["La liste des applications à patcher, déjà faite"]
+```
 
 ### Quand le produire, où le garder
 
