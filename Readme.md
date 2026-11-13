@@ -24,14 +24,15 @@ la sécurité des applications et des protocoles réseau **par l'attaque** : ch
 mécanisme défensif est introduit par la menace qu'il contrarie, puis appliqué au
 code, à la configuration et aux flux de données. Vous y travaillez le secure
 coding, la sécurité des API et des données, puis les protocoles réseau et le cycle
-de vie sécurisé, en suivant un fil rouge concret : la place de marché
+de vie sécurisé, sur un sujet concret : la place de marché
 **Marché des Cévennes** et les données personnelles de ses clients — c'est elle
-qui sert de cadre au TP intégrateur. Deux éléments comptent au bulletin : le QCM
+qui sert de cadre au TP. Un seul élément est noté au bulletin : le QCM
 évaluatif de fin de séquence (J9, 20 questions, seuil de réussite 0,7, tentative
-unique) et, s'il est rendu, le TP intégrateur (facultatif, noté sur 20). Les
-chapitres et les exercices s'appuient, eux, sur le lab Docker de la fromagerie
-**DIGICHEESE** (la fromagerie du fil rouge), partagé entre les cours du
-parcours. Les enjeux y sont autant
+unique). Le TP intégrateur, facultatif, est un travail pour pousser la
+compréhension, il ne compte pas dans la note. Les chapitres et les exercices
+s'appuient, eux, sur le lab Docker de la fromagerie **DIGICHEESE**, partagé
+entre les cours du parcours ([DiginamicAcademy/lab-digicheese](https://github.com/DiginamicAcademy/lab-digicheese)).
+Les enjeux y sont autant
 techniques que réglementaires : exposer de telles données engage la responsabilité
 de l'organisme au titre du RGPD (Règlement général sur la protection des données).
 
