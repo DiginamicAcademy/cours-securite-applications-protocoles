@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" width="960" height="340" role="img" aria-label="La vie d'une faille en quatre étapes : cause racine, exposition, exploitation, impact, avec la barrière qui permet de couper chaque étape">
+  <defs>
+    <marker id="fleche" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b5b8d"/>
+    </marker>
+  </defs>
+  <style>
+    .titre { font-family: DejaVu Sans, Arial, sans-serif; font-size: 24px; font-weight: bold; fill: #1f2937; text-anchor: middle; }
+    .etape { font-family: DejaVu Sans, Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #1f2937; text-anchor: middle; }
+    .sous { font-family: DejaVu Sans, Arial, sans-serif; font-size: 14px; fill: #4b5563; text-anchor: middle; }
+    .coupure { font-family: DejaVu Sans, Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #2f7d4f; text-anchor: middle; }
+    .lien { stroke: #3b5b8d; stroke-width: 2.5; fill: none; marker-end: url(#fleche); }
+  </style>
+
+  <text class="titre" x="480" y="30">La vie d'une faille</text>
+  <text class="sous" x="480" y="52">quatre étapes, quatre occasions de couper la chaîne</text>
+
+  <!-- Cause racine -->
+  <rect x="20" y="75" width="190" height="125" rx="12" fill="#eef2f9" stroke="#3b5b8d" stroke-width="2"/>
+  <text class="etape" x="115" y="108">Cause racine</text>
+  <text class="sous" x="115" y="134">pourquoi la faille</text>
+  <text class="sous" x="115" y="154">existe-t-elle ?</text>
+  <text class="sous" x="115" y="178">une requête concaténée</text>
+
+  <!-- Exposition -->
+  <rect x="250" y="75" width="190" height="125" rx="12" fill="#eef2f9" stroke="#3b5b8d" stroke-width="2"/>
+  <text class="etape" x="345" y="108">Exposition</text>
+  <text class="sous" x="345" y="134">où est-elle atteignable,</text>
+  <text class="sous" x="345" y="154">et par qui ?</text>
+  <text class="sous" x="345" y="178">une page ouverte à tous</text>
+
+  <!-- Exploitation -->
+  <rect x="480" y="75" width="190" height="125" rx="12" fill="#dbe6f5" stroke="#1f3f6b" stroke-width="2.5"/>
+  <text class="etape" x="575" y="108">Exploitation</text>
+  <text class="sous" x="575" y="134">comment l'attaquant</text>
+  <text class="sous" x="575" y="154">s'en sert-il ?</text>
+  <text class="sous" x="575" y="178">la requête est réécrite</text>
+
+  <!-- Impact -->
+  <rect x="710" y="75" width="190" height="125" rx="12" fill="#fde8e8" stroke="#b34040" stroke-width="2.5"/>
+  <text class="etape" x="805" y="108">Impact</text>
+  <text class="sous" x="805" y="134">qu'est-ce que</text>
+  <text class="sous" x="805" y="154">l'organisation y perd ?</text>
+  <text class="sous" x="805" y="178">comptes, confiance, activité</text>
+
+  <!-- Liens entre les étapes -->
+  <path class="lien" d="M 210 137 L 246 137"/>
+  <path class="lien" d="M 440 137 L 476 137"/>
+  <path class="lien" d="M 670 137 L 706 137"/>
+
+  <!-- Barrières -->
+  <text class="coupure" x="115" y="235">corriger la cause</text>
+  <text class="coupure" x="345" y="235">réduire l'exposition</text>
+  <text class="coupure" x="575" y="235">surveiller, limiter</text>
+  <text class="coupure" x="805" y="235">préparer la réponse</text>
+
+  <line x1="115" y1="205" x2="115" y2="220" stroke="#2f7d4f" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="345" y1="205" x2="345" y2="220" stroke="#2f7d4f" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="575" y1="205" x2="575" y2="220" stroke="#2f7d4f" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="805" y1="205" x2="805" y2="220" stroke="#2f7d4f" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <text class="sous" x="480" y="305">Aucune barrière ne remplace les autres : c'est leur succession qui fait la sécurité.</text>
+</svg>

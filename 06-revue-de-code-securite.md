@@ -48,6 +48,12 @@ dans quel **contexte** la valeur s'insère-t-elle, et son traitement est-il
 là ? **Appels système** : une donnée extérieure peut-elle en **modifier la
 forme** ?
 
+La revue ne demande pas « ce code est-il joli » mais « où couper ». Le schéma
+ci-dessous montre les quatre étapes que parcourt une faille, et la barrière qui
+coupe chacune d'elles : c'est cette chaîne que les trois passes balaient.
+
+![La vie d'une faille — quatre étapes, quatre occasions de couper la chaîne](assets/vie-dune-faille.svg)
+
 > 🧪 **Atelier rapide (10 min)**
 >
 > Prenez `lab-securite/vulnerable/app.py` et appliquez les trois passes, sans chercher à

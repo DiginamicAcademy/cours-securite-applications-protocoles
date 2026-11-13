@@ -11,6 +11,7 @@ GitHub et le support PDF les affichent.
 | `Logo-diginamic-color.svg` | clair | en-tête du Readme et du support PDF |
 | `Logo-diginamic-color-blk.png` | sombre | en-tête du Readme quand GitHub est en thème sombre |
 | `course-patch-exploit.svg` | clair | chapitre 05 — la course entre le correctif et l'exploit |
+| `vie-dune-faille.svg` | clair | chapitre 06 — les quatre étapes d'une faille et la barrière qui coupe chacune |
 
 Les deux logos sont des copies du dépôt
 [PublicAssets](https://github.com/DiginamicInternal/PublicAssets). Le texte de
