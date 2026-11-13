@@ -24,7 +24,10 @@ app = Flask(__name__)
 
 BASE_DE_COMMANDES = "commandes.db"
 DOSSIER_FACTURES = "factures"
-URL_PRESTATAIRE = "https://api.paiement-marche.fr/v1"
+# Domaine réservé par la RFC 2606 : ne peut pas être résolu, l'appel ne sort
+# jamais de la machine de l'apprenant. Il échoue donc toujours — c'est voulu,
+# et c'est un constat de plus à relever dans l'audit (voir le README).
+URL_PRESTATAIRE = "https://paiement-marche.invalid/v1"
 CLE_API_PAIEMENT = "mk_live_7c41f0b93ad2586e14f8c7ba"
 
 app.config["SECRET_KEY"] = "marche-cevennes-2024"
@@ -40,18 +43,26 @@ def base():
 
 
 def amorcer():
-    """Crée la base de démonstration avec trois commandes."""
+    """Crée la base de démonstration avec trois commandes, et le dossier des factures.
+
+    Idempotent : relancer `python commandes.py` ne doit pas ajouter trois lignes
+    de plus. Sans cette garde, les comptes annoncés dans l'énoncé du TP cessent
+    d'être vrais dès le deuxième lancement, et l'apprenant ne peut plus prouver
+    ce que sa correction a changé.
+    """
+    os.makedirs(DOSSIER_FACTURES, exist_ok=True)
     connexion = base()
     connexion.execute(
         "CREATE TABLE IF NOT EXISTS commandes (id INTEGER PRIMARY KEY, "
         "client_id TEXT, produit TEXT, quantite INTEGER, total REAL, "
         "statut TEXT, adresse TEXT)")
-    connexion.executemany(
-        "INSERT INTO commandes (client_id, produit, quantite, total, statut, "
-        "adresse) VALUES (?, ?, ?, ?, ?, ?)",
-        [("CL-1042", "Comté 18 mois", 2, 78.50, "payée", "12 rue des Prés, Florac"),
-         ("CL-1042", "Saucisson sèche", 1, 18.90, "livrée", "12 rue des Prés, Florac"),
-         ("CL-2087", "Miel de châtaignier", 3, 41.70, "payée", "3 rue du Tarn, Le Bleymard")])
+    if connexion.execute("SELECT COUNT(*) FROM commandes").fetchone()[0] == 0:
+        connexion.executemany(
+            "INSERT INTO commandes (client_id, produit, quantite, total, statut, "
+            "adresse) VALUES (?, ?, ?, ?, ?, ?)",
+            [("CL-1042", "Comté 18 mois", 2, 78.50, "payée", "12 rue des Prés, Florac"),
+             ("CL-1042", "Saucisson sèche", 1, 18.90, "livrée", "12 rue des Prés, Florac"),
+             ("CL-2087", "Miel de châtaignier", 3, 41.70, "payée", "3 rue du Tarn, Le Bleymard")])
     connexion.commit()
     connexion.close()
 

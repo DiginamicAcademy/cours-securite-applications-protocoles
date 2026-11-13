@@ -26,7 +26,9 @@ code, à la configuration et aux flux de données. Vous y travaillez le secure
 coding, la sécurité des API et des données, puis les protocoles réseau et le cycle
 de vie sécurisé, en suivant un fil rouge concret : la place de marché
 **Marché des Cévennes** et les données personnelles de ses clients — c'est elle
-qui sert de cadre au TP intégrateur noté, seul élément évalué du cours. Les
+qui sert de cadre au TP intégrateur. Deux éléments comptent au bulletin : le QCM
+évaluatif de fin de séquence (J9, 20 questions, seuil de réussite 0,7, tentative
+unique) et, s'il est rendu, le TP intégrateur (facultatif, noté sur 20). Les
 chapitres et les exercices s'appuient, eux, sur le lab Docker de la fromagerie
 **DIGICHEESE** (la fromagerie du fil rouge), partagé entre les cours du
 parcours. Les enjeux y sont autant
@@ -107,10 +109,10 @@ de la partie qui enseigne la notion ; leur correction se déplie sous les quest
 | 🟡 | Intégrer la sécurité dans une intégration continue — dans le chapitre 15 | 50 min |
 | 🔵 | Rédiger un mini-plan de réponse à incident — dans le chapitre 17 | 55 min |
 | 🔴 | Construire sa feuille de route de sécurité — dans le chapitre 18 | non chronométré |
-| 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](tp/TP-INTEGRATEUR.md) — **TP intégrateur, seul élément noté du cours** | 4 h |
+| 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](tp/TP-INTEGRATEUR.md) — **TP intégrateur, l'un des deux éléments notés du cours** — facultatif, noté sur 20 s'il est rendu | 4 h |
 
 Les quatorze exercices intégrés aux chapitres sont formatifs : leur correction,
-dépliable dans le chapitre, reste publique et sert à l'auto-évaluation. Le TP intégrateur, lui, est **noté** — il reprend l'ensemble du
+dépliable dans le chapitre, reste publique et sert à l'auto-évaluation. Le TP intégrateur, lui, est **noté**, comme le QCM évaluatif de fin de séquence — il reprend l'ensemble du
 cours (J7 à J9) et se rend en un dossier unique ; son corrigé est réservé à
 l'évaluation et n'est pas publié.
 

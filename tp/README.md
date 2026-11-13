@@ -17,7 +17,7 @@ rendu, il est **noté** : son corrigé est réservé à l'évaluation et n'est 
 
 | Élément | Nature | Durée |
 | --- | --- | --- |
-| [TP-INTEGRATEUR.md](TP-INTEGRATEUR.md) | **TP intégrateur — seul élément noté du cours**, facultatif, noté s'il est rendu ; son corrigé n'est pas publié | 4 h |
+| [TP-INTEGRATEUR.md](TP-INTEGRATEUR.md) | **TP intégrateur — l'un des deux éléments notés du cours**, facultatif, noté sur 20 s'il est rendu ; son corrigé n'est pas publié | 4 h |
 | [marche-cevennes/](marche-cevennes/) | Le module de commandes à auditer, fourni pour les étapes 1 à 3 du TP intégrateur | — |
 
 ## Table des exercices
@@ -40,7 +40,7 @@ Les exercices ne se cherchent plus ici : ils sont dans le chapitre indiqué.
 | 🟡 | Intégrer la sécurité dans une intégration continue (35 min) | 15 — DevSecOps |
 | 🔵 | Rédiger un mini-plan de réponse à incident (40 min) | 17 — Réponse à incident |
 | 🔴 | Construire sa feuille de route de sécurité (non chronométré) — **facultatif** | 18 — Maturité et perspectives |
-| 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](TP-INTEGRATEUR.md) — **TP intégrateur facultatif, noté s'il est rendu** — seul élément noté, corrigé non publié | les chapitres 01 à 18 (J7-J9) |
+| 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](TP-INTEGRATEUR.md) — **TP intégrateur facultatif, noté sur 20 s'il est rendu** — l'un des deux éléments notés, avec le QCM évaluatif de fin de séquence ; corrigé non publié | les chapitres 01 à 18 (J7-J9) |
 
 Les niveaux suivent la progression 🟢 découverte · 🟡 application · 🔵 intégration ·
 🔴 défi facultatif. Un 🔴 ne bloque jamais la progression.

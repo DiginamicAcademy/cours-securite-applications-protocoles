@@ -23,7 +23,7 @@ La direction veut passer de trente à cent vingt producteurs dans six mois, et c
 
 Votre mission : **sécuriser le service de bout en bout** — du code jusqu'au plan d'incident — et répondre à cette question dans un **dossier de sécurisation** unique.
 
-**Ce qui est fourni** — le module de gestion des commandes à auditer : [`tp/marche-cevennes/`](marche-cevennes/). Son README explique comment le lancer. Les étapes 1 à 3 portent sur ce code.
+**Ce qui est fourni** — le module de gestion des commandes à auditer : [`tp/marche-cevennes/`](marche-cevennes/). Son README explique comment le lancer, ce que vous verrez à l'exécution et ce qui n'est pas un bug du support. Les étapes 1 à 3 portent sur ce code ; les deux factures de démonstration y sont livrées, et relancer l'application laisse la base à trois commandes.
 
 ---
 
@@ -48,43 +48,53 @@ Votre mission : **sécuriser le service de bout en bout** — du code jusqu'au 
 
 ## Étapes
 
-### 1. Faire l'état des lieux du code — chapitres 01 et 06
+Les durées indiquées sont des **repères** pour tenir les 4 h annoncées — environ 25 minutes par étape, un peu plus pour la 2 et la 6 —, pas des minima. Avancez à votre rythme : le dossier compte plus que la montre.
+
+### 1. Faire l'état des lieux du code — chapitres 01 et 06 (25 min)
 
 Appliquez la [revue de code en trois passes](../06-revue-de-code-securite.md) au module de gestion des commandes de la boutique : les entrées, les sorties, les appels système. Classez chaque faiblesse avec les [principes du secure coding](../01-principes-secure-coding.md) — moindre privilège, défense en profondeur, fail-closed — et dites pour chacune ce qu'elle permet à un attaquant.
 
-### 2. Sécuriser le code — chapitres 02, 03 et 04
+Deux précautions pour ne pas conclure trop vite. Sur la route de recherche, **le caractère `%` seul affiche déjà toutes les lignes** : c'est le joker de `LIKE`, pas une injection. Écrire « j'ai obtenu plus de lignes que prévu » ne prouve donc rien — pour prouver quelque chose, il faut faire apparaître dans la réponse **une ligne que la base ne contient pas**. Et sur la route d'annulation, l'appel au prestataire échoue toujours (domaine réservé) : regardez ce qui a **déjà** été écrit en base au moment où ça casse.
+
+### 2. Sécuriser le code — chapitres 02, 03 et 04 (35 min)
 
 Corrigez ce que l'état des lieux a fait remonter : requêtes paramétrées et [validation des entrées](../02-validation-et-injections.md), [échappement des sorties](../03-xss-et-sorties.md) et en-têtes de sécurité, [erreurs et journaux](../04-erreurs-et-logging.md) qui n'exposent rien. Chaque correction figure au dossier en extrait **avant / après**, avec une phrase qui dit ce qu'elle change.
 
-### 3. Traiter les dépendances et la configuration — chapitre 05
+### 3. Traiter les dépendances et la configuration — chapitre 05 (20 min)
 
-Recensez les [dépendances et la configuration](../05-dependances-et-configuration.md) du service : bibliothèques et leurs versions, secrets et mots de passe, configuration par environnement. Pour chaque avis de sécurité trouvé, dites si le service est exposé et quelle version retenir ; nommez les secrets à sortir du code et où les mettre.
+Recensez les [dépendances et la configuration](../05-dependances-et-configuration.md) **du module fourni** : bibliothèques et leurs versions, secrets et mots de passe, configuration par environnement. Pour chaque avis de sécurité trouvé, dites si le service est exposé et quelle version retenir ; nommez les secrets à sortir du code et où les mettre.
 
-### 4. Sécuriser l'API des partenaires — chapitres 07 et 08
+Le module est la seule partie du service dont le code vous est donné. Pour les cinq autres briques, travaillez à partir du contexte : vous recensez ce qui **devrait** être déclaré, et vous signalez ce que vous ne pouvez pas vérifier sans le code. C'est une réponse, pas un oubli.
+
+### 4. Sécuriser l'API des partenaires — chapitres 07 et 08 (20 min)
 
 Reprenez la [surface d'attaque de l'API](../07-securite-api.md) : pour chaque endpoint, qui peut l'appeler, ce qu'il renvoie, ce qu'il coûte. Traitez les cas d'[autorisation et de limitation](../08-auth-et-limitation-api.md) — un partenaire ne doit lire que ses commandes, et aucun partenaire ne doit pouvoir épuiser le service.
 
-### 5. Protéger les données personnelles — chapitres 09 et 10
+Les endpoints des partenaires (transporteur, paiement, e-mailing) ne sont pas livrés : traitez-les comme à l'étape 3, en déclarant ce qui est vérifiable dans le module et ce qui ne l'est pas.
+
+### 5. Protéger les données personnelles — chapitres 09 et 10 (20 min)
 
 Classez les [données manipulées](../09-donnees-sensibles.md) par sensibilité, appliquez la minimisation et le masquage, puis traduisez les [obligations RGPD](../10-rgpd-applique.md) du service en contraintes concrètes : finalité, durée de conservation, information des clients. Complétez le registre des traitements pour les trois traitements principaux du service.
 
-### 6. Sécuriser le pipeline de données — chapitres 11 et 12
+### 6. Sécuriser le pipeline de données — chapitres 11 et 12 (25 min)
 
 Parcourez le [pipeline de données](../11-pipelines-data.md) étape par étape — extraction, stockage intermédiaire, transformation, entrepôt, export — et écrivez pour chacune les risques de fuite et d'altération, puis les mesures qui les traitent. Encadrez le [partage avec les tiers](../12-partage-et-tiers.md) : ce qui part vers le prestataire d'e-mailing, sous quelle forme, et avec quel contrat.
 
-### 7. Durcir le réseau — chapitres 13 et 14
+### 7. Durcir le réseau — chapitres 13 et 14 (20 min)
 
 Listez les [protocoles utilisés](../13-protocoles-reseau.md) et dites, pour chacun, ce qui circule en clair. Puis découpez le service en [zones de confiance](../14-architecture-reseau.md) et ne gardez que les flux nécessaires : chaque flux retenu est justifié, chaque flux refusé aussi.
 
-### 8. Verrouiller la chaîne DevSecOps — chapitres 15 et 16
+### 8. Verrouiller la chaîne DevSecOps — chapitres 15 et 16 (25 min)
 
 Écrivez le [workflow d'intégration continue](../15-devsecops.md) du service : analyse statique, analyse des composants, recherche de secrets, SBOM (Software Bill of Materials, la liste de ce qui compose le logiciel). Ajoutez les [tests de sécurité](../16-tests-securite.md) qui empêchent une faille corrigée de revenir, et dites quelle porte de sécurité bloque quoi.
 
-### 9. Préparer la réponse à incident — chapitre 17
+Un piège à éviter ici, parce qu'il fait passer un workflow au vert sans rien contrôler : un analyseur lancé **sans cible** audite l'environnement d'exécution, pas votre dépôt. Vérifiez toujours ce que votre porte de sécurité regarde avant de vous fier à sa couleur.
+
+### 9. Préparer la réponse à incident — chapitre 17 (20 min)
 
 Rédigez le [plan de réponse à incident](../17-reponse-incident.md) du service : qui décide, qui communique, dans quel ordre. Puis appliquez-le au scénario suivant — *un export mensuel de clients est retrouvé en accès public sur l'espace de stockage du prestataire d'e-mailing* — et racontez les premières heures heure par heure.
 
-### 10. Arbitrer et conclure — chapitre 18
+### 10. Arbitrer et conclure — chapitre 18 (15 min)
 
 Rassemblez le tout dans le dossier (voir plus bas), et terminez par une [feuille de route](../18-maturite-et-perspectives.md) : ce qui est fait, ce qui reste, dans quel ordre, et pour quel gain. Un arbitrage motivé vaut mieux qu'une mesure de plus : dites ce que vous **ne faites pas**, et pourquoi.
 

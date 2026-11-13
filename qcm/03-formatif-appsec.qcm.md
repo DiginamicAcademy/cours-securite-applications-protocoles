@@ -15,17 +15,6 @@ qcm:
   seuil: 0.7                   # indicatif : le formatif n'est pas noté au bulletin
 ---
 
-<!--
-  SOURCE DE VÉRITÉ de ce QCM formatif. Le XML d'import, 03-formatif-appsec.moodle.xml,
-  est couplé 1:1 à ce fichier (règle maison : 1 QCM = 1 .qcm.md + 1 .moodle.xml).
-  24 questions, choix unique, 1 point, réponses mélangées (shuffleanswers).
-  Une section par journée : J7 chapitres 01-06, J8 chapitres 07-12, J9 chapitres 13-18.
-  Les questions portent uniquement sur le contenu OBLIGATOIRE des chapitres : aucun
-  approfondissement « Pour aller plus loin » n'est interrogé.
-  Les lettres A/B/C/D sont celles de cette liste : elles ne figurent ni dans le XML,
-  ni dans les feedbacks, parce que Moodle mélange les propositions.
--->
-
 ## Journée 7 — Sécuriser l'application dans le code (chapitres 01 à 06)
 
 ## Q1 {niveau: facile, tags: [ch01, principes]}
