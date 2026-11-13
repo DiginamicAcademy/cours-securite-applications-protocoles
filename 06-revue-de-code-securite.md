@@ -50,7 +50,7 @@ forme** ?
 
 > 🧪 **Atelier rapide (10 min)**
 >
-> Prenez `lab-digicheese/vulnerable/app.py` et appliquez les trois passes, sans chercher à
+> Prenez `lab-securite/vulnerable/app.py` et appliquez les trois passes, sans chercher à
 > comprendre le code en détail. Première passe : listez les paramètres reçus par
 > chaque route. Deuxième passe : listez tout ce qui est renvoyé ou affiché.
 > Troisième passe : listez les appels à la base de données. Comparez ensuite vos

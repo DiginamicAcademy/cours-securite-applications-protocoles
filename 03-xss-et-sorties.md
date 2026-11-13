@@ -361,9 +361,9 @@ terminer la journée.*
 > Ouvrez un interpréteur Python et comparez deux façons d'afficher une saisie :
 > la chaîne brute, puis la même chaîne passée par `html.escape`. Faites de même
 > avec une valeur contenant une apostrophe et un chevron. Puis ouvrez
-> `lab-digicheese/vulnerable/app.py`, repérez la route qui réaffiche la recherche dans une
+> `lab-securite/vulnerable/app.py`, repérez la route qui réaffiche la recherche dans une
 > page, et identifiez la ligne où la donnée redevient du code. La même route,
-> dans `lab-digicheese/secure/app.py`, montre le traitement appliqué.
+> dans `lab-securite/secure/app.py`, montre le traitement appliqué.
 >
 > Ce qui frappe en faisant l'exercice, c'est que la correction tient en un appel
 > de fonction. Comme pour la requête paramétrée, tout le travail est dans le

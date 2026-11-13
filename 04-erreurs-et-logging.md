@@ -374,7 +374,7 @@ terminer la journée.*
 >
 > 🧪 **Atelier rapide (5 min)**
 >
-> Dans le lab du cours, lancez `lab-digicheese/vulnerable/app.py`, puis provoquez une
+> Dans le lab du cours, lancez `lab-securite/vulnerable/app.py`, puis provoquez une
 > erreur de base de données en appelant la route de recherche avec une valeur
 > qui casse la requête. Regardez ce que reçoit le client, puis ce qui apparaît
 > dans la sortie du serveur. Notez ce qui, dans la réponse, renseigne la

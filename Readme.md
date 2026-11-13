@@ -31,7 +31,7 @@ qui sert de cadre au TP. Un seul élément est noté au bulletin : le QCM
 unique). Le TP intégrateur, facultatif, est un travail pour pousser la
 compréhension, il ne compte pas dans la note. Les chapitres et les exercices
 s'appuient, eux, sur le lab Docker de la fromagerie **DIGICHEESE**, partagé
-entre les cours du parcours ([DiginamicAcademy/lab-digicheese](https://github.com/DiginamicAcademy/lab-digicheese)).
+entre les cours du parcours ([DiginamicAcademy/lab-securite](https://github.com/DiginamicAcademy/lab-securite)).
 Les enjeux y sont autant
 techniques que réglementaires : exposer de telles données engage la responsabilité
 de l'organisme au titre du RGPD (Règlement général sur la protection des données).
