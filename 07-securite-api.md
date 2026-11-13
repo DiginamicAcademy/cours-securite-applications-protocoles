@@ -5,7 +5,7 @@
 > L'API d'une grande rétention de véhicules expose `GET /users/{id}` sans aucun
 > contrôle : il suffit d'incrémenter l'identifiant pour lister les clients, un
 > par un. Pas de faille exotique dans cette histoire — seulement des droits
-> absents. La fromagerie **DIGICHEESE** (la fromagerie du fil rouge) ouvre elle
+> absents. La fromagerie **DIGICHEESE** (l'entreprise d'étude du parcours) ouvre elle
 > aussi son API au monde : 200 clients, 8 000 commandes, et une surface qu'il
 > faut auditer **avant** la mise en production.
 

@@ -2,7 +2,7 @@
 
 # Principes du secure coding — écrire pour que ça ne casse pas
 
-> Le développeur de la fromagerie **DIGICHEESE** (la fromagerie du fil rouge) a ouvert le
+> Le développeur de la fromagerie **DIGICHEESE** (l'entreprise d'étude du parcours) a ouvert le
 > fichier de sa boutique en ligne : les failles étudiées lors des journées
 > précédentes sont bien là, commentées, visibles. Le travail d'aujourd'hui n'est
 > pas de les *voir* — c'est de les *corriger*, sans en introduire de nouvelles.
@@ -98,7 +98,7 @@ comptabilité sait qu'elle ne doit pas le reprendre.
 
 #### Contexte
 
-La fromagerie **DIGICHEESE** (la fromagerie du fil rouge) lance un programme de fidélité.
+La fromagerie **DIGICHEESE** (l'entreprise d'étude du parcours) lance un programme de fidélité.
 Chaque soir, un script exporte les commandes du jour dans un fichier que le
 service comptabilité reprend le lendemain matin.
 
