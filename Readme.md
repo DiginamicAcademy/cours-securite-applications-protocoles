@@ -110,12 +110,12 @@ de la partie qui enseigne la notion ; leur correction se déplie sous les quest
 | 🟡 | Intégrer la sécurité dans une intégration continue — dans le chapitre 15 | 50 min |
 | 🔵 | Rédiger un mini-plan de réponse à incident — dans le chapitre 17 | 55 min |
 | 🔴 | Construire sa feuille de route de sécurité — dans le chapitre 18 | non chronométré |
-| 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](tp/TP-INTEGRATEUR.md) — **TP intégrateur, l'un des deux éléments notés du cours** — facultatif, noté sur 20 s'il est rendu | 4 h |
+| 🔵 | [Sécuriser de bout en bout une place de marché et son pipeline de données](tp/TP-INTEGRATEUR.md) — **TP intégrateur, le dossier de bout en bout qui reprend tout le cours** — facultatif et non noté, pour la compréhension | 4 h |
 
 Les quatorze exercices intégrés aux chapitres sont formatifs : leur correction,
-dépliable dans le chapitre, reste publique et sert à l'auto-évaluation. Le TP intégrateur, lui, est **noté**, comme le QCM évaluatif de fin de séquence — il reprend l'ensemble du
-cours (J7 à J9) et se rend en un dossier unique ; son corrigé est réservé à
-l'évaluation et n'est pas publié.
+dépliable dans le chapitre, reste publique et sert à l'auto-évaluation. Le TP intégrateur, lui, est **facultatif et non noté** : il reprend l'ensemble du
+cours (J7 à J9) et se rend en un dossier unique — un travail pour pousser la
+compréhension, qui ne compte pas dans la note ; son corrigé n'est pas publié.
 
 ---
 

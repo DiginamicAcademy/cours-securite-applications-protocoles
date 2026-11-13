@@ -1,6 +1,6 @@
-# TP intégrateur noté — Sécuriser de bout en bout une place de marché et son pipeline de données
+# TP intégrateur — Sécuriser de bout en bout une place de marché et son pipeline de données
 
-> **Nature :** TP intégrateur **facultatif**, noté au bulletin s'il est rendu · **Durée :** 4 h · **Notion :** le cours entier (J7-J9), appliqué de bout en bout à une application et à son pipeline de données
+> **Nature :** TP intégrateur **facultatif et non noté** — un travail pour pousser la compréhension, il ne compte pas au bulletin · **Durée :** 4 h · **Notion :** le cours entier (J7-J9), appliqué de bout en bout à une application et à son pipeline de données
 > 🔵 **Intégration** · **Lien :** les trois journées ([chapitres 01 à 18](../Readme.md))
 > **Objectif :** sécuriser un service réel de bout en bout et le prouver dans un dossier unique.
 
@@ -112,7 +112,7 @@ Rassemblez le tout dans le dossier (voir plus bas), et terminez par une [feuille
 6. **La chaîne DevSecOps** — workflow, portes de sécurité, SBOM, tests.
 7. **La réponse à incident et la feuille de route** — plan, scénario traité, priorités.
 
-Les étapes 1 à 9 sont la matière du dossier, pas des livrables à part. Ce TP est **noté sur 20**.
+Les étapes 1 à 9 sont la matière du dossier, pas des livrables à part. Ce TP est **facultatif et non noté** : il se rend pour pousser la compréhension, pas pour la note.
 
 ---
 

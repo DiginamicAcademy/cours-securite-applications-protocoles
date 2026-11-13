@@ -1,7 +1,7 @@
 """
 Marché des Cévennes — module de gestion des commandes.
 
-⚠️ Support pédagogique du TP intégrateur noté (J9). Ce module est donné à
+⚠️ Support pédagogique du TP intégrateur, facultatif et non noté (J9). Ce module est donné à
 AUDITER : il contient volontairement des faiblesses. Ne jamais le réutiliser
 tel quel, ni le déployer.
 

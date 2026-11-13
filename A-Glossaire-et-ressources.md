@@ -71,7 +71,7 @@ Cette page rassemble les acronymes et les termes techniques du cours, avec leurs
 | **SSE** | Security Service Edge | la brique de sécurité des services à la périphérie |
 | **TD** | travaux dirigés | une série d'exercices, souvent en séquence découverte |
 | **TLS** | Transport Layer Security | le protocole qui chiffre les communications réseau |
-| **TP** | travaux pratiques | une mise en pratique — ici, le TP intégrateur noté de fin de parcours |
+| **TP** | travaux pratiques | une mise en pratique — ici, le TP intégrateur facultatif et non noté de fin de parcours |
 | **UE** | Union européenne | |
 | **XML** | Extensible Markup Language | un format de données structurées en balises |
 | **XSS** | Cross-Site Scripting | l'injection de script dans une page web |
